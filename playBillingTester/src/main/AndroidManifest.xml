@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nytimes.android.external.playbillingtester">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <application
+        android:name=".PlayBillingTesterApp"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.Light" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".PlayBillingTesterService"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.nytimes.android.external.playbillingtester.InAppBillingService.BIND"/>
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".BuyActivity"
+            android:label="@string/title_activity_buy" >
+            <intent-filter>
+                <action android:name="com.nytimes.android.external.playbillingtester.test.buy"/>
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

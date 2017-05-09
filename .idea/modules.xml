@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/playBillingTester.iml" filepath="$PROJECT_DIR$/playBillingTester.iml" />
+      <module fileurl="file://$PROJECT_DIR$/playBillingTester/playBillingTester-playBillingTester.iml" filepath="$PROJECT_DIR$/playBillingTester/playBillingTester-playBillingTester.iml" />
+      <module fileurl="file://$PROJECT_DIR$/playBillingTesterLib/playBillingTesterLib.iml" filepath="$PROJECT_DIR$/playBillingTesterLib/playBillingTesterLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sampleApp/sampleApp.iml" filepath="$PROJECT_DIR$/sampleApp/sampleApp.iml" />
+    </modules>
+  </component>
+</project>

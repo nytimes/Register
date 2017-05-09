@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/Users/200760/playBillingTester/playBillingTesterLib/src/main/assets"/><source path="/Users/200760/playBillingTester/playBillingTesterLib/build/generated/assets/shaders/release"/></dataSet><dataSet config="release"><source path="/Users/200760/playBillingTester/playBillingTesterLib/src/release/assets"/></dataSet></merger>

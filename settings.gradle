@@ -1,0 +1,3 @@
+include ':playBillingTester'
+include ':playBillingTesterLib'
+include ':sampleApp'

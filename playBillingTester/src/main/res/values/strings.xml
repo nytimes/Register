@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Play Billing Tester</string>
+    <string name="action_settings">About</string>
+    <string name="title_activity_buy">BuyActivity</string>
+    <string name="refresh">REFRESH</string>
+    <string name="purge">PURGE</string>
+    <string name="error">Error</string>
+    <string name="config_not_found">Config file not found</string>
+    <string name="item_not_found">Item not found</string>
+    <string name="item_already_owned">Item already owned</string>
+    <string name="buy">Buy</string>
+    <string name="ok">OK</string>
+    <string name="started">STARTED</string>
+    <string name="created">CREATED</string>
+    <string name="destroyed">DESTROYED</string>
+    <string name="is_billing_supported">isBillingSupported</string>
+    <string name="get_buy_intent">getBuyIntent</string>
+    <string name="buy_label">buy</string>
+    <string name="get_purchases">getPurchases</string>
+    <string name="get_sku_details">getSkuDetails</string>
+    <string name="user">User</string>
+    <string name="spn_default">-1 RESULT_DEFAULT</string>
+    <string name="spn_ok">0 RESULT_OK</string>
+    <string name="spn_billing_unavailable">3 RESULT_BILLING_UNAVAILABLE</string>
+    <string name="spn_item_unavailable">4 RESULT_ITEM_UNAVAILABLE</string>
+    <string name="spn_dev_error">5 RESULT_DEVELOPER_ERROR</string>
+    <string name="spn_error">6 RESULT_ERROR</string>
+    <string name="spn_item_owned">7 RESULT_ITEM_ALREADY_OWNED</string>
+    <string-array name="isBillingEnabled_spinner">
+        <item>@string/spn_default</item>
+        <item>@string/spn_ok</item>
+        <item>@string/spn_billing_unavailable</item>
+        <item>@string/spn_dev_error</item>
+        <item>@string/spn_error</item>
+    </string-array>
+
+    <string-array name="getBuyIntent_spinner">
+        <item>@string/spn_default</item>
+        <item>@string/spn_ok</item>
+        <item>@string/spn_dev_error</item>
+        <item>@string/spn_error</item>
+    </string-array>
+
+    <string-array name="buy_spinner">
+        <item>@string/spn_default</item>
+        <item>@string/spn_ok</item>
+        <item>@string/spn_item_unavailable</item>
+        <item>@string/spn_dev_error</item>
+        <item>@string/spn_error</item>
+        <item>@string/spn_item_owned</item>
+    </string-array>
+
+    <string-array name="getPurchases_spinner">
+        <item>@string/spn_default</item>
+        <item>@string/spn_ok</item>
+        <item>@string/spn_dev_error</item>
+        <item>@string/spn_error</item>
+    </string-array>
+
+    <string-array name="getSkuDetails_spinner">
+        <item>@string/spn_default</item>
+        <item>@string/spn_ok</item>
+        <item>@string/spn_item_unavailable</item>
+        <item>@string/spn_dev_error</item>
+        <item>@string/spn_error</item>
+    </string-array>
+
+    <!--
+
+
+        public static final int RESULT_DEFAULT = -1;            // - no user override
+        public static final int RESULT_OK = 0;                  // - success
+        public static final int RESULT_USER_CANCELED = 1;       // - user pressed back or canceled a dialog
+        public static final int RESULT_BILLING_UNAVAILABLE = 3; // - this billing API version is not supported for the type requested
+        public static final int RESULT_ITEM_UNAVAILABLE = 4;    // - requested SKU is not available for purchase
+        public static final int RESULT_DEVELOPER_ERROR = 5;     // - invalid arguments provided to the API
+        public static final int RESULT_ERROR = 6;               // - Fatal error during the API action
+        public static final int RESULT_ITEM_ALREADY_OWNED = 7;  // - Failure to purchase since item is already owned
+        public static final int RESULT_ITEM_NOT_OWNED = 8;      // - Failure to consume since item is not owned
+    -->
+</resources>
