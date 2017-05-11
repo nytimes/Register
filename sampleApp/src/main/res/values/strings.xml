@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Play Billing Tester Sample</string>
+    <string name="buy_label">Buy %s</string>
+    <string name="own_label">Already own %s</string>
+    <string name="not_found">%s not found</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.nytimes.android.external.playbillingtester;
+package com.nytimes.android.external.playbillingtester.sample;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.nytimes.android.external.playbillingtester", appContext.getPackageName());
+        assertEquals("com.nytimes.android.external.playbillingtester.sample", appContext.getPackageName());
     }
 }

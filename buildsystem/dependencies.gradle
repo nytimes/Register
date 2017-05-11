@@ -30,6 +30,8 @@ ext.versions = [
         guava                : '19.0',
         immutables           : '2.4.1',
         javaxInject          : '1',
+        rxJava               : '2.1.0',
+        rxAndroid            : '2.0.1',
 
         // Debugging & Inspecting.
         slf4j                : '1.7.19',
@@ -60,6 +62,8 @@ ext.libraries = [
         immutablesGson          : "org.immutables:gson:$versions.immutables",
         supportAnnotations      : "com.android.support:support-annotations:$versions.supportLibs",
         javaxInject             : "javax.inject:javax.inject:$versions.javaxInject",
+        rxJava                  : "io.reactivex.rxjava2:rxjava:$versions.rxJava",
+        rxAndroid               : "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid",
 
         // Debugging & Inspecting.
         slf4jTesting            : "org.slf4j:slf4j-simple:$versions.slf4j",
