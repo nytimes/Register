@@ -1,27 +1,40 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: 'buildsystem/dependencies.gradle'
 
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
         mavenLocal()
         maven {
             url 'https://plugins.gradle.org/m2/'
         }
+
         maven {
             url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
         }
+
         jcenter()
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'me.tatarka:gradle-retrolambda:3.6.1'
+        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
+        classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.8'
     }
+    // this corresponds to the lombok.ast included above. fixes lint for retro-lambda
+    configurations.classpath.exclude group: 'com.android.tools.com.nytimes.android.external.lombok'
+
 }
 
 allprojects {
+    buildscript {
+
+    }
+
     repositories {
         maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+            url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
         }
-
         mavenCentral()
     }
 
@@ -32,6 +45,47 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+ext {
+    // SDK versions
+
+    // POM file
+    GROUP = "com.nytimes.android"
+    VERSION_NAME = "0.0.1-SNAPSHOT"
+    POM_PACKAGING = "pom"
+    POM_DESCRIPTION = "playBillingTester"
+
+    POM_URL = "https://github.com/nytimes/playBillingTester/"
+    POM_SCM_URL = "https://github.com/nytimes/playBillingTester/"
+    POM_SCM_CONNECTION = "scm:git:https://github.com/nytm/playBillingTester.git"
+    POM_SCM_DEV_CONNECTION = "scm:git:git@github.com:nytm/playBillingTester.git"
+
+    POM_LICENCE_NAME = "Apache License"
+    POM_LICENCE_URL = "http://www.apache.org/licenses/"
+    POM_LICENCE_DIST = "repo"
+
+    POM_DEVELOPER_ID = "nytimesandroid"
+    POM_DEVELOPER_NAME = "New York Times"
+}
+
+// From command line use: -PdisablePreDex to disable it: primarily for jenkins
+project.ext.preDexLibs = !project.hasProperty('disablePreDex')
+
+subprojects {
+    project.plugins.whenPluginAdded { plugin ->
+        if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name)) {
+            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
+        } else if ("com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
+            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
+        }
+    }
+    project.plugins.apply('net.ltgt.errorprone')
+
+    configurations.errorprone {
+        resolutionStrategy.force 'com.google.errorprone:error_prone_core:2.0.15'
+    }
+}
+
+task gitHooksInit (type:Exec) {
+    workingDir "$projectDir"
+    commandLine './init-git-hooks'
 }

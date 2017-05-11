@@ -1,0 +1,74 @@
+allprojects {
+    repositories {
+        mavenLocal()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+
+        maven {
+            url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+        }
+        jcenter()
+    }
+}
+
+ext.versions = [
+        minSdk               : 16,
+        targetSdk            : 25,
+        compileSdk           : 25,
+        buildTools           : '25.0.2',
+
+        // UI libs.
+        supportLibs          : '25.1.0',
+        constraint           : '1.0.2',
+        butterKnife          : '8.5.1',
+
+        // Others.
+        retrolambda          : '2.3.0',
+        dagger               : '2.9',
+        gson                 : '2.6.2',
+        guava                : '19.0',
+        immutables           : '2.4.1',
+        javaxInject          : '1',
+
+        // Debugging & Inspecting.
+        slf4j                : '1.7.19',
+
+        // Testing.
+        junit                : '4.12',
+        assertJ              : '1.7.1',
+        mockito              : '1.9.5',
+        robolectric          : '3.3.2',
+        espresso             : '2.2.2'
+]
+
+ext.libraries = [
+        // UI libs.
+        supportAppCompat        : "com.android.support:appcompat-v7:$versions.supportLibs",
+        supportDesign           : "com.android.support:design:$versions.supportLibs",
+        constraint              : "com.android.support.constraint:constraint-layout:$versions.constraint",
+        butterKnife             : "com.jakewharton:butterknife:$versions.butterKnife",
+        butterKnifeCompiler     : "com.jakewharton:butterknife-compiler:$versions.butterKnife",
+
+        // Others.
+        retrolambda             : "net.orfjackal.retrolambda:retrolambda:$versions.retrolambda",
+        dagger                  : "com.google.dagger:dagger:$versions.dagger",
+        daggerCompiler          : "com.google.dagger:dagger-compiler:$versions.dagger",
+        gson                    : "com.google.code.gson:gson:$versions.gson",
+        guava                   : "com.google.guava:guava:$versions.guava",
+        immutablesValue         : "org.immutables:value:$versions.immutables",
+        immutablesGson          : "org.immutables:gson:$versions.immutables",
+        supportAnnotations      : "com.android.support:support-annotations:$versions.supportLibs",
+        javaxInject             : "javax.inject:javax.inject:$versions.javaxInject",
+
+        // Debugging & Inspecting.
+        slf4jTesting            : "org.slf4j:slf4j-simple:$versions.slf4j",
+        slf4jAndroid            : "org.slf4j:slf4j-android:$versions.slf4j",
+
+        // Testing.
+        junit                   : "junit:junit:$versions.junit",
+        assertJ                 : "org.assertj:assertj-core:$versions.assertJ",
+        mockito                 : "org.mockito:mockito-all:$versions.mockito",
+        robolectric             : "org.robolectric:robolectric:$versions.robolectric",
+        espresso                : "com.android.support.test.espresso:espresso-core:$versions.espresso",
+]
