@@ -1,11 +1,11 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
+
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -19,17 +19,19 @@ android {
 }
 
 dependencies {
+    compile libraries.gson
     androidTestCompile(libraries.espresso, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile libraries.supportAppCompat
     testCompile libraries.junit
-    compile libraries.constraint
-    compile libraries.supportDesign
-    compile libraries.butterKnife
-    annotationProcessor libraries.butterKnifeCompiler
 }
 
+buildscript {
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+apply from: rootProject.file("gradle/maven-push.gradle")
 apply from: rootProject.file("gradle/checkstyle.gradle")
 apply from: rootProject.file("gradle/pmd.gradle")
-
