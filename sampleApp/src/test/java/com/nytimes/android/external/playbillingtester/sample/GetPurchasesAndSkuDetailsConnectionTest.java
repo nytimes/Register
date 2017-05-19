@@ -1,6 +1,5 @@
 package com.nytimes.android.external.playbillingtester.sample;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -35,8 +34,6 @@ public class GetPurchasesAndSkuDetailsConnectionTest {
 
     private GetPurchasesAndSkuDetailsConnection testObject;
     @Mock
-    private Activity activity;
-    @Mock
     private GoogleServiceProvider googleServiceProvider;
     @Mock
     private ComponentName componentName;
@@ -53,7 +50,7 @@ public class GetPurchasesAndSkuDetailsConnectionTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         testObject = new GetPurchasesAndSkuDetailsConnection(ImmutableList.of("sku-iap"),
-                ImmutableList.of("sku-sub"), activity, googleServiceProvider);
+                ImmutableList.of("sku-sub"), "com.my.pkg", googleServiceProvider);
         when(googleServiceProvider.getSkuDetails(anyInt(), anyString(), argThat(iapMatcher), any(Bundle.class)))
                 .thenReturn(iapSkuDetailsBundle);
         when(googleServiceProvider.getSkuDetails(anyInt(), anyString(), argThat(subMatcher), any(Bundle.class)))

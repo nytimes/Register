@@ -1,6 +1,5 @@
 package com.nytimes.android.external.playbillingtester.sample;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -23,16 +22,16 @@ public class GetPurchasesAndSkuDetailsConnection implements ServiceConnection {
 
     private static final String TAG = "GetPurchasesConnection";
     private final GoogleServiceProvider googleServiceProvider;
-    private final Activity activity;
     private final PublishSubject<Response> purchasesAndSkuDetailsSubject;
     private final List<String> iapSkus, subSkus;
+    private final String packageName;
 
-    public GetPurchasesAndSkuDetailsConnection(List<String> iapSkus, List<String> subSkus, Activity activity,
+    public GetPurchasesAndSkuDetailsConnection(List<String> iapSkus, List<String> subSkus, String packageName,
                                                GoogleServiceProvider googleServiceProvider) {
         this.iapSkus = iapSkus;
         this.subSkus = subSkus;
+        this.packageName = packageName;
         this.googleServiceProvider = googleServiceProvider;
-        this.activity = activity;
         this.purchasesAndSkuDetailsSubject = PublishSubject.create();
     }
 
@@ -42,14 +41,14 @@ public class GetPurchasesAndSkuDetailsConnection implements ServiceConnection {
         try {
             purchasesAndSkuDetailsSubject.onNext(ImmutableResponse.builder()
                     .subSkuDetails(googleServiceProvider.getSkuDetails(GoogleUtil.BILLING_API_VERSION,
-                            activity.getPackageName(), GoogleUtil.BILLING_TYPE_SUBSCRIPTION, makeItemBundle(subSkus)))
+                            packageName, GoogleUtil.BILLING_TYPE_SUBSCRIPTION, makeItemBundle(subSkus)))
                     .iapSkuDetails(googleServiceProvider.getSkuDetails(GoogleUtil.BILLING_API_VERSION,
-                            activity.getPackageName(), GoogleUtil.BILLING_TYPE_IAP, makeItemBundle(iapSkus)))
+                            packageName, GoogleUtil.BILLING_TYPE_IAP, makeItemBundle(iapSkus)))
                     .subPurchases(googleServiceProvider.getPurchases(GoogleUtil.BILLING_API_VERSION,
-                            activity.getPackageName(), GoogleUtil.BILLING_TYPE_SUBSCRIPTION,
+                            packageName, GoogleUtil.BILLING_TYPE_SUBSCRIPTION,
                             GoogleUtil.CONTINUATION_TOKEN))
                     .iapPurchases(googleServiceProvider.getPurchases(GoogleUtil.BILLING_API_VERSION,
-                            activity.getPackageName(), GoogleUtil.BILLING_TYPE_IAP,
+                            packageName, GoogleUtil.BILLING_TYPE_IAP,
                             GoogleUtil.CONTINUATION_TOKEN))
                     .build());
         } catch (RemoteException e) {
@@ -68,7 +67,7 @@ public class GetPurchasesAndSkuDetailsConnection implements ServiceConnection {
         googleServiceProvider.releaseService();
     }
 
-    public Observable<Response> getPurchasesAndSkuDetails() {
+    Observable<Response> getPurchasesAndSkuDetails() {
         return purchasesAndSkuDetailsSubject;
     }
 

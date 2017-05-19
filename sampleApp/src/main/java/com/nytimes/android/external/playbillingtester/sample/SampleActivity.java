@@ -1,7 +1,9 @@
 package com.nytimes.android.external.playbillingtester.sample;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -46,6 +48,7 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
     private static final String TAG = "SampleActivity";
     private static final String SKU_IAP = "playbillingtester.sample.iap";
     private static final String SKU_SUB = "playbillingtester.sample.sub";
+    private static final String DEV_PAYLOAD = "devPayload";
 
     @BindView(R.id.testerSwitch)
     Switch testerSwitch;
@@ -85,6 +88,23 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         public void accept(Throwable throwable) {
             unbindConnection(getPurchasesConn);
             Log.e(TAG, "getPurchasesAndSkuDetails error", throwable);
+        }
+    };
+
+    private final Consumer<PendingIntent> buyPendingIntentConsumer = new Consumer<PendingIntent>() {
+        @Override
+        public void accept(PendingIntent pendingIntent) throws IntentSender.SendIntentException {
+            unbindConnection(buyServiceConnection);
+            startIntentSenderForResult(pendingIntent.getIntentSender(),
+                    REQUEST_CODE_GOOGLE_PURCHASE, new Intent(), 0, 0, 0);
+        }
+    };
+
+    private final Consumer<Throwable> buyPendingIntentError = new Consumer<Throwable>() {
+        @Override
+        public void accept(Throwable throwable) {
+            unbindConnection(buyServiceConnection);
+            Log.e(TAG, "getBuyIntent error", throwable);
         }
     };
 
@@ -172,6 +192,7 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         }
     }
 
+    @Override
     @OnCheckedChanged({R.id.testerSwitch})
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (testerSwitch.equals(buttonView)) {
@@ -181,6 +202,7 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         }
     }
 
+    @Override
     @OnClick({R.id.buyIAPButton, R.id.buySubButton})
     public void onClick(View view) {
         if (buyIAPButton.equals(view)) {
@@ -193,7 +215,12 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
     private void buy(String sku, String type) {
         Intent intent = ServiceIntentHelper.createExplicitFromImplicitIntent(this, googleServiceProvider.getIntent());
         if (intent != null) {
-            buyServiceConnection = new BuyServiceConnection(sku, type, this, googleServiceProvider);
+            buyServiceConnection = new BuyServiceConnection(sku, type, getPackageName(), DEV_PAYLOAD,
+                    googleServiceProvider);
+            compositeDisposable.add(buyServiceConnection.getBuyPendingIntent()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(buyPendingIntentConsumer, buyPendingIntentError));
             bindService(intent, buyServiceConnection, Context.BIND_AUTO_CREATE);
             boundSet.add(buyServiceConnection);
         }
@@ -203,7 +230,7 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         Intent intent = ServiceIntentHelper.createExplicitFromImplicitIntent(this, googleServiceProvider.getIntent());
         if (intent != null) {
             getPurchasesConn = new GetPurchasesAndSkuDetailsConnection(ImmutableList.of(SKU_IAP),
-                    ImmutableList.of(SKU_SUB), this, googleServiceProvider);
+                    ImmutableList.of(SKU_SUB), getPackageName(), googleServiceProvider);
             compositeDisposable.add(getPurchasesConn.getPurchasesAndSkuDetails()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
