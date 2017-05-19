@@ -173,7 +173,6 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
     }
 
     @OnCheckedChanged({R.id.testerSwitch})
-    @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (testerSwitch.equals(buttonView)) {
             prefsManager.setUsingGoogleServiceProvider(isChecked);
@@ -183,7 +182,6 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
     }
 
     @OnClick({R.id.buyIAPButton, R.id.buySubButton})
-    @Override
     public void onClick(View view) {
         if (buyIAPButton.equals(view)) {
             buy(SKU_IAP, GoogleUtil.BILLING_TYPE_IAP);

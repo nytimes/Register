@@ -31,21 +31,36 @@ public final class ServiceIntentHelper {
      * @return Explicit Intent created from the implicit original intent
      */
     public static Intent createExplicitFromImplicitIntent(Context context, Intent implicitIntent) {
-        // Retrieve all services that can match the given intent
-        PackageManager packageManager = context.getPackageManager();
-        List<ResolveInfo> resolveInfo = packageManager.queryIntentServices(implicitIntent, 0);
-
-        // Make sure only one match was found
-        if (resolveInfo == null || resolveInfo.size() != 1) {
+        ResolveInfo resolveInfo = getResolveInfo(context, implicitIntent);
+        if (resolveInfo == null) {
             return null;
         }
 
-        // Get component info and create ComponentName
-        ResolveInfo serviceInfo = resolveInfo.get(0);
+        ComponentName component =  getComponentFromServiceInfo(resolveInfo);
+
+        return makeExplicitIntent(implicitIntent, component);
+    }
+
+    // Retrieve service that can match the given intent
+    private static ResolveInfo getResolveInfo(Context context, Intent implicitIntent) {
+        PackageManager packageManager = context.getPackageManager();
+        List<ResolveInfo> resolveInfoList = packageManager.queryIntentServices(implicitIntent, 0);
+
+        // Make sure only one match was found
+        if (resolveInfoList == null || resolveInfoList.size() != 1) {
+            return null;
+        }
+        return resolveInfoList.get(0);
+    }
+
+    // Get component info and create ComponentName
+    private static ComponentName getComponentFromServiceInfo(ResolveInfo serviceInfo) {
         String packageName = serviceInfo.serviceInfo.packageName;
         String className = serviceInfo.serviceInfo.name;
-        ComponentName component = new ComponentName(packageName, className);
+        return new ComponentName(packageName, className);
+    }
 
+    private static Intent makeExplicitIntent(Intent implicitIntent, ComponentName component) {
         // Create a new intent. Use the old one for extras and such reuse
         Intent explicitIntent = new Intent(implicitIntent);
 
