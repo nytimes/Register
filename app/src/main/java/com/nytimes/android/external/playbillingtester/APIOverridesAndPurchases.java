@@ -30,6 +30,7 @@ public class APIOverridesAndPurchases {
     private static final String BUY = "Buy";
     private static final String GET_PURCHASES = "getPurchases";
     private static final String GET_SKU_DETAILS = "getSkuDetails";
+    private static final String CONSUME_PURCHASE = "consumePurchase";
     private static final String USERS = "Users";
     private static final String DEFAULT_USER = "200nyttest1@nytimes.com";
 
@@ -83,6 +84,14 @@ public class APIOverridesAndPurchases {
         sharedPreferences.edit().putInt(GET_SKU_DETAILS, response).apply();
     }
 
+    public int getConsumePurchaseResponse() {
+        return sharedPreferences.getInt(CONSUME_PURCHASE, RESULT_DEFAULT);
+    }
+
+    void setConsumePurchaseResponse(int response) {
+        sharedPreferences.edit().putInt(CONSUME_PURCHASE, response).apply();
+    }
+
     @NonNull
     String getUsersResponse() {
         return sharedPreferences.getString(USERS, DEFAULT_USER);
@@ -95,6 +104,12 @@ public class APIOverridesAndPurchases {
     void addPurchase(@NonNull String inAppPurchaseDataStr, @NonNull String itemType) {
         Set<String> items = sharedPreferences.getStringSet(getItemsKeyFromType(itemType), new LinkedHashSet<String>());
         items.add(inAppPurchaseDataStr);
+        sharedPreferences.edit().putStringSet(getItemsKeyFromType(itemType), items).apply();
+    }
+
+    public void removePurchase(@NonNull String inAppPurchaseDataStr, @NonNull String itemType) {
+        Set<String> items = sharedPreferences.getStringSet(getItemsKeyFromType(itemType), new LinkedHashSet<String>());
+        items.remove(inAppPurchaseDataStr);
         sharedPreferences.edit().putStringSet(getItemsKeyFromType(itemType), items).apply();
     }
 

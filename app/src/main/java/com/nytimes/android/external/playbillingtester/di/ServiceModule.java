@@ -13,6 +13,7 @@ import com.nytimes.android.external.playbillingtester.IInAppBillingService;
 import com.nytimes.android.external.playbillingtester.PermissionHandler;
 import com.nytimes.android.external.playbillingtester.R;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
+import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.SkuDetailsBundleBuilder;
 import com.nytimes.android.external.playbillingtester.model.Config;
@@ -66,9 +67,10 @@ public class ServiceModule {
                                                             Gson gson, Config config,
                                                             BuyIntentBundleBuilder buyIntentBundleBuilder,
                                                             SkuDetailsBundleBuilder skuDetailsBundleBuilder,
-                                                            PurchasesBundleBuilder purchasesBundleBuilder) {
+                                                            PurchasesBundleBuilder purchasesBundleBuilder,
+                                                            ConsumePurchaseBundleBuilder consumePurchaseBundleBuilder) {
         return new BillingServiceStubImpl(apiOverridesAndPurchases, gson, config, buyIntentBundleBuilder,
-                skuDetailsBundleBuilder, purchasesBundleBuilder);
+                skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseBundleBuilder);
     }
 
     @Provides
@@ -89,5 +91,11 @@ public class ServiceModule {
     @ScopeService
     PurchasesBundleBuilder providePurchasesBundleBuilder(APIOverridesAndPurchases apiOverridesAndPurchases) {
         return new PurchasesBundleBuilder(apiOverridesAndPurchases);
+    }
+
+    @Provides
+    @ScopeService
+    ConsumePurchaseBundleBuilder provideConsumePurchaseBundleBuilder(APIOverridesAndPurchases apiOverridesAndPurchases) {
+        return new ConsumePurchaseBundleBuilder(apiOverridesAndPurchases);
     }
 }

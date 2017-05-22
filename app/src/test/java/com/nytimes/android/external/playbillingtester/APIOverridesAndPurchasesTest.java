@@ -178,4 +178,24 @@ public class APIOverridesAndPurchasesTest  {
         assertThat(testObject.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP).size())
                 .isEqualTo(0);
     }
+
+    @Test
+    public void testRemovePurchase() {
+        testObject.addPurchase(inAppPurchaseData1Str, GoogleUtil.BILLING_TYPE_SUBSCRIPTION);
+        testObject.addPurchase(inAppPurchaseData2Str, GoogleUtil.BILLING_TYPE_IAP);
+        Set<InAppPurchaseData> iapdActual1 = testObject.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION);
+        Set<InAppPurchaseData> iapdActual2 = testObject.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP);
+        assertThat(iapdActual1.iterator().next())
+                .isEqualTo(inAppPurchaseData1);
+        assertThat(iapdActual2.iterator().next())
+                .isEqualTo(inAppPurchaseData2);
+
+        testObject.removePurchase(inAppPurchaseData1Str, GoogleUtil.BILLING_TYPE_SUBSCRIPTION);
+        testObject.removePurchase(inAppPurchaseData2Str, GoogleUtil.BILLING_TYPE_IAP);
+        Set<InAppPurchaseData> iapdActualAfterDeletion1 = testObject.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION);
+        Set<InAppPurchaseData> iapdActualAfterDeletion2 = testObject.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP);
+        assertThat(iapdActualAfterDeletion1).isEmpty();
+        assertThat(iapdActualAfterDeletion2).isEmpty();
+    }
+
 }
