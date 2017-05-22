@@ -14,6 +14,7 @@ import com.nytimes.android.external.playbillingtester.PermissionHandler;
 import com.nytimes.android.external.playbillingtester.Purchases;
 import com.nytimes.android.external.playbillingtester.R;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
+import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.SkuDetailsBundleBuilder;
 import com.nytimes.android.external.playbillingtester.model.Config;
@@ -70,6 +71,8 @@ public class ServiceModule {
                                                             PurchasesBundleBuilder purchasesBundleBuilder) {
         return new BillingServiceStubImpl(apiOverrides, gson, config, buyIntentBundleBuilder,
                 skuDetailsBundleBuilder, purchasesBundleBuilder);
+                                                            PurchasesBundleBuilder purchasesBundleBuilder,
+                                                            ConsumePurchaseBundleBuilder consumePurchaseBundleBuilder);
     }
 
     @Provides
@@ -90,5 +93,11 @@ public class ServiceModule {
     @ScopeService
     PurchasesBundleBuilder providePurchasesBundleBuilder(APIOverrides apiOverrides, Purchases purchases) {
         return new PurchasesBundleBuilder(apiOverrides, purchases);
+    }
+
+    @Provides
+    @ScopeService
+    ConsumePurchaseBundleBuilder provideConsumePurchaseBundleBuilder(APIOverrides apiOverrides, Purchases purchases) {
+        return new ConsumePurchaseBundleBuilder(apiOverrides, purchases);
     }
 }

@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     Spinner buySpinner;
     @BindView(R.id.getPurchases)
     Spinner getPurchasesSpinner;
+    @BindView(R.id.consumePurchase)
+    Spinner consumePurchaseSpinner;
     @BindView(R.id.getSkuDetails)
     Spinner getSkuDetailsSpinner;
     @BindView(R.id.usersSpinner)
@@ -117,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 apiOverrides.getGetPurchasesResponse()));
         getSkuDetailsSpinner.setSelection(getSpinnerArrayPositionFromCode(R.array.getSkuDetails_spinner,
                 apiOverrides.getGetSkuDetailsResponse()));
+        consumePurchaseSpinner.setSelection(getSpinnerArrayPositionFromCode(R.array.consumePurchase_spinner,
+                apiOverrides.getConsumePurchaseResponse()));
         usersSpinner.setSelection(getSpinnerArrayPosition(config.users(),
                 apiOverrides.getUsersResponse()));
     }
@@ -229,6 +233,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     apiOverrides.setGetSkuDetailsResponse(
                             getCodeFromSpinnerItem(R.array.getSkuDetails_spinner, position));
                     break;
+                case R.id.consumePurchase:
+                    apiOverrides.setConsumePurchaseResponse(
+                            getCodeFromSpinnerItem(R.array.consumePurchase_spinner, position));
                 case R.id.usersSpinner:
                     apiOverrides.setUsersReponse(config.users().get(position));
                     break;

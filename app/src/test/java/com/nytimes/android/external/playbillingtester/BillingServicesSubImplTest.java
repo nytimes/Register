@@ -5,6 +5,7 @@ import android.os.RemoteException;
 
 import com.google.common.collect.ImmutableList;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
+import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.SkuDetailsBundleBuilder;
 import com.nytimes.android.external.playbillingtester.model.Config;
@@ -49,6 +50,9 @@ public class BillingServicesSubImplTest {
     @Mock
     private PurchasesBundleBuilder purchasesBundleBuilder;
 
+    @Mock
+    private ConsumePurchaseBundleBuilder consumePurchaseBundleBuilder;
+
     private BillingServiceStubImpl testObject;
 
     private final String type = GoogleUtil.BILLING_TYPE_IAP;
@@ -71,7 +75,7 @@ public class BillingServicesSubImplTest {
         when(purchasesBundleBuilder.continuationToken(anyString())).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.build()).thenReturn(expected);
         testObject = new BillingServiceStubImpl(apiOverrides, create(), config,
-                buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder);
+                buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseBundleBuilder);
     }
 
     @Test
