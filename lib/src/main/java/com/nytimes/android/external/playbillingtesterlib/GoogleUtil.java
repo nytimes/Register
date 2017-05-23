@@ -30,7 +30,10 @@ public final class GoogleUtil {
     public static final String RESPONSE_CODE = "RESPONSE_CODE";
     public static final String INAPP_PURCHASE_DATA = "INAPP_PURCHASE_DATA";
     public static final String BUY_INTENT = "BUY_INTENT";
+    public static final String INAPP_PURCHASE_ITEM_LIST = "INAPP_PURCHASE_ITEM_LIST";
     public static final String INAPP_PURCHASE_DATA_LIST = "INAPP_PURCHASE_DATA_LIST";
+    public static final String INAPP_DATA_SIGNATURE_LIST = "INAPP_DATA_SIGNATURE_LIST";
+    public static final String INAPP_CONTINUATION_TOKEN = "INAPP_CONTINUATION_TOKEN";
     public static final String ITEM_ID_LIST = "ITEM_ID_LIST";
     public static final String DETAILS_LIST = "DETAILS_LIST";
 
@@ -40,9 +43,6 @@ public final class GoogleUtil {
     public static final int BILLING_API_VERSION = 5;
     public static final String BILLING_TYPE_SUBSCRIPTION = "subs";
     public static final String BILLING_TYPE_IAP = "inapp";
-    public static final String BILLING_DEVELOPER_PAYLOAD = "";
-    public static final String CONTINUATION_TOKEN = "";      // Set by Google if owned products are
-                                                            // large enough.
 
     private GoogleUtil() {
     }

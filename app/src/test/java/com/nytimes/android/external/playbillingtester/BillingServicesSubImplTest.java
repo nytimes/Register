@@ -19,7 +19,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 
-import static com.nytimes.android.external.playbillingtester.APIOverridesAndPurchases.RESULT_DEFAULT;
+import static com.nytimes.android.external.playbillingtester.APIOverrides.RESULT_DEFAULT;
 import static com.nytimes.android.external.playbillingtester.di.GsonFactory.create;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyListOf;
@@ -35,7 +35,7 @@ public class BillingServicesSubImplTest {
     private static final String SKU = "sku";
 
     @Mock
-    private APIOverridesAndPurchases apiOverridesAndPurchases;
+    private APIOverrides apiOverrides;
 
     @Mock
     private Config config;
@@ -68,15 +68,16 @@ public class BillingServicesSubImplTest {
         when(buyIntentBundleBuilder.build()).thenReturn(expected);
         when(purchasesBundleBuilder.newBuilder()).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.type(anyString())).thenReturn(purchasesBundleBuilder);
+        when(purchasesBundleBuilder.continuationToken(anyString())).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.build()).thenReturn(expected);
-        testObject = new BillingServiceStubImpl(apiOverridesAndPurchases, create(), config,
+        testObject = new BillingServiceStubImpl(apiOverrides, create(), config,
                 buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder);
     }
 
     @Test
     public void testIsBillingSupportedDefault() {
         int expected = GoogleUtil.RESULT_OK;
-        when(apiOverridesAndPurchases.getIsBillingSupportedResponse()).thenReturn(RESULT_DEFAULT);
+        when(apiOverrides.getIsBillingSupportedResponse()).thenReturn(RESULT_DEFAULT);
         int actual = testObject.isBillingSupported(API_VERSION, PACKAGE_NAME, type);
         assertThat(actual)
                 .isEqualTo(expected);
@@ -85,7 +86,7 @@ public class BillingServicesSubImplTest {
     @Test
     public void testIsBillingSupportedNonDefault() {
         int expected = GoogleUtil.RESULT_BILLING_UNAVAILABLE;
-        when(apiOverridesAndPurchases.getIsBillingSupportedResponse()).thenReturn(expected);
+        when(apiOverrides.getIsBillingSupportedResponse()).thenReturn(expected);
         int actual = testObject.isBillingSupported(API_VERSION, PACKAGE_NAME, type);
         assertThat(actual)
                 .isEqualTo(expected);

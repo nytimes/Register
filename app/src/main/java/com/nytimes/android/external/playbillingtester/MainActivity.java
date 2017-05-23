@@ -42,7 +42,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     static final String VERSION_FMT = "Version %s(%d)";
 
     @Inject
-    protected APIOverridesAndPurchases apiOverridesAndPurchases;
+    protected APIOverrides apiOverrides;
+    @Inject
+    protected Purchases purchases;
     @Inject
     protected Config config;
     @Inject
@@ -106,26 +108,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         // set spinners from model
         isBillingSupportedSpinner.setSelection(getSpinnerArrayPositionFromCode(R.array.isBillingEnabled_spinner,
-                apiOverridesAndPurchases.getIsBillingSupportedResponse()));
+                apiOverrides.getIsBillingSupportedResponse()));
         getBuyIntentSpinner.setSelection(getSpinnerArrayPositionFromCode(R.array.getBuyIntent_spinner,
-                apiOverridesAndPurchases.getGetBuyIntentResponse()));
+                apiOverrides.getGetBuyIntentResponse()));
         buySpinner.setSelection(getSpinnerArrayPositionFromCode(R.array.buy_spinner,
-                apiOverridesAndPurchases.getBuyResponse()));
+                apiOverrides.getBuyResponse()));
         getPurchasesSpinner.setSelection(getSpinnerArrayPositionFromCode(R.array.getPurchases_spinner,
-                apiOverridesAndPurchases.getGetPurchasesResponse()));
+                apiOverrides.getGetPurchasesResponse()));
         getSkuDetailsSpinner.setSelection(getSpinnerArrayPositionFromCode(R.array.getSkuDetails_spinner,
-                apiOverridesAndPurchases.getGetSkuDetailsResponse()));
+                apiOverrides.getGetSkuDetailsResponse()));
         usersSpinner.setSelection(getSpinnerArrayPosition(config.users(),
-                apiOverridesAndPurchases.getUsersResponse()));
+                apiOverrides.getUsersResponse()));
     }
     void updateItemsTextView() {
         StringBuffer buf = new StringBuffer();
         for (InAppPurchaseData inAppPurchaseData :
-                apiOverridesAndPurchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION)) {
+                purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION)) {
             appendInAppPurchaseLine(buf, inAppPurchaseData);
         }
         for (InAppPurchaseData inAppPurchaseData :
-                apiOverridesAndPurchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP)) {
+                purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP)) {
             appendInAppPurchaseLine(buf, inAppPurchaseData);
         }
         itemsTextView.setText(buf);
@@ -192,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @OnClick(R.id.purgeButton)
     public void handlePurge(View v) {
-        apiOverridesAndPurchases.purgePurchases();
+        purchases.purgePurchases();
         updateItemsTextView();
     }
 
@@ -208,27 +210,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (checkedMap.get(parent.getId())) { // we want to ignore 1st call onCreate
             switch (parent.getId()) {
                 case R.id.isBillingSupported:
-                    apiOverridesAndPurchases.setIsBillingSupportedResponse(
+                    apiOverrides.setIsBillingSupportedResponse(
                             getCodeFromSpinnerItem(R.array.isBillingEnabled_spinner, position));
                     break;
                 case R.id.getBuyIntent:
-                    apiOverridesAndPurchases.setGetBuyIntentResponse(
+                    apiOverrides.setGetBuyIntentResponse(
                             getCodeFromSpinnerItem(R.array.getBuyIntent_spinner, position));
                     break;
                 case R.id.buy:
-                    apiOverridesAndPurchases.setBuyResponse(
+                    apiOverrides.setBuyResponse(
                             getCodeFromSpinnerItem(R.array.buy_spinner, position));
                     break;
                 case R.id.getPurchases:
-                    apiOverridesAndPurchases.setGetPurchasesResponse(
+                    apiOverrides.setGetPurchasesResponse(
                             getCodeFromSpinnerItem(R.array.getPurchases_spinner, position));
                     break;
                 case R.id.getSkuDetails:
-                    apiOverridesAndPurchases.setGetSkuDetailsResponse(
+                    apiOverrides.setGetSkuDetailsResponse(
                             getCodeFromSpinnerItem(R.array.getSkuDetails_spinner, position));
                     break;
                 case R.id.usersSpinner:
-                    apiOverridesAndPurchases.setUsersReponse(config.users().get(position));
+                    apiOverrides.setUsersReponse(config.users().get(position));
                     break;
                 default:
                     // unknown id

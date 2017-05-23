@@ -50,6 +50,7 @@ public class BuyActivityTest {
 
     private static final String SKU = "sku1";
     private static final String TYPE = GoogleUtil.BILLING_TYPE_SUBSCRIPTION;
+    private static final String CONTINUATION_TOKEN = "";
     private static final String DEVELOPER_PAYLOAD = "devPayload";
     private static final String DESCRIPTION = "some description";
     private static final String PACKAGE_NAME = "com.my.pkg";
@@ -81,7 +82,11 @@ public class BuyActivityTest {
     private Gson gson = GsonFactory.create();
 
     @Mock
-    private APIOverridesAndPurchases apiOverridesAndPurchases;
+    private APIOverrides apiOverrides;
+    @Mock
+    private Purchases purchases;
+    @Mock
+    private Purchases.PurchasesLists purchasesLists;
     @Mock
     private Config config;
     @Mock
@@ -100,7 +105,8 @@ public class BuyActivityTest {
 
         controller = Robolectric.buildActivity(TestBuyActivity.class, intent).create();
         testObject = (BuyActivity) controller.get();
-        testObject.apiOverridesAndPurchases = apiOverridesAndPurchases;
+        testObject.apiOverrides = apiOverrides;
+        testObject.purchases = purchases;
         testObject.gson = gson;
         testObject.config = config;
         testObject.dialogBuilder = alertDialogBuilder;
@@ -111,13 +117,14 @@ public class BuyActivityTest {
         when(alertDialogBuilder.setOnKeyListener(any(Dialog.OnKeyListener.class))).thenReturn(alertDialogBuilder);
         when(alertDialogBuilder.create()).thenReturn(alertDialog);
 
+        when(purchases.getPurchasesLists(TYPE, CONTINUATION_TOKEN)).thenReturn(purchasesLists);
         configSkuMapBuilder = ImmutableMap.builder();
     }
 
     @Test
     public void testDialogBuyResponseOK() {
-        when(apiOverridesAndPurchases.getBuyResponse()).thenReturn(APIOverridesAndPurchases.RESULT_DEFAULT);
-        when(apiOverridesAndPurchases.getReceiptForSku(SKU, TYPE)).thenReturn(Optional.<String>absent());
+        when(apiOverrides.getBuyResponse()).thenReturn(APIOverrides.RESULT_DEFAULT);
+        when(purchases.getReceiptForSku(SKU, TYPE)).thenReturn(Optional.absent());
         configSkuMapBuilder.put(SKU, configSku);
         when(config.skus()).thenReturn(configSkuMapBuilder.build());
 
@@ -132,8 +139,8 @@ public class BuyActivityTest {
     @Test
     public void testDialogItemUnavailable() {
         String sku2 = "sku2";
-        when(apiOverridesAndPurchases.getBuyResponse()).thenReturn(APIOverridesAndPurchases.RESULT_DEFAULT);
-        when(apiOverridesAndPurchases.getReceiptForSku(SKU, TYPE)).thenReturn(Optional.<String>absent());
+        when(apiOverrides.getBuyResponse()).thenReturn(APIOverrides.RESULT_DEFAULT);
+        when(purchases.getReceiptForSku(SKU, TYPE)).thenReturn(Optional.absent());
         configSkuMapBuilder.put(sku2, configSku);
         when(config.skus()).thenReturn(configSkuMapBuilder.build());
 
@@ -147,8 +154,8 @@ public class BuyActivityTest {
 
     @Test
     public void testDialogItemAlreadyOwned() {
-        when(apiOverridesAndPurchases.getBuyResponse()).thenReturn(APIOverridesAndPurchases.RESULT_DEFAULT);
-        when(apiOverridesAndPurchases.getReceiptForSku(SKU, TYPE)).thenReturn(Optional.of(SKU));
+        when(apiOverrides.getBuyResponse()).thenReturn(APIOverrides.RESULT_DEFAULT);
+        when(purchases.getReceiptForSku(SKU, TYPE)).thenReturn(Optional.of(SKU));
         configSkuMapBuilder.put(SKU, configSku);
         when(config.skus()).thenReturn(configSkuMapBuilder.build());
 
@@ -163,7 +170,7 @@ public class BuyActivityTest {
     @Test
     public void testDialogError() {
         int resultCode = GoogleUtil.RESULT_ERROR;
-        when(apiOverridesAndPurchases.getBuyResponse()).thenReturn(resultCode);
+        when(apiOverrides.getBuyResponse()).thenReturn(resultCode);
 
         controller.start();
 
@@ -176,7 +183,7 @@ public class BuyActivityTest {
 
     @Test
     public void testHandleBuy() {
-        when(apiOverridesAndPurchases.getUsersResponse()).thenReturn(USER);
+        when(apiOverrides.getUsersResponse()).thenReturn(USER);
         configSkuMapBuilder.put(SKU, configSku);
         when(config.skus()).thenReturn(configSkuMapBuilder.build());
 
@@ -187,17 +194,17 @@ public class BuyActivityTest {
         assertThat(shadowActivity.getResultCode())
                 .isEqualTo(RESULT_OK);
         Intent resultIntent = shadowActivity.getResultIntent();
-        assertThat(resultIntent.getIntExtra(GoogleUtil.RESPONSE_CODE, APIOverridesAndPurchases.RESULT_DEFAULT))
+        assertThat(resultIntent.getIntExtra(GoogleUtil.RESPONSE_CODE, APIOverrides.RESULT_DEFAULT))
                 .isEqualTo(GoogleUtil.RESULT_OK);
         String inAppPurchaseDataStr = gson.toJson(inAppPurchaseData);
         assertThat(inAppPurchaseDataStr)
                 .isEqualTo(resultIntent.getStringExtra(GoogleUtil.INAPP_PURCHASE_DATA));
-        verify(apiOverridesAndPurchases).addPurchase(inAppPurchaseDataStr, TYPE);
+        verify(purchases).addPurchase(inAppPurchaseDataStr, TYPE);
     }
 
     @Test
     public void testHandleAlreadyOwnedValid() {
-        when(apiOverridesAndPurchases.getInAppPurchaseData(TYPE)).thenReturn(ImmutableSet.of(inAppPurchaseData));
+        when(purchases.getInAppPurchaseData(TYPE)).thenReturn(ImmutableSet.of(inAppPurchaseData));
         configSkuMapBuilder.put(SKU, configSku);
         when(config.skus()).thenReturn(configSkuMapBuilder.build());
 
@@ -213,7 +220,7 @@ public class BuyActivityTest {
 
     @Test
     public void testHandleAlreadyOwnedInvalid() {
-        when(apiOverridesAndPurchases.getInAppPurchaseData(TYPE)).thenReturn(ImmutableSet.<InAppPurchaseData>of());
+        when(purchases.getInAppPurchaseData(TYPE)).thenReturn(ImmutableSet.of());
         configSkuMapBuilder.put(SKU, configSku);
         when(config.skus()).thenReturn(configSkuMapBuilder.build());
 

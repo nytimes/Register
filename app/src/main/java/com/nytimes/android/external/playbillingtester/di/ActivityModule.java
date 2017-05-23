@@ -22,7 +22,7 @@ import dagger.Module;
 import dagger.Provides;
 
 import static com.google.common.base.Charsets.UTF_8;
-import static com.nytimes.android.external.playbillingtester.APIOverridesAndPurchases.CONFIG_FILE;
+import static com.nytimes.android.external.playbillingtester.APIOverrides.CONFIG_FILE;
 
 @Module
 public class ActivityModule {

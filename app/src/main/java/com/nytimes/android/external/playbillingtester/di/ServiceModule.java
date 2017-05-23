@@ -7,10 +7,11 @@ import android.support.annotation.NonNull;
 
 import com.google.common.io.Files;
 import com.google.gson.Gson;
-import com.nytimes.android.external.playbillingtester.APIOverridesAndPurchases;
+import com.nytimes.android.external.playbillingtester.APIOverrides;
 import com.nytimes.android.external.playbillingtester.BillingServiceStubImpl;
 import com.nytimes.android.external.playbillingtester.IInAppBillingService;
 import com.nytimes.android.external.playbillingtester.PermissionHandler;
+import com.nytimes.android.external.playbillingtester.Purchases;
 import com.nytimes.android.external.playbillingtester.R;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
@@ -28,7 +29,7 @@ import dagger.Module;
 import dagger.Provides;
 
 import static com.google.common.base.Charsets.UTF_8;
-import static com.nytimes.android.external.playbillingtester.APIOverridesAndPurchases.CONFIG_FILE;
+import static com.nytimes.android.external.playbillingtester.APIOverrides.CONFIG_FILE;
 
 @Module
 public class ServiceModule {
@@ -62,32 +63,32 @@ public class ServiceModule {
 
     @Provides
     @ScopeService
-    IInAppBillingService.Stub provideBillingServiceStubImpl(APIOverridesAndPurchases apiOverridesAndPurchases,
+    IInAppBillingService.Stub provideBillingServiceStubImpl(APIOverrides apiOverrides,
                                                             Gson gson, Config config,
                                                             BuyIntentBundleBuilder buyIntentBundleBuilder,
                                                             SkuDetailsBundleBuilder skuDetailsBundleBuilder,
                                                             PurchasesBundleBuilder purchasesBundleBuilder) {
-        return new BillingServiceStubImpl(apiOverridesAndPurchases, gson, config, buyIntentBundleBuilder,
+        return new BillingServiceStubImpl(apiOverrides, gson, config, buyIntentBundleBuilder,
                 skuDetailsBundleBuilder, purchasesBundleBuilder);
     }
 
     @Provides
     @ScopeService
     BuyIntentBundleBuilder provideBuyIntentBundleBuilder(Application application,
-                                                         APIOverridesAndPurchases apiOverridesAndPurchases) {
-        return new BuyIntentBundleBuilder(application, apiOverridesAndPurchases);
+                                                         APIOverrides apiOverrides) {
+        return new BuyIntentBundleBuilder(application, apiOverrides);
     }
 
     @Provides
     @ScopeService
-    SkuDetailsBundleBuilder provideSkuDetailsBundleBuilder(APIOverridesAndPurchases apiOverridesAndPurchases,
+    SkuDetailsBundleBuilder provideSkuDetailsBundleBuilder(APIOverrides apiOverrides,
                                                            Config config, Gson gson) {
-        return new SkuDetailsBundleBuilder(apiOverridesAndPurchases, config, gson);
+        return new SkuDetailsBundleBuilder(apiOverrides, config, gson);
     }
 
     @Provides
     @ScopeService
-    PurchasesBundleBuilder providePurchasesBundleBuilder(APIOverridesAndPurchases apiOverridesAndPurchases) {
-        return new PurchasesBundleBuilder(apiOverridesAndPurchases);
+    PurchasesBundleBuilder providePurchasesBundleBuilder(APIOverrides apiOverrides, Purchases purchases) {
+        return new PurchasesBundleBuilder(apiOverrides, purchases);
     }
 }
