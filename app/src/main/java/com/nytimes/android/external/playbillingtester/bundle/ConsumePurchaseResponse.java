@@ -11,11 +11,16 @@ import javax.inject.Inject;
 import static com.nytimes.android.external.playbillingtesterlib.GoogleUtil.RESULT_OK;
 
 @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
-public class ConsumePurchaseBundleBuilder extends BaseBundleBuilder {
+public class ConsumePurchaseResponse extends BaseResponse {
 
     @Inject
-    public ConsumePurchaseBundleBuilder(APIOverridesAndPurchases apiOverridesAndPurchases) {
+    public ConsumePurchaseResponse(APIOverridesAndPurchases apiOverridesAndPurchases) {
         super(apiOverridesAndPurchases);
+    }
+
+    @Override
+    protected int rawResponseCode() {
+        return apiOverridesAndPurchases.getConsumePurchaseResponse();
     }
 
     public int consumePurchase(int apiVersion, String packageName, String purchaseToken) {
@@ -36,8 +41,4 @@ public class ConsumePurchaseBundleBuilder extends BaseBundleBuilder {
         return responseCode();
     }
 
-    @Override
-    protected int rawResponseCode() {
-        return apiOverridesAndPurchases.getConsumePurchaseResponse();
-    }
 }
