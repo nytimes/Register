@@ -13,7 +13,7 @@ import com.nytimes.android.external.playbillingtester.IInAppBillingService;
 import com.nytimes.android.external.playbillingtester.PermissionHandler;
 import com.nytimes.android.external.playbillingtester.R;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
-import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseBundleBuilder;
+import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.SkuDetailsBundleBuilder;
 import com.nytimes.android.external.playbillingtester.model.Config;
@@ -68,9 +68,9 @@ public class ServiceModule {
                                                             BuyIntentBundleBuilder buyIntentBundleBuilder,
                                                             SkuDetailsBundleBuilder skuDetailsBundleBuilder,
                                                             PurchasesBundleBuilder purchasesBundleBuilder,
-                                                            ConsumePurchaseBundleBuilder consumePurchaseBundleBuilder) {
+                                                            ConsumePurchaseResponse consumePurchaseResponse) {
         return new BillingServiceStubImpl(apiOverridesAndPurchases, gson, config, buyIntentBundleBuilder,
-                skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseBundleBuilder);
+                skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseResponse);
     }
 
     @Provides
@@ -95,7 +95,7 @@ public class ServiceModule {
 
     @Provides
     @ScopeService
-    ConsumePurchaseBundleBuilder provideConsumePurchaseBundleBuilder(APIOverridesAndPurchases apiOverridesAndPurchases) {
-        return new ConsumePurchaseBundleBuilder(apiOverridesAndPurchases);
+    ConsumePurchaseResponse provideConsumePurchaseBundleBuilder(APIOverridesAndPurchases apiOverridesAndPurchases) {
+        return new ConsumePurchaseResponse(apiOverridesAndPurchases);
     }
 }
