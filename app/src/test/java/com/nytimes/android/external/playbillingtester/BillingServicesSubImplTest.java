@@ -5,6 +5,7 @@ import android.os.RemoteException;
 
 import com.google.common.collect.ImmutableList;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
+import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.SkuDetailsBundleBuilder;
 import com.nytimes.android.external.playbillingtester.model.Config;
@@ -18,6 +19,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.nytimes.android.external.playbillingtester.APIOverridesAndPurchases.RESULT_DEFAULT;
 import static com.nytimes.android.external.playbillingtester.di.GsonFactory.create;
@@ -49,6 +51,8 @@ public class BillingServicesSubImplTest {
     @Mock
     private PurchasesBundleBuilder purchasesBundleBuilder;
 
+    private ConsumePurchaseResponse consumePurchaseResponse;
+
     private BillingServiceStubImpl testObject;
 
     private final String type = GoogleUtil.BILLING_TYPE_IAP;
@@ -69,8 +73,9 @@ public class BillingServicesSubImplTest {
         when(purchasesBundleBuilder.newBuilder()).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.type(anyString())).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.build()).thenReturn(expected);
+        consumePurchaseResponse = new ConsumePurchaseResponse(apiOverridesAndPurchases);
         testObject = new BillingServiceStubImpl(apiOverridesAndPurchases, create(), config,
-                buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder);
+                buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseResponse);
     }
 
     @Test
@@ -119,7 +124,75 @@ public class BillingServicesSubImplTest {
     public void testConsumePurchase() {
         String purchaseToken = "token";
         assertThat(testObject.consumePurchase(API_VERSION, PACKAGE_NAME, purchaseToken))
-                .isEqualTo(0);
+                .isEqualTo(GoogleUtil.RESULT_ITEM_NOT_OWNED);
+    }
+
+    @Test
+    public void testConsumePurchaseIAP() {
+        final List<String> purchases = ImmutableList.of("purchase1", "purchase2");
+        final List<String> subscriptions = ImmutableList.of("subscription1", "subscription2");
+        Bundle getPurchasesBundle = new Bundle();
+        getPurchasesBundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST, new ArrayList<>(purchases));
+        when(apiOverridesAndPurchases.getInAppPurchaseDataAsArrayList(GoogleUtil.BILLING_TYPE_IAP)).thenReturn(purchases);
+        when(apiOverridesAndPurchases.getInAppPurchaseDataAsArrayList(GoogleUtil.BILLING_TYPE_SUBSCRIPTION)).thenReturn(subscriptions);
+        when(purchasesBundleBuilder.build()).thenReturn(getPurchasesBundle);
+
+        Bundle stored = testObject.getPurchases(API_VERSION, PACKAGE_NAME, type, "token");
+        assertThat(stored.getInt(GoogleUtil.RESPONSE_CODE))
+                .isEqualTo(GoogleUtil.RESULT_OK);
+        assertThat(stored.getStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST))
+                .isEqualTo(purchases);
+        assertThat(stored).isEqualTo(getPurchasesBundle);
+
+        String purchaseToken = purchases.get(0);
+        int result = testObject.consumePurchase(API_VERSION, PACKAGE_NAME, purchaseToken);
+        assertThat(result).isEqualTo(GoogleUtil.RESULT_OK);
+    }
+
+    @Test
+    public void testConsumePurchaseSubscription() {
+        final List<String> purchases = ImmutableList.of("purchase1", "purchase2");
+        final List<String> subscriptions = ImmutableList.of("subscription1", "subscription2");
+        Bundle getPurchasesBundle = new Bundle();
+        getPurchasesBundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST, new ArrayList<>(purchases));
+        when(apiOverridesAndPurchases.getInAppPurchaseDataAsArrayList(GoogleUtil.BILLING_TYPE_IAP)).thenReturn(purchases);
+        when(apiOverridesAndPurchases.getInAppPurchaseDataAsArrayList(GoogleUtil.BILLING_TYPE_SUBSCRIPTION)).thenReturn(subscriptions);
+        when(purchasesBundleBuilder.build()).thenReturn(getPurchasesBundle);
+
+        Bundle stored = testObject.getPurchases(API_VERSION, PACKAGE_NAME, type, "token");
+        assertThat(stored.getInt(GoogleUtil.RESPONSE_CODE))
+                .isEqualTo(GoogleUtil.RESULT_OK);
+        assertThat(stored.getStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST))
+                .isEqualTo(purchases);
+        assertThat(stored).isEqualTo(getPurchasesBundle);
+
+        String purchaseToken = subscriptions.get(0);
+
+        int result = testObject.consumePurchase(API_VERSION, PACKAGE_NAME, purchaseToken);
+        assertThat(result).isEqualTo(GoogleUtil.RESULT_ERROR);
+    }
+
+    @Test
+    public void testConsumePurchaseNotOwned() {
+        final List<String> purchases = ImmutableList.of("purchase1", "purchase2");
+        final List<String> subscriptions = ImmutableList.of("subscription1", "subscription2");
+        Bundle getPurchasesBundle = new Bundle();
+        getPurchasesBundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST, new ArrayList<>(purchases));
+        when(apiOverridesAndPurchases.getInAppPurchaseDataAsArrayList(GoogleUtil.BILLING_TYPE_IAP)).thenReturn(purchases);
+        when(apiOverridesAndPurchases.getInAppPurchaseDataAsArrayList(GoogleUtil.BILLING_TYPE_SUBSCRIPTION)).thenReturn(subscriptions);
+        when(purchasesBundleBuilder.build()).thenReturn(getPurchasesBundle);
+
+        Bundle stored = testObject.getPurchases(API_VERSION, PACKAGE_NAME, type, "token");
+        assertThat(stored.getInt(GoogleUtil.RESPONSE_CODE))
+                .isEqualTo(GoogleUtil.RESULT_OK);
+        assertThat(stored.getStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST))
+                .isEqualTo(purchases);
+        assertThat(stored).isEqualTo(getPurchasesBundle);
+
+        String purchaseToken = "Not owned product";
+
+        int result = testObject.consumePurchase(API_VERSION, PACKAGE_NAME, purchaseToken);
+        assertThat(result).isEqualTo(GoogleUtil.RESULT_ITEM_NOT_OWNED);
     }
 
     @Test
