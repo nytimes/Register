@@ -7,6 +7,8 @@ import android.os.RemoteException;
 
 import com.nytimes.android.external.playbillingtester.IInAppBillingService;
 
+import java.util.List;
+
 /**
  * methods calls against the fake (test) google in app billing service.
  */
@@ -64,4 +66,10 @@ public class GoogleServiceProviderTesting implements GoogleServiceProvider  {
         return billingService.consumePurchase(apiVersion, packageName, purchaseToken);
     }
 
+    @Override
+    public Bundle getBuyIntentToReplaceSkus(int apiVersion, String packageName, List<String> oldSkus, String newSku,
+                                            String type, String developerPayload) throws RemoteException {
+        return billingService
+                .getBuyIntentToReplaceSkus(apiVersion, packageName, oldSkus, newSku, type, developerPayload);
+    }
 }

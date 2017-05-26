@@ -10,6 +10,7 @@
     <string name="config_not_found">Config file not found</string>
     <string name="item_not_found">Item not found</string>
     <string name="item_already_owned">Item already owned</string>
+    <string name="replace_item_not_owned">Item(s) to be replaced not owned</string>
     <string name="buy">Buy</string>
     <string name="ok">OK</string>
     <string name="started">STARTED</string>

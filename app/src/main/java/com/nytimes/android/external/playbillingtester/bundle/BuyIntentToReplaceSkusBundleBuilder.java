@@ -9,13 +9,17 @@ import com.nytimes.android.external.playbillingtester.APIOverrides;
 import com.nytimes.android.external.playbillingtester.BuyActivity;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
-public class BuyIntentBundleBuilder extends BaseBundleBuilder {
+public class BuyIntentToReplaceSkusBundleBuilder extends BaseBundleBuilder {
 
     public static final String EX_PACKAGE_NAME = "packageName";
-    public static final String EX_SKU = "sku";
     public static final String EX_ITEM_TYPE = "itemType";
+    public static final String EX_OLD_SKUS = "oldSkus";
+    public static final String EX_NEW_SKU = "newSku";
     public static final String EX_DEVELOPER_PAYLOAD = "developerPayload";
 
     protected final Application application;
@@ -23,33 +27,38 @@ public class BuyIntentBundleBuilder extends BaseBundleBuilder {
     protected Intent intent;
 
     @Inject
-    public BuyIntentBundleBuilder(Application application, APIOverrides apiOverrides) {
+    public BuyIntentToReplaceSkusBundleBuilder(Application application, APIOverrides apiOverrides) {
         super(apiOverrides);
         this.application = application;
     }
 
-    public BuyIntentBundleBuilder newBuilder() {
+    public BuyIntentToReplaceSkusBundleBuilder newBuilder() {
         bundle = new Bundle();
         intent = new Intent(application, BuyActivity.class);
         return this;
     }
 
-    public BuyIntentBundleBuilder packageName(String packageName) {
+    public BuyIntentToReplaceSkusBundleBuilder packageName(String packageName) {
         intent.putExtra(EX_PACKAGE_NAME, packageName);
         return this;
     }
 
-    public BuyIntentBundleBuilder sku(String sku) {
-        intent.putExtra(EX_SKU, sku);
+    public BuyIntentToReplaceSkusBundleBuilder newSku(String newSku) {
+        intent.putExtra(EX_NEW_SKU, newSku);
         return this;
     }
 
-    public BuyIntentBundleBuilder type(String type) {
+    public BuyIntentToReplaceSkusBundleBuilder oldSkus(List<String> oldSkus) {
+        intent.putStringArrayListExtra(EX_OLD_SKUS, new ArrayList<>(oldSkus));
+        return this;
+    }
+
+    public BuyIntentToReplaceSkusBundleBuilder type(String type) {
         intent.putExtra(EX_ITEM_TYPE, type);
         return this;
     }
 
-    public BuyIntentBundleBuilder developerPayload(String developerPayload) {
+    public BuyIntentToReplaceSkusBundleBuilder developerPayload(String developerPayload) {
         intent.putExtra(EX_DEVELOPER_PAYLOAD, developerPayload);
         return this;
     }
