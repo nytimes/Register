@@ -5,7 +5,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.nytimes.android.external.playbillingtester.APIOverridesAndPurchases;
+import com.nytimes.android.external.playbillingtester.APIOverrides;
 import com.nytimes.android.external.playbillingtester.BuyActivity;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 
@@ -23,8 +23,8 @@ public class BuyIntentBundleBuilder extends BaseBundleBuilder {
     private Intent intent;
 
     @Inject
-    public BuyIntentBundleBuilder(Application application, APIOverridesAndPurchases apiOverridesAndPurchases) {
-        super(apiOverridesAndPurchases);
+    public BuyIntentBundleBuilder(Application application, APIOverrides apiOverrides) {
+        super(apiOverrides);
         this.application = application;
     }
 
@@ -68,6 +68,6 @@ public class BuyIntentBundleBuilder extends BaseBundleBuilder {
 
     @Override
     protected int rawResponseCode() {
-        return apiOverridesAndPurchases.getGetBuyIntentResponse();
+        return apiOverrides.getGetBuyIntentResponse();
     }
 }

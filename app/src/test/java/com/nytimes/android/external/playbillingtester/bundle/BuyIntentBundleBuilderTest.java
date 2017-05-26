@@ -4,7 +4,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.nytimes.android.external.playbillingtester.APIOverridesAndPurchases;
+import com.nytimes.android.external.playbillingtester.APIOverrides;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 
 import org.junit.Before;
@@ -36,17 +36,17 @@ public class BuyIntentBundleBuilderTest {
     private BuyIntentBundleBuilder testObject;
 
     @Mock
-    private APIOverridesAndPurchases apiOverridesAndPurchases;
+    private APIOverrides apiOverrides;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        testObject = new BuyIntentBundleBuilder(RuntimeEnvironment.application, apiOverridesAndPurchases);
+        testObject = new BuyIntentBundleBuilder(RuntimeEnvironment.application, apiOverrides);
     }
 
     @Test
     public void testBundleOK() {
-        when(apiOverridesAndPurchases.getGetBuyIntentResponse()).thenReturn(GoogleUtil.RESULT_OK);
+        when(apiOverrides.getGetBuyIntentResponse()).thenReturn(GoogleUtil.RESULT_OK);
 
         Bundle bundle = testObject.newBuilder()
                 .packageName(PACKAGE_NAME)
@@ -71,7 +71,7 @@ public class BuyIntentBundleBuilderTest {
 
     @Test
     public void testBundleNotOK() {
-        when(apiOverridesAndPurchases.getGetBuyIntentResponse()).thenReturn(GoogleUtil.RESULT_ERROR);
+        when(apiOverrides.getGetBuyIntentResponse()).thenReturn(GoogleUtil.RESULT_ERROR);
 
         Bundle bundle = testObject.newBuilder()
                 .packageName(PACKAGE_NAME)
@@ -89,7 +89,7 @@ public class BuyIntentBundleBuilderTest {
     @Test
     public void testRawResponseCode() {
         testObject.rawResponseCode();
-        verify(apiOverridesAndPurchases).getGetBuyIntentResponse();
+        verify(apiOverrides).getGetBuyIntentResponse();
     }
 
     public static Intent getIntent(PendingIntent pendingIntent) {

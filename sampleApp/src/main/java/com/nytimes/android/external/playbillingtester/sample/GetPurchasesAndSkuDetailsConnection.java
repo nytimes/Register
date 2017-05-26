@@ -45,11 +45,9 @@ public class GetPurchasesAndSkuDetailsConnection implements ServiceConnection {
                     .iapSkuDetails(googleServiceProvider.getSkuDetails(GoogleUtil.BILLING_API_VERSION,
                             packageName, GoogleUtil.BILLING_TYPE_IAP, makeItemBundle(iapSkus)))
                     .subPurchases(googleServiceProvider.getPurchases(GoogleUtil.BILLING_API_VERSION,
-                            packageName, GoogleUtil.BILLING_TYPE_SUBSCRIPTION,
-                            GoogleUtil.CONTINUATION_TOKEN))
+                            packageName, GoogleUtil.BILLING_TYPE_SUBSCRIPTION, ""))
                     .iapPurchases(googleServiceProvider.getPurchases(GoogleUtil.BILLING_API_VERSION,
-                            packageName, GoogleUtil.BILLING_TYPE_IAP,
-                            GoogleUtil.CONTINUATION_TOKEN))
+                            packageName, GoogleUtil.BILLING_TYPE_IAP, ""))
                     .build());
         } catch (RemoteException e) {
             Log.e(TAG, "Error on getPurchases", e);

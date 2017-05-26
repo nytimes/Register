@@ -3,7 +3,7 @@ package com.nytimes.android.external.playbillingtester.bundle;
 import android.os.Bundle;
 
 import com.google.gson.Gson;
-import com.nytimes.android.external.playbillingtester.APIOverridesAndPurchases;
+import com.nytimes.android.external.playbillingtester.APIOverrides;
 import com.nytimes.android.external.playbillingtester.model.Config;
 import com.nytimes.android.external.playbillingtester.model.ConfigSku;
 import com.nytimes.android.external.playbillingtesterlib.GoogleProductResponse;
@@ -21,8 +21,8 @@ public class SkuDetailsBundleBuilder extends BaseBundleBuilder {
     private final Gson gson;
 
     @Inject
-    public SkuDetailsBundleBuilder(APIOverridesAndPurchases apiOverridesAndPurchases, Config config, Gson gson) {
-        super(apiOverridesAndPurchases);
+    public SkuDetailsBundleBuilder(APIOverrides apiOverrides, Config config, Gson gson) {
+        super(apiOverrides);
         this.config = config;
         this.gson = gson;
     }
@@ -58,7 +58,7 @@ public class SkuDetailsBundleBuilder extends BaseBundleBuilder {
 
     public Bundle build() {
         int responseCode = responseCode();
-        if (responseCode == APIOverridesAndPurchases.RESULT_DEFAULT) {
+        if (responseCode == APIOverrides.RESULT_DEFAULT) {
             responseCode = GoogleUtil.RESULT_OK;
         }
         bundle.putInt(GoogleUtil.RESPONSE_CODE, responseCode);
@@ -70,6 +70,6 @@ public class SkuDetailsBundleBuilder extends BaseBundleBuilder {
 
     @Override
     protected int rawResponseCode() {
-        return apiOverridesAndPurchases.getGetSkuDetailsResponse();
+        return apiOverrides.getGetSkuDetailsResponse();
     }
 }

@@ -3,15 +3,7 @@ package com.nytimes.android.external.playbillingtester;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
-import com.google.common.base.Optional;
 import com.google.gson.Gson;
-import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
-import com.nytimes.android.external.playbillingtesterlib.InAppPurchaseData;
-
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -19,12 +11,10 @@ import javax.inject.Inject;
  * Wrapper for user preferences such as API overrides and purchases
  */
 
-public class APIOverridesAndPurchases {
+public class APIOverrides {
     public static final String PREF_NAME = "PlayInApBillingModel";
     public static final String CONFIG_FILE = "playbillingtester.json";
     public static final int RESULT_DEFAULT = -1;            // - no user override
-    private static final String GOOGLE_PURCHASE_ITEMS_SUB = "GoogleItems";
-    private static final String GOOGLE_PURCHASE_ITEMS_IAP = "GoogleItemsIAP";
     private static final String IS_BILLING_SUPPORTED = "isBillingSupported";
     private static final String GET_BUY_INTENT = "getBuyIntent";
     private static final String BUY = "Buy";
@@ -40,7 +30,7 @@ public class APIOverridesAndPurchases {
     private final SharedPreferences sharedPreferences;
 
     @Inject
-    public APIOverridesAndPurchases(@NonNull SharedPreferences sharedPreferences, @NonNull Gson gson) {
+    public APIOverrides(@NonNull SharedPreferences sharedPreferences, @NonNull Gson gson) {
         this.sharedPreferences = sharedPreferences;
         this.gson = gson;
     }
@@ -90,54 +80,5 @@ public class APIOverridesAndPurchases {
 
     void setUsersReponse(@NonNull String user) {
         sharedPreferences.edit().putString(USERS, user).apply();
-    }
-
-    void addPurchase(@NonNull String inAppPurchaseDataStr, @NonNull String itemType) {
-        Set<String> items = sharedPreferences.getStringSet(getItemsKeyFromType(itemType), new LinkedHashSet<String>());
-        items.add(inAppPurchaseDataStr);
-        sharedPreferences.edit().putStringSet(getItemsKeyFromType(itemType), items).apply();
-    }
-
-    @NonNull
-    Set<InAppPurchaseData> getInAppPurchaseData(@NonNull String itemType) {
-        Set<InAppPurchaseData> ret = new LinkedHashSet<>();
-        for (String json : sharedPreferences.getStringSet(getItemsKeyFromType(itemType), new LinkedHashSet<String>())) {
-            ret.add(gson.fromJson(json, InAppPurchaseData.class));
-        }
-        return ret;
-    }
-
-    @NonNull
-    public List<String> getInAppPurchaseDataAsArrayList(@NonNull String type) {
-        ArrayList<String> ret = new ArrayList<>();
-        for (InAppPurchaseData inAppPurchaseData: getInAppPurchaseData(type)) {
-            ret.add(gson.toJson(inAppPurchaseData, InAppPurchaseData.class));
-        }
-        return ret;
-    }
-
-    @NonNull
-    Optional<String> getReceiptForSku(@NonNull String sku, @NonNull String itemType) {
-        Optional<String> receipt = Optional.absent();
-        for (String json : sharedPreferences.getStringSet(getItemsKeyFromType(itemType), new LinkedHashSet<String>())) {
-            InAppPurchaseData inAppPurchaseData = gson.fromJson(json, InAppPurchaseData.class);
-            if (inAppPurchaseData.productId().equals(sku)) {
-                receipt = Optional.of(inAppPurchaseData.purchaseToken());
-            }
-        }
-        return receipt;
-    }
-
-    void purgePurchases() {
-        sharedPreferences.edit().remove(GOOGLE_PURCHASE_ITEMS_IAP).remove(GOOGLE_PURCHASE_ITEMS_SUB).apply();
-    }
-
-    @NonNull
-    private String getItemsKeyFromType(@NonNull String type) {
-        if (GoogleUtil.BILLING_TYPE_IAP.equals(type)) {
-            return GOOGLE_PURCHASE_ITEMS_IAP;
-        } else {
-            return GOOGLE_PURCHASE_ITEMS_SUB;
-        }
     }
 }

@@ -19,17 +19,17 @@ public class BillingServiceStubImpl extends IInAppBillingService.Stub {
 
     final Gson gson;
     final Config config;
-    private final APIOverridesAndPurchases apiOverridesAndPurchases;
+    private final APIOverrides apiOverrides;
     private final BuyIntentBundleBuilder buyIntentBundleBuilder;
     private final SkuDetailsBundleBuilder skuDetailsBundleBuilder;
     private final PurchasesBundleBuilder purchasesBundleBuilder;
 
     @Inject
-    public BillingServiceStubImpl(APIOverridesAndPurchases apiOverridesAndPurchases, Gson gson, Config config,
+    public BillingServiceStubImpl(APIOverrides apiOverrides, Gson gson, Config config,
                                   BuyIntentBundleBuilder buyIntentBundleBuilder,
                                   SkuDetailsBundleBuilder skuDetailsBundleBuilder,
                                   PurchasesBundleBuilder purchasesBundleBuilder) {
-        this.apiOverridesAndPurchases = apiOverridesAndPurchases;
+        this.apiOverrides = apiOverrides;
         this.gson = gson;
         this.config = config;
         this.buyIntentBundleBuilder = buyIntentBundleBuilder;
@@ -39,8 +39,8 @@ public class BillingServiceStubImpl extends IInAppBillingService.Stub {
 
     @Override
     public int isBillingSupported(int apiVersion, String packageName, String type) {
-        int response = apiOverridesAndPurchases.getIsBillingSupportedResponse();
-        if (response == APIOverridesAndPurchases.RESULT_DEFAULT) {
+        int response = apiOverrides.getIsBillingSupportedResponse();
+        if (response == APIOverrides.RESULT_DEFAULT) {
             response = GoogleUtil.RESULT_OK;
         }
         return response;
@@ -71,6 +71,7 @@ public class BillingServiceStubImpl extends IInAppBillingService.Stub {
         return purchasesBundleBuilder
                 .newBuilder()
                 .type(type)
+                .continuationToken(continuationToken)
                 .build();
     }
 

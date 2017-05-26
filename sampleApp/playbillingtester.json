@@ -10,7 +10,7 @@
 		"playbillingtester.sample.sub": {
 			"itemType": "SUBSCRIPTION",
 			"price" : "10.00",
-			"title" : "Sample Subscription Item",
+			"title" : "Sample Subscription Item1",
 			"description" : "This is a subscription item for use with Play Billing Tester sample app",
 			"package" : "com.nytimes.android.external.playbillingtester"
 		}

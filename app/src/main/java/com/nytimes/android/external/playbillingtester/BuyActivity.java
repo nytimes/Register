@@ -32,7 +32,9 @@ public class BuyActivity extends AppCompatActivity {
     static final String ERROR_FMT =  "%s: %d";
 
     @Inject
-    protected APIOverridesAndPurchases apiOverridesAndPurchases;
+    protected APIOverrides apiOverrides;
+    @Inject
+    protected Purchases purchases;
     @Inject
     protected Gson gson;
     @Inject
@@ -49,7 +51,7 @@ public class BuyActivity extends AppCompatActivity {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             String newReceipt = String.format(Locale.getDefault(), RECEIPT_FMT,
-                    apiOverridesAndPurchases.getUsersResponse(), currentTimeMillis);
+                    apiOverrides.getUsersResponse(), currentTimeMillis);
             Intent resultIntent = new Intent();
             resultIntent.putExtra(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_OK);
             InAppPurchaseData inAppPurchaseData = new InAppPurchaseData.Builder()
@@ -61,7 +63,7 @@ public class BuyActivity extends AppCompatActivity {
                     .purchaseToken(newReceipt)
                     .build();
             String inAppPurchaseDataStr = gson.toJson(inAppPurchaseData);
-            apiOverridesAndPurchases.addPurchase(inAppPurchaseDataStr, itemtype);
+            purchases.addPurchase(inAppPurchaseDataStr, itemtype);
             resultIntent.putExtra(GoogleUtil.INAPP_PURCHASE_DATA, inAppPurchaseDataStr);
             setResult(RESULT_OK, resultIntent);
             finish();
@@ -71,7 +73,7 @@ public class BuyActivity extends AppCompatActivity {
     DialogInterface.OnClickListener handleAlreadyOwned = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            Iterator iterator = apiOverridesAndPurchases.getInAppPurchaseData(itemtype).iterator();
+            Iterator iterator = purchases.getInAppPurchaseData(itemtype).iterator();
             if (iterator.hasNext()) {
                 Intent intent = new Intent();
                 intent.putExtra(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_ITEM_ALREADY_OWNED);
@@ -161,11 +163,11 @@ public class BuyActivity extends AppCompatActivity {
     }
 
     int getBuyResponse() {
-        int response = apiOverridesAndPurchases.getBuyResponse();
-        if (response == APIOverridesAndPurchases.RESULT_DEFAULT) {
+        int response = apiOverrides.getBuyResponse();
+        if (response == APIOverrides.RESULT_DEFAULT) {
             if (config.skus().get(sku) == null) {
                 response = GoogleUtil.RESULT_ITEM_UNAVAILABLE;
-            } else if (apiOverridesAndPurchases.getReceiptForSku(sku, itemtype).isPresent()) {
+            } else if (purchases.getReceiptForSku(sku, itemtype).isPresent()) {
                 response = GoogleUtil.RESULT_ITEM_ALREADY_OWNED;
             } else {
                 response = GoogleUtil.RESULT_OK;

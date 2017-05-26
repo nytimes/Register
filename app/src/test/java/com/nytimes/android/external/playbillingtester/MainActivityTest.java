@@ -24,7 +24,7 @@ import org.robolectric.android.controller.ActivityController;
 
 import java.util.Locale;
 
-import static com.nytimes.android.external.playbillingtester.APIOverridesAndPurchases.RESULT_DEFAULT;
+import static com.nytimes.android.external.playbillingtester.APIOverrides.RESULT_DEFAULT;
 import static com.nytimes.android.external.playbillingtester.BuyActivity.RECEIPT_FMT;
 import static com.nytimes.android.external.playbillingtester.MainActivity.VERSION_FMT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,7 +49,9 @@ public class MainActivityTest {
     private MainActivity testObject;
     private ActivityController controller;
     @Mock
-    private APIOverridesAndPurchases apiOverridesAndPurchases;
+    private APIOverrides apiOverrides;
+    @Mock
+    private Purchases purchases;
     @Mock
     private Config config;
     @Mock
@@ -78,7 +80,8 @@ public class MainActivityTest {
         resources = RuntimeEnvironment.application.getResources();
         controller = Robolectric.buildActivity(MainActivityTest.TestMainActivity.class).create();
         testObject = (MainActivity) controller.get();
-        testObject.apiOverridesAndPurchases = apiOverridesAndPurchases;
+        testObject.apiOverrides = apiOverrides;
+        testObject.purchases = purchases;
         testObject.config = config;
         testObject.dialogBuilder = dialogBuilder;
         when(config.users()).thenReturn(ImmutableList.of(USER1, USER2));
@@ -88,12 +91,12 @@ public class MainActivityTest {
 
     @Test
     public void testDefaults() {
-        when(apiOverridesAndPurchases.getIsBillingSupportedResponse()).thenReturn(RESULT_DEFAULT);
-        when(apiOverridesAndPurchases.getGetBuyIntentResponse()).thenReturn(RESULT_DEFAULT);
-        when(apiOverridesAndPurchases.getBuyResponse()).thenReturn(RESULT_DEFAULT);
-        when(apiOverridesAndPurchases.getGetPurchasesResponse()).thenReturn(RESULT_DEFAULT);
-        when(apiOverridesAndPurchases.getGetSkuDetailsResponse()).thenReturn(RESULT_DEFAULT);
-        when(apiOverridesAndPurchases.getUsersResponse()).thenReturn(USER1);
+        when(apiOverrides.getIsBillingSupportedResponse()).thenReturn(RESULT_DEFAULT);
+        when(apiOverrides.getGetBuyIntentResponse()).thenReturn(RESULT_DEFAULT);
+        when(apiOverrides.getBuyResponse()).thenReturn(RESULT_DEFAULT);
+        when(apiOverrides.getGetPurchasesResponse()).thenReturn(RESULT_DEFAULT);
+        when(apiOverrides.getGetSkuDetailsResponse()).thenReturn(RESULT_DEFAULT);
+        when(apiOverrides.getUsersResponse()).thenReturn(USER1);
 
         controller.start();
 
@@ -116,16 +119,16 @@ public class MainActivityTest {
 
     @Test
     public void testNonDefaults() {
-        when(apiOverridesAndPurchases.getIsBillingSupportedResponse())
+        when(apiOverrides.getIsBillingSupportedResponse())
                 .thenReturn(GoogleUtil.RESULT_BILLING_UNAVAILABLE);
-        when(apiOverridesAndPurchases.getGetBuyIntentResponse()).thenReturn(GoogleUtil.RESULT_OK);
-        when(apiOverridesAndPurchases.getBuyResponse()).thenReturn(GoogleUtil.RESULT_ITEM_UNAVAILABLE);
-        when(apiOverridesAndPurchases.getGetPurchasesResponse()).thenReturn(GoogleUtil.RESULT_DEVELOPER_ERROR);
-        when(apiOverridesAndPurchases.getGetSkuDetailsResponse()).thenReturn(GoogleUtil.RESULT_ERROR);
-        when(apiOverridesAndPurchases.getUsersResponse()).thenReturn(USER2);
-        when(apiOverridesAndPurchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
+        when(apiOverrides.getGetBuyIntentResponse()).thenReturn(GoogleUtil.RESULT_OK);
+        when(apiOverrides.getBuyResponse()).thenReturn(GoogleUtil.RESULT_ITEM_UNAVAILABLE);
+        when(apiOverrides.getGetPurchasesResponse()).thenReturn(GoogleUtil.RESULT_DEVELOPER_ERROR);
+        when(apiOverrides.getGetSkuDetailsResponse()).thenReturn(GoogleUtil.RESULT_ERROR);
+        when(apiOverrides.getUsersResponse()).thenReturn(USER2);
+        when(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
                 .thenReturn(ImmutableSet.of(inAppPurchaseData1));
-        when(apiOverridesAndPurchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
+        when(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
                 .thenReturn(ImmutableSet.of(inAppPurchaseData2));
 
         controller.start();
@@ -149,12 +152,12 @@ public class MainActivityTest {
 
     @Test
     public void testHandlePurge() {
-        when(apiOverridesAndPurchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
+        when(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
                 .thenReturn(ImmutableSet.of(inAppPurchaseData1))    // init
-                .thenReturn(ImmutableSet.<InAppPurchaseData>of());  // after purge
-        when(apiOverridesAndPurchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
+                .thenReturn(ImmutableSet.of());  // after purge
+        when(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
                 .thenReturn(ImmutableSet.of(inAppPurchaseData2))    // init
-                .thenReturn(ImmutableSet.<InAppPurchaseData>of());  // after purge
+                .thenReturn(ImmutableSet.of());  // after purge
 
         controller.start();
 
@@ -164,18 +167,18 @@ public class MainActivityTest {
 
         testObject.handlePurge(mock(View.class));
 
-        verify(apiOverridesAndPurchases).purgePurchases();
+        verify(purchases).purgePurchases();
         assertThat(testObject.itemsTextView.getText().toString())
                 .isEmpty();
     }
 
     @Test
     public void testHandleRefresh() {
-        when(apiOverridesAndPurchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
+        when(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
                 .thenReturn(ImmutableSet.of(inAppPurchaseData1))    // init
                 .thenReturn(ImmutableSet.of(inAppPurchaseData1));   // after refresh
-        when(apiOverridesAndPurchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
-                .thenReturn(ImmutableSet.<InAppPurchaseData>of())   // init
+        when(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
+                .thenReturn(ImmutableSet.of())   // init
                 .thenReturn(ImmutableSet.of(inAppPurchaseData2));   // after refresh
 
         controller.start();
@@ -212,28 +215,28 @@ public class MainActivityTest {
 
         when(parentView.getId()).thenReturn(R.id.isBillingSupported);
         testObject.onItemSelected(parentView, view, 0, 0L);
-        verify(apiOverridesAndPurchases)
+        verify(apiOverrides)
                 .setIsBillingSupportedResponse(RESULT_DEFAULT);
 
         when(parentView.getId()).thenReturn(R.id.getBuyIntent);
         testObject.onItemSelected(parentView, view, 1, 0L);
-        verify(apiOverridesAndPurchases).setGetBuyIntentResponse(GoogleUtil.RESULT_OK);
+        verify(apiOverrides).setGetBuyIntentResponse(GoogleUtil.RESULT_OK);
 
         when(parentView.getId()).thenReturn(R.id.buy);
         testObject.onItemSelected(parentView, view, 2, 0L);
-        verify(apiOverridesAndPurchases).setBuyResponse(GoogleUtil.RESULT_ITEM_UNAVAILABLE);
+        verify(apiOverrides).setBuyResponse(GoogleUtil.RESULT_ITEM_UNAVAILABLE);
 
         when(parentView.getId()).thenReturn(R.id.getPurchases);
         testObject.onItemSelected(parentView, view, 3, 0L);
-        verify(apiOverridesAndPurchases).setGetPurchasesResponse(GoogleUtil.RESULT_ERROR);
+        verify(apiOverrides).setGetPurchasesResponse(GoogleUtil.RESULT_ERROR);
 
         when(parentView.getId()).thenReturn(R.id.getSkuDetails);
         testObject.onItemSelected(parentView, view, 4, 0L);
-        verify(apiOverridesAndPurchases).setGetSkuDetailsResponse(GoogleUtil.RESULT_ERROR);
+        verify(apiOverrides).setGetSkuDetailsResponse(GoogleUtil.RESULT_ERROR);
 
         when(parentView.getId()).thenReturn(R.id.usersSpinner);
         testObject.onItemSelected(parentView, view, 1, 0L);
-        verify(apiOverridesAndPurchases).setUsersReponse(USER2);
+        verify(apiOverrides).setUsersReponse(USER2);
     }
 
     @Test

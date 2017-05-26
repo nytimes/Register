@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.nytimes.android.external.playbillingtester.APIOverridesAndPurchases;
+import com.nytimes.android.external.playbillingtester.APIOverrides;
 import com.nytimes.android.external.playbillingtester.model.Config;
 import com.nytimes.android.external.playbillingtester.model.ConfigSku;
 import com.nytimes.android.external.playbillingtester.model.ImmutableConfigSku;
@@ -34,7 +34,7 @@ public class SkuDetailsBundleBuilderTest {
     private SkuDetailsBundleBuilder testObject;
 
     @Mock
-    private APIOverridesAndPurchases apiOverridesAndPurchases;
+    private APIOverrides apiOverrides;
 
     @Mock
     private Config config;
@@ -47,7 +47,7 @@ public class SkuDetailsBundleBuilderTest {
         String title = "caps for sale";
         String price = "1.98";
 
-        testObject = new SkuDetailsBundleBuilder(apiOverridesAndPurchases, config, create());
+        testObject = new SkuDetailsBundleBuilder(apiOverrides, config, create());
         when(config.skus()).thenReturn(new ImmutableMap.Builder<String, ConfigSku>()
                 .put(SKU1, ImmutableConfigSku.builder()
                         .itemType(TYPE)
@@ -68,7 +68,7 @@ public class SkuDetailsBundleBuilderTest {
 
     @Test
     public void testBundleOK() {
-        when(apiOverridesAndPurchases.getGetSkuDetailsResponse()).thenReturn(GoogleUtil.RESULT_OK);
+        when(apiOverrides.getGetSkuDetailsResponse()).thenReturn(GoogleUtil.RESULT_OK);
 
         Bundle bundle = testObject.newBuilder()
                 .skus(ImmutableList.of(SKU1, SKU2), TYPE)
@@ -89,7 +89,7 @@ public class SkuDetailsBundleBuilderTest {
 
     @Test
     public void testBundleNotOK() {
-        when(apiOverridesAndPurchases.getGetSkuDetailsResponse()).thenReturn(GoogleUtil.RESULT_ERROR);
+        when(apiOverrides.getGetSkuDetailsResponse()).thenReturn(GoogleUtil.RESULT_ERROR);
 
         Bundle bundle = testObject.newBuilder()
                 .skus(ImmutableList.of(SKU1, SKU2), TYPE)
@@ -104,7 +104,7 @@ public class SkuDetailsBundleBuilderTest {
     @Test
     public void testRawResponseCode() {
         testObject.rawResponseCode();
-        verify(apiOverridesAndPurchases).getGetSkuDetailsResponse();
+        verify(apiOverrides).getGetSkuDetailsResponse();
     }
 }
 

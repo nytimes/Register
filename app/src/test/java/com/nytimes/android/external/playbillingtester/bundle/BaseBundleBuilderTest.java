@@ -1,6 +1,6 @@
 package com.nytimes.android.external.playbillingtester.bundle;
 
-import com.nytimes.android.external.playbillingtester.APIOverridesAndPurchases;
+import com.nytimes.android.external.playbillingtester.APIOverrides;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 
 import org.junit.Before;
@@ -18,7 +18,7 @@ public class BaseBundleBuilderTest {
     private BaseBundleBuilder testObject;
 
     @Mock
-    private APIOverridesAndPurchases apiOverridesAndPurchases;
+    private APIOverrides apiOverrides;
 
     @Before
     public void setUp() {
@@ -27,10 +27,10 @@ public class BaseBundleBuilderTest {
 
     @Test
     public void testReturnOkWhenDefault() {
-        testObject = new BaseBundleBuilder(apiOverridesAndPurchases) {
+        testObject = new BaseBundleBuilder(apiOverrides) {
             @Override
             protected int rawResponseCode() {
-                return APIOverridesAndPurchases.RESULT_DEFAULT;
+                return APIOverrides.RESULT_DEFAULT;
             }
         };
         assertThat(testObject.responseCode())
@@ -39,7 +39,7 @@ public class BaseBundleBuilderTest {
 
     @Test
     public void testReturnOverrideWhenNotDefault() {
-        testObject = new BaseBundleBuilder(apiOverridesAndPurchases) {
+        testObject = new BaseBundleBuilder(apiOverrides) {
             @Override
             protected int rawResponseCode() {
                 return GoogleUtil.RESULT_BILLING_UNAVAILABLE;
