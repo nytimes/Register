@@ -59,7 +59,9 @@ public class Purchases {
     public boolean removePurchase(@NonNull String inAppPurchaseDataStr, @NonNull String itemType) {
         Set<String> items = sharedPreferences.getStringSet(getItemsKeyFromType(itemType), new LinkedHashSet<String>());
         boolean removed = items.remove(inAppPurchaseDataStr);
-        sharedPreferences.edit().putStringSet(getItemsKeyFromType(itemType), items).apply();
+        if (removed) {
+            sharedPreferences.edit().putStringSet(getItemsKeyFromType(itemType), items).apply();
+        }
         return removed;
     }
 
