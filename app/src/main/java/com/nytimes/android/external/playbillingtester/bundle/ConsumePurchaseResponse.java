@@ -35,7 +35,9 @@ public class ConsumePurchaseResponse extends BaseResponse {
             }
             inAppPurchaseItems = purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null).purchaseDataList();
             if (inAppPurchaseItems.contains(purchaseToken)) {
-                purchases.removePurchase(purchaseToken, GoogleUtil.BILLING_TYPE_IAP);
+                if (!purchases.removePurchase(purchaseToken, GoogleUtil.BILLING_TYPE_IAP)) {
+                    return GoogleUtil.RESULT_ERROR;
+                }
             } else {
                 return GoogleUtil.RESULT_ITEM_NOT_OWNED;
             }
