@@ -236,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 case R.id.consumePurchase:
                     apiOverrides.setConsumePurchaseResponse(
                             getCodeFromSpinnerItem(R.array.consumePurchase_spinner, position));
+                    break;
                 case R.id.usersSpinner:
                     apiOverrides.setUsersReponse(config.users().get(position));
                     break;

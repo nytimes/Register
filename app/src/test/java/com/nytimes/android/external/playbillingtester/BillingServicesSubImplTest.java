@@ -19,13 +19,13 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.nytimes.android.external.playbillingtester.APIOverrides.RESULT_DEFAULT;
 import static com.nytimes.android.external.playbillingtester.di.GsonFactory.create;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -40,15 +40,6 @@ public class BillingServicesSubImplTest {
     private APIOverrides apiOverrides;
 
     @Mock
-    private Purchases purchases;
-
-    @Mock
-    private Purchases.PurchasesLists inAppPurchasesLists;
-
-    @Mock
-    private Purchases.PurchasesLists subscriptionsPurchasesLists;
-
-    @Mock
     private Config config;
 
     @Mock
@@ -59,8 +50,6 @@ public class BillingServicesSubImplTest {
 
     @Mock
     private PurchasesBundleBuilder purchasesBundleBuilder;
-
-    private ConsumePurchaseResponse consumePurchaseResponse;
 
     private BillingServiceStubImpl testObject;
 
@@ -83,7 +72,8 @@ public class BillingServicesSubImplTest {
         when(purchasesBundleBuilder.type(anyString())).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.continuationToken(anyString())).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.build()).thenReturn(expected);
-        consumePurchaseResponse = new ConsumePurchaseResponse(apiOverrides, purchases);
+
+        ConsumePurchaseResponse consumePurchaseResponse = mock(ConsumePurchaseResponse.class);
         testObject = new BillingServiceStubImpl(apiOverrides, create(), config,
                 buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseResponse);
     }
@@ -133,10 +123,8 @@ public class BillingServicesSubImplTest {
     @Test
     public void testConsumePurchase() {
         String purchaseToken = "token";
-        when(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null)).thenReturn(inAppPurchasesLists);
-        when(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null)).thenReturn(subscriptionsPurchasesLists);
         assertThat(testObject.consumePurchase(API_VERSION, PACKAGE_NAME, purchaseToken))
-                .isEqualTo(GoogleUtil.RESULT_ITEM_NOT_OWNED);
+                .isEqualTo(GoogleUtil.RESULT_OK);
     }
 
     @Test

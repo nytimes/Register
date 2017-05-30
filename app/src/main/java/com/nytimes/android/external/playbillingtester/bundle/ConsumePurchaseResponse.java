@@ -29,7 +29,8 @@ public class ConsumePurchaseResponse extends BaseResponse {
         int responseCode = responseCode();
         List<String> inAppPurchaseItems, subscriptionsItems;
         if (responseCode == RESULT_OK) {
-            subscriptionsItems = purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null).purchaseDataList();
+            subscriptionsItems = purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null)
+                    .purchaseDataList();
             if (subscriptionsItems.contains(purchaseToken)) {
                 return GoogleUtil.RESULT_ERROR;
             }

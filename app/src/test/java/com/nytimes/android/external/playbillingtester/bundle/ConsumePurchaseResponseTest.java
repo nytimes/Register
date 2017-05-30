@@ -55,8 +55,6 @@ public class ConsumePurchaseResponseTest {
     @Mock
     private PurchasesBundleBuilder purchasesBundleBuilder;
 
-    private ConsumePurchaseResponse consumePurchaseResponse;
-
     private BillingServiceStubImpl testObject;
 
     private final Bundle expected = new Bundle();
@@ -78,7 +76,7 @@ public class ConsumePurchaseResponseTest {
         when(purchasesBundleBuilder.type(anyString())).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.continuationToken(anyString())).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.build()).thenReturn(expected);
-        consumePurchaseResponse = new ConsumePurchaseResponse(apiOverrides, purchases);
+        ConsumePurchaseResponse consumePurchaseResponse = new ConsumePurchaseResponse(apiOverrides, purchases);
         testObject = new BillingServiceStubImpl(apiOverrides, create(), config,
                 buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseResponse);
     }
@@ -93,7 +91,8 @@ public class ConsumePurchaseResponseTest {
         when(inAppPurchasesLists.purchaseDataList()).thenReturn(testPurchases);
         when(purchases.removePurchase("purchase1", GoogleUtil.BILLING_TYPE_IAP)).thenReturn(true);
 
-        when(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null)).thenReturn(subscriptionsPurchasesLists);
+        when(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null))
+                .thenReturn(subscriptionsPurchasesLists);
         when(subscriptionsPurchasesLists.purchaseDataList()).thenReturn(subscriptions);
 
         when(purchasesBundleBuilder.build()).thenReturn(getPurchasesBundle);
@@ -116,11 +115,15 @@ public class ConsumePurchaseResponseTest {
         final List<String> subscriptions = ImmutableList.of("subscription1", "subscription2");
         Bundle getPurchasesBundle = new Bundle();
         getPurchasesBundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST, new ArrayList<>(testPurchases));
-        when(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null)).thenReturn(inAppPurchasesLists);
+        when(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null))
+                .thenReturn(inAppPurchasesLists);
         when(inAppPurchasesLists.purchaseDataList()).thenReturn(testPurchases);
-        when(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null)).thenReturn(subscriptionsPurchasesLists);
-        when(subscriptionsPurchasesLists.purchaseDataList()).thenReturn(subscriptions);
-        when(purchasesBundleBuilder.build()).thenReturn(getPurchasesBundle);
+        when(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null))
+                .thenReturn(subscriptionsPurchasesLists);
+        when(subscriptionsPurchasesLists.purchaseDataList())
+                .thenReturn(subscriptions);
+        when(purchasesBundleBuilder.build())
+                .thenReturn(getPurchasesBundle);
 
         Bundle stored = testObject.getPurchases(API_VERSION, PACKAGE_NAME, type, "token");
         assertThat(stored.getInt(GoogleUtil.RESPONSE_CODE))
@@ -141,11 +144,15 @@ public class ConsumePurchaseResponseTest {
         final List<String> subscriptions = ImmutableList.of("subscription1", "subscription2");
         Bundle getPurchasesBundle = new Bundle();
         getPurchasesBundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST, new ArrayList<>(testPurchases));
-        when(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null)).thenReturn(inAppPurchasesLists);
+        when(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null))
+                .thenReturn(inAppPurchasesLists);
         when(inAppPurchasesLists.purchaseDataList()).thenReturn(testPurchases);
-        when(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null)).thenReturn(subscriptionsPurchasesLists);
-        when(subscriptionsPurchasesLists.purchaseDataList()).thenReturn(subscriptions);
-        when(purchasesBundleBuilder.build()).thenReturn(getPurchasesBundle);
+        when(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null))
+                .thenReturn(subscriptionsPurchasesLists);
+        when(subscriptionsPurchasesLists.purchaseDataList())
+                .thenReturn(subscriptions);
+        when(purchasesBundleBuilder.build())
+                .thenReturn(getPurchasesBundle);
 
         Bundle stored = testObject.getPurchases(API_VERSION, PACKAGE_NAME, type, "token");
         assertThat(stored.getInt(GoogleUtil.RESPONSE_CODE))
