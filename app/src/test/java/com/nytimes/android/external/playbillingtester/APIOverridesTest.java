@@ -24,6 +24,7 @@ public class APIOverridesTest {
     private static final int BUY_RESPONSE = -102;
     private static final int GET_PURCHASES_RESPONSE = -103;
     private static final int GET_SKU_DETAILS_RESPONSE = -104;
+    private static final int CONSUME_PURCHASE_RESPONSE = -105;
     private static final String GET_USERS_RESPONSE = "myfun@user.com";
     private APIOverrides testObject;
 
@@ -71,6 +72,13 @@ public class APIOverridesTest {
         testObject.setGetSkuDetailsResponse(GET_SKU_DETAILS_RESPONSE);
         assertThat(testObject.getGetSkuDetailsResponse())
                 .isEqualTo(GET_SKU_DETAILS_RESPONSE);
+    }
+
+    @Test
+    public void testConsumePurchaseResponse() {
+        testObject.setConsumePurchaseResponse(CONSUME_PURCHASE_RESPONSE);
+        assertThat(testObject.getConsumePurchaseResponse())
+                .isEqualTo(CONSUME_PURCHASE_RESPONSE);
     }
 
     @Test

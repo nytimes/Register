@@ -33,7 +33,6 @@ public class BillingServiceStubImpl extends IInAppBillingService.Stub {
                                   PurchasesBundleBuilder purchasesBundleBuilder,
                                   ConsumePurchaseResponse consumePurchaseResponse) {
         this.apiOverrides = apiOverrides;
-        this.apiOverridesAndPurchases = apiOverridesAndPurchases;
         this.gson = gson;
         this.config = config;
         this.buyIntentBundleBuilder = buyIntentBundleBuilder;

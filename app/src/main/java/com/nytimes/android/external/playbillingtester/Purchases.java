@@ -56,6 +56,12 @@ public class Purchases {
         sharedPreferences.edit().putStringSet(getItemsKeyFromType(itemType), items).apply();
     }
 
+    public void removePurchase(@NonNull String inAppPurchaseDataStr, @NonNull String itemType) {
+        Set<String> items = sharedPreferences.getStringSet(getItemsKeyFromType(itemType), new LinkedHashSet<String>());
+        items.remove(inAppPurchaseDataStr);
+        sharedPreferences.edit().putStringSet(getItemsKeyFromType(itemType), items).apply();
+    }
+
     @NonNull
     Set<InAppPurchaseData> getInAppPurchaseData(@NonNull String itemType) {
         Set<InAppPurchaseData> ret = new LinkedHashSet<>();

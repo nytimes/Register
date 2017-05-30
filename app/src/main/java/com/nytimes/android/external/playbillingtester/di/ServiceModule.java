@@ -68,9 +68,10 @@ public class ServiceModule {
                                                             Gson gson, Config config,
                                                             BuyIntentBundleBuilder buyIntentBundleBuilder,
                                                             SkuDetailsBundleBuilder skuDetailsBundleBuilder,
-                                                            PurchasesBundleBuilder purchasesBundleBuilder) {
+                                                            PurchasesBundleBuilder purchasesBundleBuilder,
+                                                            ConsumePurchaseResponse consumePurchaseResponse) {
         return new BillingServiceStubImpl(apiOverrides, gson, config, buyIntentBundleBuilder,
-                skuDetailsBundleBuilder, purchasesBundleBuilder);
+                skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseResponse);
     }
 
     @Provides

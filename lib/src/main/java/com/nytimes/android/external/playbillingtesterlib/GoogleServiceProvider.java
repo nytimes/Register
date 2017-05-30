@@ -20,5 +20,7 @@ public interface GoogleServiceProvider extends Serializable {
             continuationToken) throws RemoteException;
     public Bundle getSkuDetails(int apiVersion, String packageName, String type,
                                 Bundle skusBundle) throws RemoteException;
+    int consumePurchase(int apiVersion, String packageName,
+                        String purchaseToken) throws RemoteException;
     void releaseService();
 }
