@@ -6,6 +6,7 @@ import android.os.RemoteException;
 
 import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
+import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.SkuDetailsBundleBuilder;
 import com.nytimes.android.external.playbillingtester.model.Config;
@@ -23,18 +24,21 @@ public class BillingServiceStubImpl extends IInAppBillingService.Stub {
     private final BuyIntentBundleBuilder buyIntentBundleBuilder;
     private final SkuDetailsBundleBuilder skuDetailsBundleBuilder;
     private final PurchasesBundleBuilder purchasesBundleBuilder;
+    private final ConsumePurchaseResponse consumePurchaseResponse;
 
     @Inject
     public BillingServiceStubImpl(APIOverrides apiOverrides, Gson gson, Config config,
                                   BuyIntentBundleBuilder buyIntentBundleBuilder,
                                   SkuDetailsBundleBuilder skuDetailsBundleBuilder,
-                                  PurchasesBundleBuilder purchasesBundleBuilder) {
+                                  PurchasesBundleBuilder purchasesBundleBuilder,
+                                  ConsumePurchaseResponse consumePurchaseResponse) {
         this.apiOverrides = apiOverrides;
         this.gson = gson;
         this.config = config;
         this.buyIntentBundleBuilder = buyIntentBundleBuilder;
         this.skuDetailsBundleBuilder = skuDetailsBundleBuilder;
         this.purchasesBundleBuilder = purchasesBundleBuilder;
+        this.consumePurchaseResponse = consumePurchaseResponse;
     }
 
     @Override
@@ -77,8 +81,7 @@ public class BillingServiceStubImpl extends IInAppBillingService.Stub {
 
     @Override
     public int consumePurchase(int apiVersion, String packageName, String purchaseToken) {
-        // We are not using this call
-        return 0;
+        return consumePurchaseResponse.consumePurchase(apiVersion, packageName, purchaseToken);
     }
 
     @Override

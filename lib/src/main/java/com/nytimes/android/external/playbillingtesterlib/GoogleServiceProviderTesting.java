@@ -58,4 +58,10 @@ public class GoogleServiceProviderTesting implements GoogleServiceProvider  {
         throws RemoteException {
         return billingService.getSkuDetails(apiVersion, packageName, type, skusBundle);
     }
+
+    @Override
+    public int consumePurchase(int apiVersion, String packageName, String purchaseToken) throws RemoteException {
+        return billingService.consumePurchase(apiVersion, packageName, purchaseToken);
+    }
+
 }

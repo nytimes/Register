@@ -95,12 +95,29 @@
         android:entries="@array/getSkuDetails_spinner"
         android:layout_below="@+id/getPurchases" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="consumePurchase"
+        android:id="@+id/textviewConsumePurchase"
+        android:layout_alignTop="@+id/consumePurchase"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/consumePurchase"
+        android:layout_toEndOf="@+id/textviewConsumePurchase"
+        android:spinnerMode="dropdown"
+        android:entries="@array/consumePurchase_spinner"
+        android:layout_below="@+id/getSkuDetails" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/refresh"
         android:id="@+id/refreshButton"
-        android:layout_below="@+id/getSkuDetails"
+        android:layout_below="@+id/consumePurchase"
         android:layout_alignParentStart="true" />
 
     <Button
@@ -108,7 +125,7 @@
         android:layout_height="wrap_content"
         android:text="@string/purge"
         android:id="@+id/purgeButton"
-        android:layout_below="@+id/getSkuDetails"
+        android:layout_below="@+id/consumePurchase"
         android:layout_toEndOf="@+id/refreshButton" />
 
     <EditText
@@ -129,7 +146,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/usersSpinner"
         android:layout_toEndOf="@+id/textView6"
-        android:layout_below="@+id/getSkuDetails"/>
+        android:layout_below="@+id/consumePurchase"/>
 
     <TextView
         android:layout_width="wrap_content"

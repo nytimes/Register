@@ -5,6 +5,7 @@ import android.os.RemoteException;
 
 import com.google.common.collect.ImmutableList;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
+import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.SkuDetailsBundleBuilder;
 import com.nytimes.android.external.playbillingtester.model.Config;
@@ -24,6 +25,7 @@ import static com.nytimes.android.external.playbillingtester.di.GsonFactory.crea
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -70,8 +72,10 @@ public class BillingServicesSubImplTest {
         when(purchasesBundleBuilder.type(anyString())).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.continuationToken(anyString())).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.build()).thenReturn(expected);
+
+        ConsumePurchaseResponse consumePurchaseResponse = mock(ConsumePurchaseResponse.class);
         testObject = new BillingServiceStubImpl(apiOverrides, create(), config,
-                buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder);
+                buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseResponse);
     }
 
     @Test
@@ -120,7 +124,7 @@ public class BillingServicesSubImplTest {
     public void testConsumePurchase() {
         String purchaseToken = "token";
         assertThat(testObject.consumePurchase(API_VERSION, PACKAGE_NAME, purchaseToken))
-                .isEqualTo(0);
+                .isEqualTo(GoogleUtil.RESULT_OK);
     }
 
     @Test

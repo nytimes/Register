@@ -28,6 +28,7 @@
     <string name="spn_dev_error">5 RESULT_DEVELOPER_ERROR</string>
     <string name="spn_error">6 RESULT_ERROR</string>
     <string name="spn_item_owned">7 RESULT_ITEM_ALREADY_OWNED</string>
+    <string name="spn_item_not_owned">8 RESULT_ITEM_NOT_OWNED</string>
     <string-array name="isBillingEnabled_spinner">
         <item>@string/spn_default</item>
         <item>@string/spn_ok</item>
@@ -65,6 +66,13 @@
         <item>@string/spn_item_unavailable</item>
         <item>@string/spn_dev_error</item>
         <item>@string/spn_error</item>
+    </string-array>
+
+    <string-array name="consumePurchase_spinner">
+        <item>@string/spn_default</item>
+        <item>@string/spn_ok</item>
+        <item>@string/spn_error</item>
+        <item>@string/spn_item_not_owned</item>
     </string-array>
 
     <!--

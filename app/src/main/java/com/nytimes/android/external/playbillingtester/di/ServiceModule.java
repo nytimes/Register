@@ -14,6 +14,7 @@ import com.nytimes.android.external.playbillingtester.PermissionHandler;
 import com.nytimes.android.external.playbillingtester.Purchases;
 import com.nytimes.android.external.playbillingtester.R;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
+import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.SkuDetailsBundleBuilder;
 import com.nytimes.android.external.playbillingtester.model.Config;
@@ -67,9 +68,10 @@ public class ServiceModule {
                                                             Gson gson, Config config,
                                                             BuyIntentBundleBuilder buyIntentBundleBuilder,
                                                             SkuDetailsBundleBuilder skuDetailsBundleBuilder,
-                                                            PurchasesBundleBuilder purchasesBundleBuilder) {
+                                                            PurchasesBundleBuilder purchasesBundleBuilder,
+                                                            ConsumePurchaseResponse consumePurchaseResponse) {
         return new BillingServiceStubImpl(apiOverrides, gson, config, buyIntentBundleBuilder,
-                skuDetailsBundleBuilder, purchasesBundleBuilder);
+                skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseResponse);
     }
 
     @Provides
@@ -90,5 +92,11 @@ public class ServiceModule {
     @ScopeService
     PurchasesBundleBuilder providePurchasesBundleBuilder(APIOverrides apiOverrides, Purchases purchases) {
         return new PurchasesBundleBuilder(apiOverrides, purchases);
+    }
+
+    @Provides
+    @ScopeService
+    ConsumePurchaseResponse provideConsumePurchaseBundleBuilder(APIOverrides apiOverrides, Purchases purchases) {
+        return new ConsumePurchaseResponse(apiOverrides, purchases);
     }
 }

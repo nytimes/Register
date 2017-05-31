@@ -54,6 +54,12 @@ public class GoogleServiceProviderImpl implements GoogleServiceProvider  {
     }
 
     @Override
+    public int consumePurchase(int apiVersion, String packageName,
+                               String purchaseToken) throws RemoteException {
+        return billingService.consumePurchase(apiVersion, packageName, purchaseToken);
+    }
+
+    @Override
     public void releaseService() {
         billingService = null;
     }
