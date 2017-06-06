@@ -15,6 +15,7 @@ import com.nytimes.android.external.playbillingtester.Purchases;
 import com.nytimes.android.external.playbillingtester.R;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
+import com.nytimes.android.external.playbillingtester.bundle.BuyIntentToReplaceSkusBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.SkuDetailsBundleBuilder;
 import com.nytimes.android.external.playbillingtester.model.Config;
@@ -69,9 +70,11 @@ public class ServiceModule {
                                                             BuyIntentBundleBuilder buyIntentBundleBuilder,
                                                             SkuDetailsBundleBuilder skuDetailsBundleBuilder,
                                                             PurchasesBundleBuilder purchasesBundleBuilder,
-                                                            ConsumePurchaseResponse consumePurchaseResponse) {
-        return new BillingServiceStubImpl(apiOverrides, gson, config, buyIntentBundleBuilder,
-                skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseResponse);
+                                                            ConsumePurchaseResponse consumePurchaseResponse,
+                                                            BuyIntentToReplaceSkusBundleBuilder
+                                                                    buyIntentToReplaceSkusBundleBuilder) {
+        return new BillingServiceStubImpl(apiOverrides, gson, config, buyIntentBundleBuilder, skuDetailsBundleBuilder,
+                purchasesBundleBuilder, consumePurchaseResponse, buyIntentToReplaceSkusBundleBuilder);
     }
 
     @Provides
@@ -98,5 +101,12 @@ public class ServiceModule {
     @ScopeService
     ConsumePurchaseResponse provideConsumePurchaseBundleBuilder(APIOverrides apiOverrides, Purchases purchases) {
         return new ConsumePurchaseResponse(apiOverrides, purchases);
+    }
+
+    @Provides
+    @ScopeService
+    BuyIntentToReplaceSkusBundleBuilder provideBuyIntentToReplaceSkusBundleBuilder(Application application,
+                                                                                   APIOverrides apiOverrides) {
+        return new BuyIntentToReplaceSkusBundleBuilder(application, apiOverrides);
     }
 }

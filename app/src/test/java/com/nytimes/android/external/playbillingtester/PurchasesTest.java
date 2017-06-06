@@ -3,7 +3,7 @@ package com.nytimes.android.external.playbillingtester;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 import com.nytimes.android.external.playbillingtesterlib.InAppPurchaseData;
@@ -162,18 +162,20 @@ public class PurchasesTest {
     public void testGetReceiptForSkuFound() {
         testObject.addPurchase(inAppPurchaseData1Str, GoogleUtil.BILLING_TYPE_SUBSCRIPTION);
         testObject.addPurchase(inAppPurchaseData2Str, GoogleUtil.BILLING_TYPE_IAP);
-        Optional<String> actual = testObject.getReceiptForSku(PRODUCT_ID_1, GoogleUtil.BILLING_TYPE_SUBSCRIPTION);
+        Set<String> actual = testObject.getReceiptsForSkus(ImmutableSet.of(PRODUCT_ID_1),
+                GoogleUtil.BILLING_TYPE_SUBSCRIPTION);
         assertThat(actual)
-                .isEqualTo(Optional.of(PURCHASE_TOKEN_1));
+                .isEqualTo(ImmutableSet.of(PURCHASE_TOKEN_1));
     }
 
     @Test
     public void testGetReceiptForSkuNotFound() {
         testObject.addPurchase(inAppPurchaseData1Str, GoogleUtil.BILLING_TYPE_SUBSCRIPTION);
         testObject.addPurchase(inAppPurchaseData2Str, GoogleUtil.BILLING_TYPE_IAP);
-        Optional<String> actual = testObject.getReceiptForSku(PRODUCT_ID_1, GoogleUtil.BILLING_TYPE_IAP);
+        Set<String> actual = testObject.getReceiptsForSkus(ImmutableSet.of(PRODUCT_ID_1),
+                GoogleUtil.BILLING_TYPE_IAP);
         assertThat(actual)
-                .isEqualTo(Optional.absent());
+                .isEqualTo(ImmutableSet.of());
     }
 
     @Test

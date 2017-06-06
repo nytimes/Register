@@ -21,6 +21,8 @@ public class APIOverrides {
     private static final String GET_PURCHASES = "getPurchases";
     private static final String GET_SKU_DETAILS = "getSkuDetails";
     private static final String CONSUME_PURCHASE = "consumePurchase";
+    private static final String GET_BUY_INTENT_TO_REPLACE_SKUS = "getBuyIntentToReplaceSkus";
+    private static final String REPLACE = "Replace";
     private static final String USERS = "Users";
     private static final String DEFAULT_USER = "200nyttest1@nytimes.com";
 
@@ -80,6 +82,22 @@ public class APIOverrides {
 
     void setConsumePurchaseResponse(int response) {
         sharedPreferences.edit().putInt(CONSUME_PURCHASE, response).apply();
+    }
+
+    public int getGetBuyIntentToReplaceSkusResponse() {
+        return sharedPreferences.getInt(GET_BUY_INTENT_TO_REPLACE_SKUS, RESULT_DEFAULT);
+    }
+
+    void setGetBuyIntentToReplaceSkusResponse(int response) {
+        sharedPreferences.edit().putInt(GET_BUY_INTENT_TO_REPLACE_SKUS, response).apply();
+    }
+
+    public int getReplaceResponse() {
+        return sharedPreferences.getInt(REPLACE, RESULT_DEFAULT);
+    }
+
+    void setReplaceReponse(int response) {
+        sharedPreferences.edit().putInt(REPLACE, response).apply();
     }
 
     @NonNull

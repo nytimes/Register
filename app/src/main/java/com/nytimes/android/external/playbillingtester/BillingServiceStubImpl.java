@@ -7,6 +7,7 @@ import android.os.RemoteException;
 import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
+import com.nytimes.android.external.playbillingtester.bundle.BuyIntentToReplaceSkusBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.SkuDetailsBundleBuilder;
 import com.nytimes.android.external.playbillingtester.model.Config;
@@ -25,13 +26,15 @@ public class BillingServiceStubImpl extends IInAppBillingService.Stub {
     private final SkuDetailsBundleBuilder skuDetailsBundleBuilder;
     private final PurchasesBundleBuilder purchasesBundleBuilder;
     private final ConsumePurchaseResponse consumePurchaseResponse;
+    private final BuyIntentToReplaceSkusBundleBuilder buyIntentToReplaceSkusBundleBuilder;
 
     @Inject
     public BillingServiceStubImpl(APIOverrides apiOverrides, Gson gson, Config config,
                                   BuyIntentBundleBuilder buyIntentBundleBuilder,
                                   SkuDetailsBundleBuilder skuDetailsBundleBuilder,
                                   PurchasesBundleBuilder purchasesBundleBuilder,
-                                  ConsumePurchaseResponse consumePurchaseResponse) {
+                                  ConsumePurchaseResponse consumePurchaseResponse,
+                                  BuyIntentToReplaceSkusBundleBuilder buyIntentToReplaceSkusBundleBuilder) {
         this.apiOverrides = apiOverrides;
         this.gson = gson;
         this.config = config;
@@ -39,6 +42,7 @@ public class BillingServiceStubImpl extends IInAppBillingService.Stub {
         this.skuDetailsBundleBuilder = skuDetailsBundleBuilder;
         this.purchasesBundleBuilder = purchasesBundleBuilder;
         this.consumePurchaseResponse = consumePurchaseResponse;
+        this.buyIntentToReplaceSkusBundleBuilder = buyIntentToReplaceSkusBundleBuilder;
     }
 
     @Override
@@ -94,8 +98,14 @@ public class BillingServiceStubImpl extends IInAppBillingService.Stub {
     public Bundle getBuyIntentToReplaceSkus(int apiVersion, String packageName, List<String> oldSkus,
                                             String newSku, String type,
                                             String developerPayload) throws RemoteException {
-        // We are not using this call
-        return null;
+        return buyIntentToReplaceSkusBundleBuilder
+                .newBuilder()
+                .packageName(packageName)
+                .oldSkus(oldSkus)
+                .newSku(newSku)
+                .type(type)
+                .developerPayload(developerPayload)
+                .build();
     }
 
     @Override

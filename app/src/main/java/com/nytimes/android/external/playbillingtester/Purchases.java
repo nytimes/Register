@@ -4,9 +4,9 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.google.common.base.Optional;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
-import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 import com.nytimes.android.external.playbillingtesterlib.InAppPurchaseData;
 
 import org.immutables.value.Value;
@@ -22,6 +22,9 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import static com.nytimes.android.external.playbillingtesterlib.GoogleUtil.BILLING_TYPE_IAP;
+import static com.nytimes.android.external.playbillingtesterlib.GoogleUtil.BILLING_TYPE_SUBSCRIPTION;
+
 /**
  * Wrapper for user preferences such as API overrides and purchases
  */
@@ -30,8 +33,6 @@ public class Purchases {
 
     static final int PAGE_LIMIT = 100; // not sure what this limit actually is
     private static final Logger LOGGER = LoggerFactory.getLogger(Purchases.class);
-    private static final String GOOGLE_PURCHASE_ITEMS_SUB = "GoogleItems";
-    private static final String GOOGLE_PURCHASE_ITEMS_IAP = "GoogleItemsIAP";
 
     @NonNull
     protected Gson gson;
@@ -49,30 +50,6 @@ public class Purchases {
         this.signer = signer;
     }
 
-
-    void addPurchase(@NonNull String inAppPurchaseDataStr, @NonNull String itemType) {
-        Set<String> items = sharedPreferences.getStringSet(getItemsKeyFromType(itemType), new LinkedHashSet<>());
-        items.add(inAppPurchaseDataStr);
-        sharedPreferences.edit().putStringSet(getItemsKeyFromType(itemType), items).apply();
-    }
-
-    public boolean removePurchase(@NonNull String inAppPurchaseDataStr, @NonNull String itemType) {
-        Set<String> items = sharedPreferences.getStringSet(getItemsKeyFromType(itemType), new LinkedHashSet<String>());
-        boolean removed = items.remove(inAppPurchaseDataStr);
-        if (removed) {
-            sharedPreferences.edit().putStringSet(getItemsKeyFromType(itemType), items).apply();
-        }
-        return removed;
-    }
-
-    @NonNull
-    Set<InAppPurchaseData> getInAppPurchaseData(@NonNull String itemType) {
-        Set<InAppPurchaseData> ret = new LinkedHashSet<>();
-        for (String json : sharedPreferences.getStringSet(getItemsKeyFromType(itemType), new LinkedHashSet<>())) {
-            ret.add(gson.fromJson(json, InAppPurchaseData.class));
-        }
-        return ret;
-    }
 
     @NonNull
     public PurchasesLists getPurchasesLists(@NonNull String type, @Nullable String continuationToken) {
@@ -98,36 +75,89 @@ public class Purchases {
         return builder.build();
     }
 
+    boolean addPurchase(@NonNull String inAppPurchaseDataStr, @NonNull String itemType) {
+        Set<String> items = getPurchases(itemType);
+        if (items.contains(inAppPurchaseDataStr)) {
+            return false;
+        } else {
+            Set<String> toAdd =  new ImmutableSet.Builder<String>().addAll(items).add(inAppPurchaseDataStr).build();
+            sharedPreferences.edit().putStringSet(itemType, toAdd).apply();
+            return true;
+        }
+    }
+
+    public boolean removePurchase(@NonNull String inAppPurchaseDataStr, @NonNull String itemType) {
+        Set<String> items = getPurchases(itemType);
+        boolean removed = items.remove(inAppPurchaseDataStr);
+        if (removed) {
+            sharedPreferences.edit().putStringSet(itemType, items).apply();
+        }
+        return removed;
+    }
+
+    boolean replacePurchase(@NonNull String newInAppPurchaseDataStr, List<String> replacedSkus) {
+        Set<String> purchasedItems = getPurchases(BILLING_TYPE_SUBSCRIPTION);
+        Set<String> purchasedSkus = getPurchasedSkus(BILLING_TYPE_SUBSCRIPTION);
+        ImmutableSet.Builder<String> builder = ImmutableSet.builder();
+        if (purchasedSkus.containsAll(replacedSkus) && !purchasedItems.contains(newInAppPurchaseDataStr)) {
+            Set<String> finalSet = builder
+                    .addAll(getPurchasesExceptForSkus(BILLING_TYPE_SUBSCRIPTION, ImmutableSet.copyOf(replacedSkus)))
+                    .add(newInAppPurchaseDataStr)
+                    .build();
+            sharedPreferences.edit().putStringSet(BILLING_TYPE_SUBSCRIPTION,
+                    finalSet).commit();
+            return true;
+        }
+        return  false;
+    }
+
+    @NonNull
+    Set<InAppPurchaseData> getInAppPurchaseData(@NonNull String itemType) {
+        Set<InAppPurchaseData> ret = new LinkedHashSet<>();
+        for (String json : getPurchases(itemType)) {
+            ret.add(gson.fromJson(json, InAppPurchaseData.class));
+        }
+        return ret;
+    }
+
+    @NonNull
+    Set<String> getReceiptsForSkus(@NonNull Set<String> skus, @NonNull String itemType) {
+        ImmutableSet.Builder<String> builder = ImmutableSet.builder();
+        for (String json : getPurchases(itemType)) {
+            InAppPurchaseData inAppPurchaseData = gson.fromJson(json, InAppPurchaseData.class);
+            if (skus.contains(inAppPurchaseData.productId())) {
+                builder.add(inAppPurchaseData.purchaseToken());
+            }
+        }
+        return builder.build();
+    }
+
+    void purgePurchases() {
+        sharedPreferences.edit().remove(BILLING_TYPE_IAP).remove(BILLING_TYPE_SUBSCRIPTION).apply();
+    }
+
+    private Set<String> getPurchases(@NonNull String itemType) {
+        return sharedPreferences.getStringSet(itemType, ImmutableSet.of());
+    }
+
+    private Set<String> getPurchasesExceptForSkus(@NonNull String itemType, @NonNull Set<String> skuFilter) {
+        return ImmutableSet.copyOf(Collections2.filter(getPurchases(itemType),
+                json -> !skuFilter.contains(gson.fromJson(json, InAppPurchaseData.class).productId())));
+    }
+
+    private Set<String> getPurchasedSkus(String itemType) {
+        ImmutableSet.Builder<String> builder = ImmutableSet.builder();
+        for (String inAppPurchaseDataStr : getPurchases(itemType)) {
+            builder.add(gson.fromJson(inAppPurchaseDataStr, InAppPurchaseData.class).productId());
+        }
+        return builder.build();
+    }
+
     private int getFirst(String continuationToken) {
         try {
             return Integer.parseInt(continuationToken);
         } catch (NumberFormatException exception) {
             return 0;
-        }
-    }
-
-    @NonNull
-    Optional<String> getReceiptForSku(@NonNull String sku, @NonNull String itemType) {
-        Optional<String> receipt = Optional.absent();
-        for (String json : sharedPreferences.getStringSet(getItemsKeyFromType(itemType), new LinkedHashSet<>())) {
-            InAppPurchaseData inAppPurchaseData = gson.fromJson(json, InAppPurchaseData.class);
-            if (inAppPurchaseData.productId().equals(sku)) {
-                receipt = Optional.of(inAppPurchaseData.purchaseToken());
-            }
-        }
-        return receipt;
-    }
-
-    void purgePurchases() {
-        sharedPreferences.edit().remove(GOOGLE_PURCHASE_ITEMS_IAP).remove(GOOGLE_PURCHASE_ITEMS_SUB).apply();
-    }
-
-    @NonNull
-    private String getItemsKeyFromType(@NonNull String type) {
-        if (GoogleUtil.BILLING_TYPE_IAP.equals(type)) {
-            return GOOGLE_PURCHASE_ITEMS_IAP;
-        } else {
-            return GOOGLE_PURCHASE_ITEMS_SUB;
         }
     }
 

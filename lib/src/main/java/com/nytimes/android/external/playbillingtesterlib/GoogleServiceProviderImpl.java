@@ -7,6 +7,8 @@ import android.os.RemoteException;
 
 import com.android.vending.billing.IInAppBillingService;
 
+import java.util.List;
+
 /**
  * methods calls against the real google in app billing service
  */
@@ -57,6 +59,13 @@ public class GoogleServiceProviderImpl implements GoogleServiceProvider  {
     public int consumePurchase(int apiVersion, String packageName,
                                String purchaseToken) throws RemoteException {
         return billingService.consumePurchase(apiVersion, packageName, purchaseToken);
+    }
+
+    @Override
+    public Bundle getBuyIntentToReplaceSkus(int apiVersion, String packageName, List<String> oldSkus, String newSku,
+                                            String type, String developerPayload) throws RemoteException {
+        return billingService
+                .getBuyIntentToReplaceSkus(apiVersion, packageName, oldSkus, newSku, type, developerPayload);
     }
 
     @Override

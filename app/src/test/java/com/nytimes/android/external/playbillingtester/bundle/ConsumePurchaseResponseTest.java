@@ -55,6 +55,9 @@ public class ConsumePurchaseResponseTest {
     @Mock
     private PurchasesBundleBuilder purchasesBundleBuilder;
 
+    @Mock
+    private BuyIntentToReplaceSkusBundleBuilder buyIntentToReplaceSkusBundleBuilder;
+
     private BillingServiceStubImpl testObject;
 
     private final Bundle expected = new Bundle();
@@ -78,7 +81,8 @@ public class ConsumePurchaseResponseTest {
         when(purchasesBundleBuilder.build()).thenReturn(expected);
         ConsumePurchaseResponse consumePurchaseResponse = new ConsumePurchaseResponse(apiOverrides, purchases);
         testObject = new BillingServiceStubImpl(apiOverrides, create(), config,
-                buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseResponse);
+                buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseResponse,
+                buyIntentToReplaceSkusBundleBuilder);
     }
 
     @Test

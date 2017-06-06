@@ -6,6 +6,7 @@ import android.os.RemoteException;
 import com.google.common.collect.ImmutableList;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
+import com.nytimes.android.external.playbillingtester.bundle.BuyIntentToReplaceSkusBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.SkuDetailsBundleBuilder;
 import com.nytimes.android.external.playbillingtester.model.Config;
@@ -51,6 +52,9 @@ public class BillingServicesSubImplTest {
     @Mock
     private PurchasesBundleBuilder purchasesBundleBuilder;
 
+    @Mock
+    private BuyIntentToReplaceSkusBundleBuilder buyIntentToReplaceSkusBundleBuilder;
+
     private BillingServiceStubImpl testObject;
 
     private final String type = GoogleUtil.BILLING_TYPE_IAP;
@@ -72,10 +76,19 @@ public class BillingServicesSubImplTest {
         when(purchasesBundleBuilder.type(anyString())).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.continuationToken(anyString())).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.build()).thenReturn(expected);
-
-        ConsumePurchaseResponse consumePurchaseResponse = mock(ConsumePurchaseResponse.class);
+        when(buyIntentToReplaceSkusBundleBuilder.newBuilder()).thenReturn(buyIntentToReplaceSkusBundleBuilder);
+        when(buyIntentToReplaceSkusBundleBuilder.developerPayload(anyString()))
+                .thenReturn(buyIntentToReplaceSkusBundleBuilder);
+        when(buyIntentToReplaceSkusBundleBuilder.packageName(anyString()))
+                .thenReturn(buyIntentToReplaceSkusBundleBuilder);
+        when(buyIntentToReplaceSkusBundleBuilder.newSku(anyString())).thenReturn(buyIntentToReplaceSkusBundleBuilder);
+        when(buyIntentToReplaceSkusBundleBuilder.oldSkus(anyListOf(String.class)))
+                .thenReturn(buyIntentToReplaceSkusBundleBuilder);
+        when(buyIntentToReplaceSkusBundleBuilder.type(anyString())).thenReturn(buyIntentToReplaceSkusBundleBuilder);
+        when(buyIntentToReplaceSkusBundleBuilder.build()).thenReturn(expected);
         testObject = new BillingServiceStubImpl(apiOverrides, create(), config,
-                buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseResponse);
+                buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder,
+                mock(ConsumePurchaseResponse.class), buyIntentToReplaceSkusBundleBuilder);
     }
 
     @Test
@@ -134,11 +147,11 @@ public class BillingServicesSubImplTest {
     }
 
     @Test
-    public void testGutBuyIntentToReplaceSkus() throws RemoteException {
+    public void testGetBuyIntentToReplaceSkus() throws RemoteException {
         String sku2 = "sku2";
         assertThat(testObject.getBuyIntentToReplaceSkus(API_VERSION, PACKAGE_NAME,
                 ImmutableList.of(SKU), sku2, type, DEVELOPER_PAYLOAD))
-                .isNull();
+                .isEqualTo(expected);
     }
 
     @Test
