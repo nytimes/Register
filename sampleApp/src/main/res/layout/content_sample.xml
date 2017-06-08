@@ -1,46 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.nytimes.android.external.playbillingtester.sample.SampleActivity"
-    tools:showIn="@layout/activity_sample">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <Switch
-        android:id="@+id/testerSwitch"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/recycler_padding_vertical"
+        android:paddingLeft="@dimen/recycler_padding_horizontal"
+        android:paddingRight="@dimen/recycler_padding_horizontal"
+        android:paddingTop="@dimen/recycler_padding_vertical"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        tools:context="com.nytimes.android.external.playbillingtester.sample.SampleActivity"
+        tools:listitem="@layout/item_card"
+        tools:showIn="@layout/activity_sample" />
+
+    <include
+        layout="@layout/content_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play Billing Tester"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="20dp"
-        android:width="300dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"/>
+        android:layout_gravity="center"
+        android:layout_marginLeft="72dp"
+        android:layout_marginRight="72dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
-    <Button
-        android:id="@+id/buyIAPButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="124dp"
-        app:layout_constraintEnd_toEndOf="@+id/buySubButton"
-        app:layout_constraintStart_toStartOf="@+id/buySubButton"
-        app:layout_constraintTop_toBottomOf="@+id/testerSwitch"
-        app:layout_constraintHorizontal_bias="0.0"/>
-
-    <Button
-        android:id="@+id/buySubButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/testerSwitch"
-        android:layout_marginTop="88dp"
-        app:layout_constraintEnd_toEndOf="@+id/testerSwitch"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>

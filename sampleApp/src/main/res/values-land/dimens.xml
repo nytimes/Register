@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="recycler_padding_horizontal">56dp</dimen>
+    <dimen name="recycler_empty_icon_size">84dp</dimen>
+</resources>

@@ -1,3 +1,8 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="status_bar_height">24dp</dimen>
+    <dimen name="recycler_divider_size">16dp</dimen>
+    <dimen name="recycler_padding_vertical">16dp</dimen>
+    <dimen name="recycler_padding_horizontal">8dp</dimen>
+    <dimen name="recycler_empty_icon_size">112dp</dimen>
 </resources>
