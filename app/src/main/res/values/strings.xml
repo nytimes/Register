@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Play Billing Tester</string>
+    <string name="app_name">Register Sample</string>
     <string name="action_settings">About</string>
     <string name="title_activity_buy">BuyActivity</string>
     <string name="refresh">REFRESH</string>
@@ -12,6 +12,7 @@
     <string name="item_already_owned">Item already owned</string>
     <string name="replace_item_not_owned">Item(s) to be replaced not owned</string>
     <string name="buy">Buy</string>
+    <string name="replace">Replace</string>
     <string name="ok">OK</string>
     <string name="started">STARTED</string>
     <string name="created">CREATED</string>
@@ -30,6 +31,7 @@
     <string name="spn_error">6 RESULT_ERROR</string>
     <string name="spn_item_owned">7 RESULT_ITEM_ALREADY_OWNED</string>
     <string name="spn_item_not_owned">8 RESULT_ITEM_NOT_OWNED</string>
+    <string name="register">Register</string>
     <string-array name="isBillingEnabled_spinner">
         <item>@string/spn_default</item>
         <item>@string/spn_ok</item>

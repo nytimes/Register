@@ -30,6 +30,7 @@
 
         <activity
             android:name=".BuyActivity"
+            android:theme="@style/Theme.Register.Dialog"
             android:label="@string/title_activity_buy" >
             <intent-filter>
                 <action android:name="com.nytimes.android.external.playbillingtester.test.buy"/>
