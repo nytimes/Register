@@ -12,6 +12,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    aaptOptions {
+        additionalParameters "--no-version-vectors"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -35,6 +39,9 @@ repositories {
 
 dependencies {
     compile libraries.supportAppCompat
+    compile libraries.supportDesign
+    compile libraries.swipeLayout
+
     compile project(':lib')
     compile libraries.gson
     compile libraries.slf4jAndroid

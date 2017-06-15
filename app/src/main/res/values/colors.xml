@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="register_blue">#FF248CD0</color>
+
+    <color name="windowBackground">#1B1B1B</color>
+    <color name="colorPrimary">#282829</color>
+    <color name="colorPrimaryDark">#202020</color>
+    <color name="textColorSecondary">#8AFFFFFF</color>
+
+    <!-- Spinner Colors -->
+    <color name="config_spinner_background">#1AFFFFFF</color>
+    <color name="config_gray">#D1D1D1</color>
+    <color name="config_yellow">#EBDE8C</color>
+    <color name="config_red">#CF6764</color>
+    <color name="config_green">#7AB881</color>
+    <color name="config_blue">#60B7D7</color>
+    <color name="scrim">#A6000000</color>
+    <color name="background_dark">#ff333333</color>
 </resources>

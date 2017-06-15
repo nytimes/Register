@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+    public static final int RESULT_DEFAULT = -1;            // - no user override
+    public static final int RESULT_OK = 0;                  // - success
+    public static final int RESULT_USER_CANCELED = 1;       // - user pressed back or canceled a dialog
+    public static final int RESULT_BILLING_UNAVAILABLE = 3; // - this billing API version is not supported for the type requested
+    public static final int RESULT_ITEM_UNAVAILABLE = 4;    // - requested SKU is not available for purchase
+    public static final int RESULT_DEVELOPER_ERROR = 5;     // - invalid arguments provided to the API
+    public static final int RESULT_ERROR = 6;               // - Fatal error during the API action
+    public static final int RESULT_ITEM_ALREADY_OWNED = 7;  // - Failure to purchase since item is already owned
+    public static final int RESULT_ITEM_NOT_OWNED = 8;      // - Failure to consume since item is not owned
+    -->
+
+    <string name="spn_default">RESULT_DEFAULT</string>
+    <string name="spn_ok">RESULT_OK</string>
+    <string name="spn_billing_unavailable">RESULT_BILLING_UNAVAILABLE</string>
+    <string name="spn_item_unavailable">RESULT_ITEM_UNAVAILABLE</string>
+    <string name="spn_dev_error">RESULT_DEVELOPER_ERROR</string>
+    <string name="spn_error">RESULT_ERROR</string>
+    <string name="spn_item_owned">RESULT_ITEM_ALREADY_OWNED</string>
+    <string name="spn_item_not_owned">RESULT_ITEM_NOT_OWNED</string>
+
+    <integer name="spn_default_code">-1</integer>
+    <integer name="spn_ok_code">0</integer>
+    <integer name="spn_billing_unavailable_code">3</integer>
+    <integer name="spn_item_unavailable_code">4</integer>
+    <integer name="spn_dev_error_code">5</integer>
+    <integer name="spn_error_code">6</integer>
+    <integer name="spn_item_owned_code">7</integer>
+    <integer name="spn_item_not_owned_code">8</integer>
+
+    <string-array name="debug_spinner">
+        <item>spn_default</item>
+        <item>spn_ok</item>
+        <item>spn_billing_unavailable</item>
+        <item>spn_item_unavailable</item>
+        <item>spn_dev_error</item>
+        <item>spn_error</item>
+        <item>spn_item_owned</item>
+        <item>spn_item_not_owned</item>
+    </string-array>
+
+    <string-array name="isBillingEnabled_spinner">
+        <item>spn_default</item>
+        <item>spn_ok</item>
+        <item>spn_billing_unavailable</item>
+        <item>spn_dev_error</item>
+        <item>spn_error</item>
+    </string-array>
+
+    <string-array name="getBuyIntent_spinner">
+        <item>spn_default</item>
+        <item>spn_ok</item>
+        <item>spn_dev_error</item>
+        <item>spn_error</item>
+    </string-array>
+
+    <string-array name="buy_spinner">
+        <item>spn_default</item>
+        <item>spn_ok</item>
+        <item>spn_item_unavailable</item>
+        <item>spn_dev_error</item>
+        <item>spn_error</item>
+        <item>spn_item_owned</item>
+    </string-array>
+
+    <string-array name="getPurchases_spinner">
+        <item>spn_default</item>
+        <item>spn_ok</item>
+        <item>spn_dev_error</item>
+        <item>spn_error</item>
+    </string-array>
+
+    <string-array name="getSkuDetails_spinner">
+        <item>spn_default</item>
+        <item>spn_ok</item>
+        <item>spn_item_unavailable</item>
+        <item>spn_dev_error</item>
+        <item>spn_error</item>
+    </string-array>
+
+    <string-array name="consumePurchase_spinner">
+        <item>spn_default</item>
+        <item>spn_ok</item>
+        <item>spn_error</item>
+        <item>spn_item_not_owned</item>
+    </string-array>
+
+</resources>
