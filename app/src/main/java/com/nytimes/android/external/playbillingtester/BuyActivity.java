@@ -58,51 +58,6 @@ public class BuyActivity extends AppCompatActivity {
     long currentTimeMillis;
     boolean isReplace = false;
 
-    View.OnClickListener handleBuy = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String newReceipt = String.format(Locale.getDefault(), RECEIPT_FMT,
-                    apiOverrides.getUsersResponse(), currentTimeMillis);
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_OK);
-            String skuToPurchase  = isReplace ? newSku : sku;
-            InAppPurchaseData inAppPurchaseData = new InAppPurchaseData.Builder()
-                    .orderId(Long.toString(currentTimeMillis))
-                    .packageName(config.skus().get(skuToPurchase).packageName())
-                    .productId(skuToPurchase)
-                    .purchaseTime(Long.toString(currentTimeMillis))
-                    .developerPayload(developerPayload)
-                    .purchaseToken(newReceipt)
-                    .build();
-            String inAppPurchaseDataStr = gson.toJson(inAppPurchaseData);
-            boolean result;
-            if (isReplace) {
-                result = purchases.replacePurchase(inAppPurchaseDataStr, oldSkus);
-            } else {
-                result = purchases.addPurchase(inAppPurchaseDataStr, itemtype);
-            }
-            resultIntent.putExtra(GoogleUtil.INAPP_PURCHASE_DATA, inAppPurchaseDataStr);
-            setResult(result ? RESULT_OK : RESULT_CANCELED, resultIntent);
-            finish();
-        }
-    };
-
-    View.OnClickListener handleAlreadyOwned = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Iterator iterator = purchases.getInAppPurchaseData(itemtype).iterator();
-            if (iterator.hasNext()) {
-                Intent intent = new Intent();
-                intent.putExtra(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_ITEM_ALREADY_OWNED);
-                intent.putExtra(GoogleUtil.INAPP_PURCHASE_DATA, gson.toJson(iterator.next()));
-                setResult(RESULT_OK, intent);
-            } else {
-                setResult(RESULT_CANCELED);
-            }
-            finish();
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         inject();
@@ -158,10 +113,10 @@ public class BuyActivity extends AppCompatActivity {
         Button buyButton = (Button) findViewById(R.id.buy_button);
         if (buyResponse == GoogleUtil.RESULT_OK) {
             buyButton.setText(R.string.buy);
-            buyButton.setOnClickListener(handleBuy);
+            buyButton.setOnClickListener(v -> onBuy());
         } else if (buyResponse == GoogleUtil.RESULT_ITEM_ALREADY_OWNED) {
             buyButton.setText(R.string.replace);
-            buyButton.setOnClickListener(handleAlreadyOwned);
+            buyButton.setOnClickListener(v -> onBuyAlreadyOwned());
         } else {
             buyButton.setText(R.string.ok);
             buyButton.setOnClickListener(v -> finish());
@@ -201,6 +156,45 @@ public class BuyActivity extends AppCompatActivity {
         } else {
             buySpinner.setVisibility(View.GONE);
         }
+    }
+
+    private void onBuy() {
+        String newReceipt = String.format(Locale.getDefault(), RECEIPT_FMT,
+                apiOverrides.getUsersResponse(), currentTimeMillis);
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_OK);
+        String skuToPurchase  = isReplace ? newSku : sku;
+        InAppPurchaseData inAppPurchaseData = new InAppPurchaseData.Builder()
+                .orderId(Long.toString(currentTimeMillis))
+                .packageName(config.skus().get(skuToPurchase).packageName())
+                .productId(skuToPurchase)
+                .purchaseTime(Long.toString(currentTimeMillis))
+                .developerPayload(developerPayload)
+                .purchaseToken(newReceipt)
+                .build();
+        String inAppPurchaseDataStr = gson.toJson(inAppPurchaseData);
+        boolean result;
+        if (isReplace) {
+            result = purchases.replacePurchase(inAppPurchaseDataStr, oldSkus);
+        } else {
+            result = purchases.addPurchase(inAppPurchaseDataStr, itemtype);
+        }
+        resultIntent.putExtra(GoogleUtil.INAPP_PURCHASE_DATA, inAppPurchaseDataStr);
+        setResult(result ? RESULT_OK : RESULT_CANCELED, resultIntent);
+        finish();
+    }
+
+    private void onBuyAlreadyOwned() {
+        Iterator iterator = purchases.getInAppPurchaseData(itemtype).iterator();
+        if (iterator.hasNext()) {
+            Intent intent = new Intent();
+            intent.putExtra(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_ITEM_ALREADY_OWNED);
+            intent.putExtra(GoogleUtil.INAPP_PURCHASE_DATA, gson.toJson(iterator.next()));
+            setResult(RESULT_OK, intent);
+        } else {
+            setResult(RESULT_CANCELED);
+        }
+        finish();
     }
 
     private Bundle getResponseContent(int buyResponse) {
