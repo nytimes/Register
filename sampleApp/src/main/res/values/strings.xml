@@ -12,6 +12,6 @@
     <string name="app_bar_switch_title">Enable Register Backend</string>
     <string name="app_bar_switch_description">Turning this control on will point to the Register Billing Library. If disabled, the app will point to the Google Play Billing API.</string>
 
-    <string name="empty_message_register">No IAPs or subscriptions found, please make  sure the JSON seed file is int the root directory of your SDCard.</string>
-    <string name="empty_message_google">No IAPs or subscriptions found, please make sure you have consumables within the Google Play Developer console.</string>
+    <string name="empty_message_register">No IAPs or subscriptions found, please make  sure the JSON seed file is in the root directory of your SDCard.</string>
+    <string name="empty_message_google">No IAPs or subscriptions found, products would display if Register Sample app was in the Play Store.</string>
 </resources>
