@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/empty_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <ImageView
+        android:id="@+id/empty_image"
+        android:layout_width="@dimen/recycler_empty_icon_size"
+        android:layout_height="@dimen/recycler_empty_icon_size"
+        android:tint="@color/emptyColor"
+        app:srcCompat="@drawable/vic_empty" />
+
+    <TextView
+        android:id="@+id/empty_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/emptyColor"
+        android:layout_marginTop="16dp"
+        android:textSize="14sp"
+        tools:text="@string/empty_message_register" />
+
+</LinearLayout>
