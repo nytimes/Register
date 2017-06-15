@@ -62,9 +62,15 @@ public class BuyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         inject();
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_buy);
+        initPurchaseData();
+    }
 
+    protected void inject() {
+        Injector.create(this).inject(this);
+    }
+
+    private void initPurchaseData() {
         sku = getIntent().getStringExtra(BuyIntentBundleBuilder.EX_SKU);
         if (sku == null) {
             newSku = getIntent().getStringExtra(BuyIntentToReplaceSkusBundleBuilder.EX_NEW_SKU);
@@ -83,22 +89,30 @@ public class BuyActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        currentTimeMillis = System.currentTimeMillis();
         initViews(isReplace ? getReplaceResponse() : getBuyResponse());
     }
 
-    protected void inject() {
-        Injector.create(this).inject(this);
+    private void initViews(int buyResponse) {
+        Bundle content = getResponseContent(buyResponse);
+        initTextBody(content);
+        if (buyResponse == GoogleUtil.RESULT_OK){
+            initBodyResultSuccess(content);
+        } else {
+            initBodyResultFail(buyResponse);
+        }
     }
 
-    void initViews(int buyResponse) {
-        Bundle content = getResponseContent(buyResponse);
-        currentTimeMillis = System.currentTimeMillis();
-
+    private void initTextBody(Bundle content) {
         TextView title = (TextView) findViewById(R.id.buy_title);
         title.setText(content.getString(RESPONSE_EXTRA_TITLE));
 
         TextView summary = (TextView) findViewById(R.id.buy_summary);
         summary.setText(content.getString(RESPONSE_EXTRA_SUMMARY));
+    }
+
+    private void initBodyResultSuccess(Bundle content) {
+        initUserSpinner();
 
         // init price
         TextView price = (TextView) findViewById(R.id.buy_price);
@@ -109,52 +123,54 @@ public class BuyActivity extends AppCompatActivity {
             price.setVisibility(View.GONE);
         }
 
-        // init button
+        findViewById(R.id.div).setVisibility(View.VISIBLE);
+
+        // init buy
         Button buyButton = (Button) findViewById(R.id.buy_button);
-        if (buyResponse == GoogleUtil.RESULT_OK) {
-            buyButton.setText(R.string.buy);
-            buyButton.setOnClickListener(v -> onBuy());
-        } else if (buyResponse == GoogleUtil.RESULT_ITEM_ALREADY_OWNED) {
+        buyButton.setText(R.string.buy);
+        buyButton.setOnClickListener(v -> onBuy());
+    }
+
+    private void initUserSpinner() {
+        Spinner usersSpinner = (Spinner) findViewById(R.id.buy_spinner_accounts);
+        usersSpinner.setVisibility(View.VISIBLE);
+
+        String currentUser = apiOverrides.getUsersResponse();
+        List<String> users = config.users();
+        int index = users.indexOf(currentUser);
+        int selectedItem = index == -1 ? 0 : index;
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                R.layout.simple_list_item, android.R.id.text1,
+                users);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        usersSpinner.setAdapter(adapter);
+        usersSpinner.setSelection(selectedItem, false);
+        usersSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                apiOverrides.setUsersReponse(users.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // No op
+            }
+        });
+    }
+
+    private void initBodyResultFail(int buyResponse) {
+        findViewById(R.id.buy_price).setVisibility(View.GONE);
+        findViewById(R.id.div).setVisibility(View.GONE);
+        findViewById(R.id.buy_spinner_accounts).setVisibility(View.GONE);
+
+        Button buyButton = (Button) findViewById(R.id.buy_button);
+        if (buyResponse == GoogleUtil.RESULT_ITEM_ALREADY_OWNED) {
             buyButton.setText(R.string.replace);
             buyButton.setOnClickListener(v -> onBuyAlreadyOwned());
         } else {
             buyButton.setText(R.string.ok);
             buyButton.setOnClickListener(v -> finish());
-        }
-
-        // init div
-        findViewById(R.id.div).setVisibility(
-                buyResponse == GoogleUtil.RESULT_OK ? View.VISIBLE : View.GONE );
-
-        // init spinner
-        Spinner buySpinner = (Spinner) findViewById(R.id.buy_spinner_accounts);
-        if (buyResponse == GoogleUtil.RESULT_OK) {
-            buySpinner.setVisibility(View.VISIBLE);
-
-            String currentUser = apiOverrides.getUsersResponse();
-            List<String> users = config.users();
-            int index = users.indexOf(currentUser);
-            int selectedItem = index == -1 ? 0 : index;
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                    R.layout.simple_list_item, android.R.id.text1,
-                    users);
-            adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-            buySpinner.setAdapter(adapter);
-            buySpinner.setSelection(selectedItem, false);
-            buySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    apiOverrides.setUsersReponse(users.get(position));
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                    // No op
-                }
-            });
-        } else {
-            buySpinner.setVisibility(View.GONE);
         }
     }
 
@@ -239,7 +255,7 @@ public class BuyActivity extends AppCompatActivity {
         return bundle;
     }
 
-    int getBuyResponse() {
+    private int getBuyResponse() {
         int response = apiOverrides.getBuyResponse();
         if (response == APIOverrides.RESULT_DEFAULT) {
             if (config.skus().get(sku) == null) {
@@ -253,7 +269,7 @@ public class BuyActivity extends AppCompatActivity {
         return response;
     }
 
-    int getReplaceResponse() {
+    private int getReplaceResponse() {
         int response = apiOverrides.getReplaceResponse();
         if (response == APIOverrides.RESULT_DEFAULT) {
             if (config.skus().get(newSku) == null) {
@@ -271,17 +287,18 @@ public class BuyActivity extends AppCompatActivity {
         return response;
     }
 
-    boolean skusNotOwned(List<String> skus) {
+    private boolean skusNotOwned(List<String> skus) {
         return purchases.getReceiptsForSkus(ImmutableSet.copyOf(skus), itemtype).size() < skus.size();
     }
 
     @Override
     public void onBackPressed() {
-        Bundle bundle = new Bundle();
-        bundle.putInt(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_USER_CANCELED);
-        setResult(RESULT_OK);
         super.onBackPressed();
-        finish();
+        if (isFinishing()) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_USER_CANCELED);
+            setResult(RESULT_OK);
+        }
     }
 
     @Override
