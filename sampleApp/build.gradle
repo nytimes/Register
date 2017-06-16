@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -37,6 +38,7 @@ dependencies {
     testCompile libraries.junit
     compile libraries.constraint
     compile libraries.supportDesign
+    compile libraries.supportCardView
     compile libraries.butterKnife
     annotationProcessor libraries.butterKnifeCompiler
     compile libraries.rxAndroid

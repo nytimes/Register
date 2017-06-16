@@ -1,5 +1,7 @@
 package com.nytimes.android.external.playbillingtester.sample;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -7,13 +9,16 @@ import android.content.IntentSender;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.AppBarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
@@ -25,16 +30,9 @@ import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 import com.nytimes.android.external.playbillingtesterlib.InAppPurchaseData;
 import com.nytimes.android.external.playbillingtesterlib.ServiceIntentHelper;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
@@ -42,46 +40,38 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.nytimes.android.external.playbillingtester.sample.BuyServiceConnection.REQUEST_CODE_GOOGLE_PURCHASE;
 
-public class SampleActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener,
-        View.OnClickListener {
+public class SampleActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
     private static final String TAG = "SampleActivity";
     private static final String SKU_IAP = "playbillingtester.sample.iap";
     private static final String SKU_SUB = "playbillingtester.sample.sub";
     private static final String DEV_PAYLOAD = "devPayload";
 
-    @BindView(R.id.testerSwitch)
-    Switch testerSwitch;
+    private Switch billingApiSwitch;
+    private ValueAnimator appBarColorAnimator;
+    private SampleAdapter adapter;
+    private View emptyView;
+    private TextView emptyTitle;
 
-    @BindView(R.id.buySubButton)
-    Button buySubButton;
-
-    @BindView(R.id.buyIAPButton)
-    Button buyIAPButton;
-
-    Unbinder unbinder;
-    PrefsManager prefsManager;
-    GoogleServiceProvider googleServiceProvider;
-    Gson gson;
-    Map<String, InAppPurchaseData> purchaseDataMap;
-    Map<String, GoogleProductResponse> skuDetailMap;
-    Set<ServiceConnection> boundSet;
-    CompositeDisposable compositeDisposable;
-    BuyServiceConnection buyServiceConnection;
-    GetPurchasesAndSkuDetailsConnection getPurchasesConn;
+    private PrefsManager prefsManager;
+    private GoogleServiceProvider googleServiceProvider;
+    private Gson gson;
+    private Set<ServiceConnection> boundSet;
+    private CompositeDisposable compositeDisposable;
+    private BuyServiceConnection buyServiceConnection;
+    private GetPurchasesAndSkuDetailsConnection getPurchasesConn;
 
     private final Consumer<GetPurchasesAndSkuDetailsConnection.Response> purchasesAndSkuDetailsConsumer =
             new Consumer<GetPurchasesAndSkuDetailsConnection.Response>() {
-        @Override
-        public void accept(GetPurchasesAndSkuDetailsConnection.Response response) {
-            unbindConnection(getPurchasesConn);
-            purchaseDataMap.clear();
-            skuDetailMap.clear();
-            handlePurchasesBundles(response.iapPurchases(), response.subPurchases());
-            handleSkuDetailsBundles(response.iapSkuDetails(), response.subSkuDetails());
-            initWidgets();
-        }
-    };
+                @Override
+                public void accept(GetPurchasesAndSkuDetailsConnection.Response response) {
+                    unbindConnection(getPurchasesConn);
+                    adapter.clear();
+                    handlePurchasesBundles(response.iapPurchases(), response.subPurchases());
+                    handleSkuDetailsBundles(response.iapSkuDetails(), response.subSkuDetails());
+                    checkEmptyState();
+                }
+            };
 
     private final Consumer<Throwable> purchasesAndSkuDetailsError = new Consumer<Throwable>() {
         @Override
@@ -108,80 +98,132 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         }
     };
 
-    private void handlePurchasesBundles(Bundle iapBundle, Bundle subBundle) {
-        int iapResponse = iapBundle.getInt(GoogleUtil.RESPONSE_CODE);
-        int subResponse = subBundle.getInt(GoogleUtil.RESPONSE_CODE);
-        if (iapResponse == GoogleUtil.RESULT_OK && subResponse == GoogleUtil.RESULT_OK) {
-            for (String json : ImmutableList.<String>builder()
-                    .addAll(iapBundle.getStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST))
-                    .addAll(subBundle.getStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST))
-                    .build()) {
-                InAppPurchaseData inAppPurchaseData = gson.fromJson(json, InAppPurchaseData.class);
-                purchaseDataMap.put(inAppPurchaseData.productId(), inAppPurchaseData);
-            }
-        } else {
-            Log.e(TAG, "getPurchases returned iap: " + iapResponse + "; sub: " + subResponse);
-        }
-    }
-
-    private void handleSkuDetailsBundles(Bundle iapBundle, Bundle subBundle) {
-        int iapResponse = iapBundle.getInt(GoogleUtil.RESPONSE_CODE);
-        int subResponse = subBundle.getInt(GoogleUtil.RESPONSE_CODE);
-        if (iapResponse == GoogleUtil.RESULT_OK && subResponse == GoogleUtil.RESULT_OK) {
-            for (String json : ImmutableList.<String>builder()
-                    .addAll(iapBundle.getStringArrayList(GoogleUtil.DETAILS_LIST))
-                    .addAll(subBundle.getStringArrayList(GoogleUtil.DETAILS_LIST))
-                    .build()) {
-                GoogleProductResponse googleProductResponse = gson.fromJson(json, GoogleProductResponse.class);
-                skuDetailMap.put(googleProductResponse.productId(), googleProductResponse);
-            }
-        } else {
-            Log.e(TAG, "getSkuDetails returned iap: " + iapResponse + "; sub: " + subResponse);
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        prefsManager = new PrefsManager(PreferenceManager.getDefaultSharedPreferences(this));
-        gson = new Gson();
-        compositeDisposable = new CompositeDisposable();
-        purchaseDataMap = new LinkedHashMap<>();
-        skuDetailMap = new LinkedHashMap<>();
-        boundSet = new LinkedHashSet<>();
+
+        initFields();
+        initToolbar();
+        initEmptyView();
+        initRecycler();
         initGoogleServiceProvider();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_GOOGLE_PURCHASE && data != null) {
+            int responseCode = data.getIntExtra(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_USER_CANCELED);
+            if (responseCode == GoogleUtil.RESULT_OK) {
+                checkPurchasesAndSkuDetails();
+            }
+        }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
         checkPurchasesAndSkuDetails();
     }
 
     @Override
     protected void onDestroy() {
-        if (unbinder != null) {
-            unbinder.unbind();
-        }
         if (compositeDisposable != null) {
             compositeDisposable.clear();
+        }
+
+        if (adapter != null) {
+            adapter.destroy();
         }
         super.onDestroy();
     }
 
-    private void initWidgets() {
-        unbinder = ButterKnife.bind(this);
-        testerSwitch.setOnCheckedChangeListener(null);
-        testerSwitch.setChecked(prefsManager.isUsingTestGoogleServiceProvider());
-        testerSwitch.setOnCheckedChangeListener(this);
-        initButton(buyIAPButton, SKU_IAP);
-        initButton(buySubButton, SKU_SUB);
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (billingApiSwitch.equals(buttonView)) {
+            prefsManager.setUsingGoogleServiceProvider(isChecked);
+            initGoogleServiceProvider();
+            checkPurchasesAndSkuDetails();
+
+            if (isChecked){
+                appBarColorAnimator.start();
+            } else {
+                appBarColorAnimator.reverse();
+            }
+        }
     }
 
-    private void initButton(Button button, String sku) {
-        boolean isPurchased = purchaseDataMap.containsKey(sku);
-        button.setEnabled(!isPurchased);
-        GoogleProductResponse skuDetail = skuDetailMap.get(sku);
-        button.setText(String.format(getString(isPurchased ? R.string.own_label : R.string.buy_label),
-                skuDetail == null ? sku : skuDetail.title()));
+    private void initFields() {
+        prefsManager = new PrefsManager(PreferenceManager.getDefaultSharedPreferences(this));
+        gson = new Gson();
+        compositeDisposable = new CompositeDisposable();
+        boundSet = new LinkedHashSet<>();
+    }
+
+    private void initToolbar() {
+        boolean isUsingTestProvider = prefsManager.isUsingTestGoogleServiceProvider();
+
+        int appBarEnabled = ContextCompat.getColor(this, R.color.colorPrimary);
+        int appBarDisabled = ContextCompat.getColor(this, R.color.colorPrimaryAlt);
+
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        appBarLayout.setOnClickListener(v -> billingApiSwitch.toggle());
+        appBarLayout.setBackgroundColor(isUsingTestProvider ? appBarEnabled : appBarDisabled);
+        appBarLayout.setPadding(appBarLayout.getPaddingLeft(),
+                getStatusBarHeight(),
+                appBarLayout.getPaddingRight(),
+                appBarLayout.getPaddingBottom());
+
+        appBarColorAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), appBarDisabled, appBarEnabled);
+        appBarColorAnimator.setCurrentPlayTime(isUsingTestProvider ?
+                appBarColorAnimator.getDuration() : 0);
+        appBarColorAnimator.addUpdateListener(animator ->
+                appBarLayout.setBackgroundColor((int) animator.getAnimatedValue()));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        billingApiSwitch = (Switch) findViewById(R.id.app_bar_switch);
+        billingApiSwitch.setChecked(isUsingTestProvider);
+        billingApiSwitch.setOnCheckedChangeListener(this);
+    }
+
+    private void initRecycler() {
+        adapter = new SampleAdapter(this);
+        compositeDisposable.add(adapter.getClickSubject().subscribe(item -> {
+            Intent intent = ServiceIntentHelper.createExplicitFromImplicitIntent(
+                    this, googleServiceProvider.getIntent());
+            if (intent != null) {
+                buyServiceConnection = new BuyServiceConnection(
+                        item.productId(),
+                        item.itemType(),
+                        getPackageName(),
+                        DEV_PAYLOAD,
+                        googleServiceProvider);
+                compositeDisposable.add(buyServiceConnection.getBuyPendingIntent()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(buyPendingIntentConsumer, buyPendingIntentError));
+                bindService(intent, buyServiceConnection, Context.BIND_AUTO_CREATE);
+                boundSet.add(buyServiceConnection);
+            }
+        }));
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        int dividerSize = getResources().getDimensionPixelSize(R.dimen.recycler_divider_size);
+        recyclerView.addItemDecoration(new EmptyItemDecoration(dividerSize));
+    }
+
+    private void initEmptyView(){
+        emptyView = findViewById(R.id.empty_view);
+        emptyView.setVisibility(View.GONE);
+
+        emptyTitle = (TextView) findViewById(R.id.empty_message);
+        emptyTitle.setText(prefsManager.isUsingTestGoogleServiceProvider() ?
+                R.string.empty_message_register : R.string.empty_message_google);
     }
 
     private void initGoogleServiceProvider() {
@@ -192,37 +234,13 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         }
     }
 
-    @Override
-    @OnCheckedChanged({R.id.testerSwitch})
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (testerSwitch.equals(buttonView)) {
-            prefsManager.setUsingGoogleServiceProvider(isChecked);
-            initGoogleServiceProvider();
-            checkPurchasesAndSkuDetails();
-        }
-    }
-
-    @Override
-    @OnClick({R.id.buyIAPButton, R.id.buySubButton})
-    public void onClick(View view) {
-        if (buyIAPButton.equals(view)) {
-            buy(SKU_IAP, GoogleUtil.BILLING_TYPE_IAP);
-        } else if (buySubButton.equals(view)) {
-            buy(SKU_SUB, GoogleUtil.BILLING_TYPE_SUBSCRIPTION);
-        }
-    }
-
-    private void buy(String sku, String type) {
-        Intent intent = ServiceIntentHelper.createExplicitFromImplicitIntent(this, googleServiceProvider.getIntent());
-        if (intent != null) {
-            buyServiceConnection = new BuyServiceConnection(sku, type, getPackageName(), DEV_PAYLOAD,
-                    googleServiceProvider);
-            compositeDisposable.add(buyServiceConnection.getBuyPendingIntent()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(buyPendingIntentConsumer, buyPendingIntentError));
-            bindService(intent, buyServiceConnection, Context.BIND_AUTO_CREATE);
-            boundSet.add(buyServiceConnection);
+    private void checkEmptyState() {
+        if (adapter.getItemCount() == 0){
+            emptyView.setVisibility(View.VISIBLE);
+            emptyTitle.setText(prefsManager.isUsingTestGoogleServiceProvider() ?
+                    R.string.empty_message_register : R.string.empty_message_google);
+        } else {
+            emptyView.setVisibility(View.GONE);
         }
     }
 
@@ -240,6 +258,38 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         }
     }
 
+    private void handlePurchasesBundles(Bundle iapBundle, Bundle subBundle) {
+        int iapResponse = iapBundle.getInt(GoogleUtil.RESPONSE_CODE);
+        int subResponse = subBundle.getInt(GoogleUtil.RESPONSE_CODE);
+        if (iapResponse == GoogleUtil.RESULT_OK && subResponse == GoogleUtil.RESULT_OK) {
+            for (String json : ImmutableList.<String>builder()
+                    .addAll(iapBundle.getStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST))
+                    .addAll(subBundle.getStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST))
+                    .build()) {
+                InAppPurchaseData inAppPurchaseData = gson.fromJson(json, InAppPurchaseData.class);
+                adapter.addPurchase(inAppPurchaseData);
+            }
+        } else {
+            Log.e(TAG, "getPurchases returned iap: " + iapResponse + "; sub: " + subResponse);
+        }
+    }
+
+    private void handleSkuDetailsBundles(Bundle iapBundle, Bundle subBundle) {
+        int iapResponse = iapBundle.getInt(GoogleUtil.RESPONSE_CODE);
+        int subResponse = subBundle.getInt(GoogleUtil.RESPONSE_CODE);
+        if (iapResponse == GoogleUtil.RESULT_OK && subResponse == GoogleUtil.RESULT_OK) {
+            for (String json : ImmutableList.<String>builder()
+                    .addAll(iapBundle.getStringArrayList(GoogleUtil.DETAILS_LIST))
+                    .addAll(subBundle.getStringArrayList(GoogleUtil.DETAILS_LIST))
+                    .build()) {
+                GoogleProductResponse googleProductResponse = gson.fromJson(json, GoogleProductResponse.class);
+                adapter.addItem(googleProductResponse);
+            }
+        } else {
+            Log.e(TAG, "getSkuDetails returned iap: " + iapResponse + "; sub: " + subResponse);
+        }
+    }
+
     void unbindConnection(ServiceConnection conn) {
         if (conn != null && boundSet.contains(conn)) {
             unbindService(conn);
@@ -247,14 +297,14 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_GOOGLE_PURCHASE && data != null) {
-            int responseCode = data.getIntExtra(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_USER_CANCELED);
-            if (responseCode == GoogleUtil.RESULT_OK) {
-                checkPurchasesAndSkuDetails();
-            }
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        } else {
+            result = getResources().getDimensionPixelSize(R.dimen.status_bar_height);
         }
+        return result;
     }
 }

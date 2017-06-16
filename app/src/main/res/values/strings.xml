@@ -21,6 +21,7 @@
     <string name="item_already_owned">Item already owned</string>
     <string name="replace_item_not_owned">Item(s) to be replaced not owned</string>
     <string name="buy">Buy</string>
+    <string name="replace">Replace</string>
     <string name="ok">OK</string>
     <string name="started">STARTED</string>
     <string name="created">CREATED</string>
@@ -33,7 +34,7 @@
     <string name="get_sku_details">getSkuDetails()</string>
     <string name="consume_purchases">consumePurchases()</string>
     <string name="buy_intent_replace_skus">getBuyIntentToReplaceSkus()</string>
-    <string name="replace">replace()</string>
+    <string name="config_replace">replace()</string>
 
 
     <string name="empty_message_text">There are no purchases available, please integrate the Register Library into your app if you haven\'t done so already.</string>
