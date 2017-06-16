@@ -26,12 +26,4 @@
         <item name="android:windowMinWidthMinor">100%</item>
     </style>
 
-    <style name="Theme.Register.Dialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="colorAccent">@color/register_blue</item>
-        <item name="android:windowMinWidthMajor">100%</item>
-        <item name="android:windowMinWidthMinor">100%</item>
-    </style>
-
 </resources>

@@ -75,7 +75,7 @@ public class ConfigActivity extends AppCompatActivity {
         initSpinner(R.id.getSkuDetails, R.string.get_sku_details, R.array.getSkuDetails_spinner);
         initSpinner(R.id.consumePurchase, R.string.consume_purchases, R.array.consumePurchase_spinner);
         initSpinner(R.id.getBuyIntentToReplaceSkus, R.string.buy_intent_replace_skus, R.array.debug_spinner);
-        initSpinner(R.id.replace, R.string.replace, R.array.debug_spinner);
+        initSpinner(R.id.replace, R.string.config_replace, R.array.debug_spinner);
     }
 
     private void initSpinner(@IdRes int containerLayoutId, @StringRes int titleResId, @ArrayRes int entriesResId) {
