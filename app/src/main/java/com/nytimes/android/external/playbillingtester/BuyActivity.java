@@ -36,6 +36,7 @@ public class BuyActivity extends AppCompatActivity {
 
     static final String RECEIPT_FMT = "%s.playBillingTesterToken%d";
     static final String ERROR_FMT =  "%s: %d";
+    static final String PRICE_FMT =  "$%s";
 
     private static final String RESPONSE_EXTRA_TITLE = "RESPONSE_EXTRA_TITLE";
     private static final String RESPONSE_EXTRA_SUMMARY = "RESPONSE_EXTRA_SUMMARY";
@@ -221,7 +222,7 @@ public class BuyActivity extends AppCompatActivity {
 
                 bundle.putString(RESPONSE_EXTRA_TITLE, configSku.title());
                 bundle.putString(RESPONSE_EXTRA_SUMMARY, configSku.description());
-                bundle.putString(RESPONSE_EXTRA_PRICE, "$" + configSku.price());
+                bundle.putString(RESPONSE_EXTRA_PRICE, String.format(PRICE_FMT, configSku.price()));
 
                 if (isReplace) {
                     ArrayList<String> oldSkuTitles = new ArrayList<>();

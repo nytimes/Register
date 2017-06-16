@@ -35,6 +35,7 @@ import edu.emory.mathcs.backport.java.util.Collections;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static com.nytimes.android.external.playbillingtester.BuyActivity.ERROR_FMT;
+import static com.nytimes.android.external.playbillingtester.BuyActivity.PRICE_FMT;
 import static com.nytimes.android.external.playbillingtester.BuyActivity.RECEIPT_FMT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -139,7 +140,7 @@ public class BuyActivityTest {
 
         assertThat(titleTextView.getText()).isEqualTo(TITLE);
         assertThat(summaryTextView.getText()).isEqualTo(DESCRIPTION);
-        assertThat(priceTextView.getText()).isEqualTo("$" + PRICE);
+        assertThat(priceTextView.getText()).isEqualTo(String.format(PRICE_FMT, PRICE));
         assertThat(buyButton.getText()).isEqualTo(getStringResource(R.string.buy));
     }
 
