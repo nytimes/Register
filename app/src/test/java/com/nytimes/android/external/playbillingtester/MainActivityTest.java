@@ -25,7 +25,7 @@ import org.robolectric.shadows.ShadowLooper;
 import java.util.Locale;
 
 import static com.nytimes.android.external.playbillingtester.BuyActivity.RECEIPT_FMT;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -90,8 +90,8 @@ public class MainActivityTest {
 
         // Verify empty
         controller.start().postResume();
-        assertEquals(list.getAdapter().getItemCount(), 2);
-        assertEquals(emptyView.getVisibility(), View.GONE);
+        assertThat(list.getAdapter().getItemCount()).isEqualTo(2);
+        assertThat(emptyView.getVisibility()).isEqualTo(View.GONE);
     }
 
     @Test
@@ -107,8 +107,8 @@ public class MainActivityTest {
 
         // Verify empty
         controller.start().postResume();
-        assertEquals(list.getAdapter().getItemCount(), 0);
-        assertEquals(emptyView.getVisibility(), View.VISIBLE);
+        assertThat(list.getAdapter().getItemCount()).isEqualTo(0);
+        assertThat(emptyView.getVisibility()).isEqualTo(View.VISIBLE);
     }
 
     @Test
@@ -123,7 +123,7 @@ public class MainActivityTest {
         // Verify ConfigureActivity started
         Intent startedIntent = shadowMain.getNextStartedActivity();
         ShadowIntent shadowIntent = shadowOf(startedIntent);
-        assertEquals(ConfigActivity.class, shadowIntent.getIntentClass());
+        assertThat(shadowIntent.getIntentClass()).isEqualTo(ConfigActivity.class);
     }
 
     @Test
@@ -140,13 +140,13 @@ public class MainActivityTest {
 
         // Start and make sure we have 1 IAP
         controller.start().postResume();
-        assertEquals(list.getAdapter().getItemCount(), 1);
+        assertThat(list.getAdapter().getItemCount()).isEqualTo(1);
 
         // Purge and make sure we are empty
         testObject.onOptionsItemSelected(item);
         verify(purchases).purgePurchases();
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
-        assertEquals(list.getAdapter().getItemCount(), 0);
+        assertThat(list.getAdapter().getItemCount()).isEqualTo(0);
     }
 
     @Test
@@ -166,12 +166,12 @@ public class MainActivityTest {
 
         // Verify empty
         controller.start().postResume();
-        assertEquals(list.getAdapter().getItemCount(), 0);
+        assertThat(list.getAdapter().getItemCount()).isEqualTo(0);
 
         //Refresh
         testObject.onOptionsItemSelected(item);
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
-        assertEquals(list.getAdapter().getItemCount(), 2);
+        assertThat(list.getAdapter().getItemCount()).isEqualTo(2);
     }
 
     @Test
@@ -186,7 +186,7 @@ public class MainActivityTest {
         // Verify SettingsActivity started
         Intent startedIntent = shadowMain.getNextStartedActivity();
         ShadowIntent shadowIntent = shadowOf(startedIntent);
-        assertEquals(SettingsActivity.class, shadowIntent.getIntentClass());
+        assertThat(shadowIntent.getIntentClass()).isEqualTo(SettingsActivity.class);
     }
 
     static class TestMainActivity extends MainActivity {
