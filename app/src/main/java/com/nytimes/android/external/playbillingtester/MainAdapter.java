@@ -18,7 +18,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
     private OnItemCallback callback;
     private LayoutInflater inflater;
-    private List<InAppPurchaseData> items;
+    private final List<InAppPurchaseData> items;
 
     MainAdapter(Context context){
         super();
@@ -69,7 +69,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
 
     void setItems(List<InAppPurchaseData> items) {
-        this.items = new ArrayList<>(items);
+        this.items.clear();
+        this.items.addAll(items);
         notifyDataSetChanged();
     }
 
