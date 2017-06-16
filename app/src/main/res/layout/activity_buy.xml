@@ -1,11 +1,82 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".BuyActivity">
+
+    <TextView
+        android:id="@+id/buy_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/buy_price"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="20sp"
+        tools:text="Lorem Ipsum Item" />
+
+    <TextView
+        android:id="@+id/buy_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buy_title"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:textColor="@color/register_blue"
+        android:textSize="22sp"
+        tools:text="$10.00" />
+
+    <TextView
+        android:id="@+id/buy_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buy_title"
+        android:layout_marginBottom="32dp"
+        android:layout_marginTop="8dp"
+        tools:text="Lorem Ipsum Item" />
+
+    <View
+        android:id="@+id/div"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/buy_summary"
+        android:background="#1A000000" />
+
+    <Spinner
+        android:id="@+id/buy_spinner_accounts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/div"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        tools:listitem="@layout/simple_list_item" />
+
+    <TextView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buy_spinner_accounts"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="2dp"
+        android:text="@string/register"
+        android:textColor="#757575"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/buy_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/buy_spinner_accounts"
+        android:background="@drawable/bg_button"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:minHeight="36dp"
+        android:minWidth="120dp"
+        android:text="@string/ok"
+        android:textColor="@android:color/white" />
 
 </RelativeLayout>
