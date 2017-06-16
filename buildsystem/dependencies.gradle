@@ -8,20 +8,27 @@ allprojects {
         maven {
             url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
         }
+        maven {
+            url 'https://maven.google.com'
+        }
+        maven {
+            url 'https://dl.google.com/dl/android/maven2/'
+        }
         jcenter()
     }
 }
 
 ext.versions = [
         minSdk               : 16,
-        targetSdk            : 25,
-        compileSdk           : 25,
-        buildTools           : '25.0.2',
+        targetSdk            : 26,
+        compileSdk           : 26,
+        buildTools           : '26.0.0-beta2',
 
         // UI libs.
-        supportLibs          : '25.1.0',
+        supportLibs          : '26.0.0-beta2',
         constraint           : '1.0.2',
         butterKnife          : '8.5.1',
+        swipeLayout          : '1.2.0@aar',
 
         // Others.
         retrolambda          : '2.3.0',
@@ -52,6 +59,7 @@ ext.libraries = [
         constraint              : "com.android.support.constraint:constraint-layout:$versions.constraint",
         butterKnife             : "com.jakewharton:butterknife:$versions.butterKnife",
         butterKnifeCompiler     : "com.jakewharton:butterknife-compiler:$versions.butterKnife",
+        swipeLayout             : "com.daimajia.swipelayout:library:$versions.swipeLayout",
 
         // Others.
         retrolambda             : "net.orfjackal.retrolambda:retrolambda:$versions.retrolambda",

@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
-@org.robolectric.annotation.Config(constants = BuildConfig.class)
+@org.robolectric.annotation.Config(constants = BuildConfig.class, sdk = 21)
 public class PlayBillingTesterServiceTest {
 
     private PlayBillingTesterService testObject;

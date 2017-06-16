@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- General-->
     <string name="app_name">Register Sample</string>
-    <string name="action_settings">About</string>
-    <string name="title_activity_buy">BuyActivity</string>
-    <string name="refresh">REFRESH</string>
-    <string name="purge">PURGE</string>
+    <string name="register">Register</string>
+
+    <!-- Menu-->
+    <string name="action_refresh">Refresh</string>
+    <string name="action_delete_all">Delete All</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Main-->
+    <string name="main_name">Register Config</string>
+
+
+
     <string name="error">Error</string>
     <string name="config_not_found">Config file not found</string>
     <string name="item_not_found">Item not found</string>
@@ -17,78 +26,28 @@
     <string name="started">STARTED</string>
     <string name="created">CREATED</string>
     <string name="destroyed">DESTROYED</string>
-    <string name="is_billing_supported">isBillingSupported</string>
-    <string name="get_buy_intent">getBuyIntent</string>
-    <string name="buy_label">buy</string>
-    <string name="get_purchases">getPurchases</string>
-    <string name="get_sku_details">getSkuDetails</string>
-    <string name="user">User</string>
-    <string name="spn_default">-1 RESULT_DEFAULT</string>
-    <string name="spn_ok">0 RESULT_OK</string>
-    <string name="spn_billing_unavailable">3 RESULT_BILLING_UNAVAILABLE</string>
-    <string name="spn_item_unavailable">4 RESULT_ITEM_UNAVAILABLE</string>
-    <string name="spn_dev_error">5 RESULT_DEVELOPER_ERROR</string>
-    <string name="spn_error">6 RESULT_ERROR</string>
-    <string name="spn_item_owned">7 RESULT_ITEM_ALREADY_OWNED</string>
-    <string name="spn_item_not_owned">8 RESULT_ITEM_NOT_OWNED</string>
-    <string name="register">Register</string>
-    <string-array name="isBillingEnabled_spinner">
-        <item>@string/spn_default</item>
-        <item>@string/spn_ok</item>
-        <item>@string/spn_billing_unavailable</item>
-        <item>@string/spn_dev_error</item>
-        <item>@string/spn_error</item>
-    </string-array>
 
-    <string-array name="getBuyIntent_spinner">
-        <item>@string/spn_default</item>
-        <item>@string/spn_ok</item>
-        <item>@string/spn_dev_error</item>
-        <item>@string/spn_error</item>
-    </string-array>
-
-    <string-array name="buy_spinner">
-        <item>@string/spn_default</item>
-        <item>@string/spn_ok</item>
-        <item>@string/spn_item_unavailable</item>
-        <item>@string/spn_dev_error</item>
-        <item>@string/spn_error</item>
-        <item>@string/spn_item_owned</item>
-    </string-array>
-
-    <string-array name="getPurchases_spinner">
-        <item>@string/spn_default</item>
-        <item>@string/spn_ok</item>
-        <item>@string/spn_dev_error</item>
-        <item>@string/spn_error</item>
-    </string-array>
-
-    <string-array name="getSkuDetails_spinner">
-        <item>@string/spn_default</item>
-        <item>@string/spn_ok</item>
-        <item>@string/spn_item_unavailable</item>
-        <item>@string/spn_dev_error</item>
-        <item>@string/spn_error</item>
-    </string-array>
-
-    <string-array name="consumePurchase_spinner">
-        <item>@string/spn_default</item>
-        <item>@string/spn_ok</item>
-        <item>@string/spn_error</item>
-        <item>@string/spn_item_not_owned</item>
-    </string-array>
-
-    <!--
+    <string name="is_billing_supported">isBillingSupported()</string>
+    <string name="get_buy_intent">getBuyIntent()</string>
+    <string name="buy_label">buy()</string>
+    <string name="get_purchases">getPurchases()</string>
+    <string name="get_sku_details">getSkuDetails()</string>
+    <string name="consume_purchases">consumePurchases()</string>
+    <string name="buy_intent_replace_skus">getBuyIntentToReplaceSkus()</string>
+    <string name="config_replace">replace()</string>
 
 
-        public static final int RESULT_DEFAULT = -1;            // - no user override
-        public static final int RESULT_OK = 0;                  // - success
-        public static final int RESULT_USER_CANCELED = 1;       // - user pressed back or canceled a dialog
-        public static final int RESULT_BILLING_UNAVAILABLE = 3; // - this billing API version is not supported for the type requested
-        public static final int RESULT_ITEM_UNAVAILABLE = 4;    // - requested SKU is not available for purchase
-        public static final int RESULT_DEVELOPER_ERROR = 5;     // - invalid arguments provided to the API
-        public static final int RESULT_ERROR = 6;               // - Fatal error during the API action
-        public static final int RESULT_ITEM_ALREADY_OWNED = 7;  // - Failure to purchase since item is already owned
-        public static final int RESULT_ITEM_NOT_OWNED = 8;      // - Failure to consume since item is not owned
-    -->
+    <string name="empty_message_text">There are no purchases available, please integrate the Register Library into your app if you haven\'t done so already.</string>
+    <string name="empty_message_title">No purchases</string>
+
+    <!-- Buy-->
+    <string name="title_activity_buy">BuyActivity</string>
+
+    <!-- Settings -->
+    <string name="settings_name">Settings</string>
+    <string name="action_configure">Configure</string>
+    <string name="confirm_save_search">Save</string>
+    <string name="confirm_save_dribbble_search">Save Dribbble</string>
+    <string name="transition_app_bar">transitions_app_bar</string>
+
 </resources>

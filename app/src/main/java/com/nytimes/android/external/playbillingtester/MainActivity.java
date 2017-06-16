@@ -1,193 +1,152 @@
 package com.nytimes.android.external.playbillingtester;
 
-import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.SparseBooleanArray;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nytimes.android.external.playbillingtester.di.Injector;
-import com.nytimes.android.external.playbillingtester.model.Config;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 import com.nytimes.android.external.playbillingtesterlib.InAppPurchaseData;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnItemSelected;
-import butterknife.Unbinder;
 
 /**
  * Controller app for Play Billing Tester Service
  * Allows user to
  * * Start/stop service
- * * Override default return values from API calls
  * * Display/Purge purchased items
  */
-@SuppressWarnings("PMD.UseVarargs")
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    static final String VERSION_FMT = "Version %s(%d)";
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
     @Inject
-    protected APIOverrides apiOverrides;
-    @Inject
     protected Purchases purchases;
-    @Inject
-    protected Config config;
-    @Inject
-    protected AlertDialog.Builder dialogBuilder;
-    @BindView(R.id.isBillingSupported)
-    Spinner isBillingSupportedSpinner;
-    @BindView(R.id.getBuyIntent)
-    Spinner getBuyIntentSpinner;
-    @BindView(R.id.buy)
-    Spinner buySpinner;
-    @BindView(R.id.getPurchases)
-    Spinner getPurchasesSpinner;
-    @BindView(R.id.consumePurchase)
-    Spinner consumePurchaseSpinner;
-    @BindView(R.id.getSkuDetails)
-    Spinner getSkuDetailsSpinner;
-    @BindView(R.id.usersSpinner)
-    Spinner usersSpinner;
-    @BindView(R.id.purgeButton)
-    Button purgeButton;
-    @BindView(R.id.refreshButton)
-    Button refreshButton;
-    @BindView(R.id.items)
-    TextView itemsTextView;
-    Unbinder unbinder;
-    SparseBooleanArray checkedMap = new SparseBooleanArray();
+
+    private MainAdapter adapter;
+    private SwipeRefreshLayout swipeRefresh;
+    private View emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         inject();
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        initToolbar();
+        initRecycler();
+        initSwipeRefresh();
+
+        emptyView = findViewById(R.id.empty_view);
     }
 
     protected void inject() {
         Injector.create(this).inject(this);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        init();
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.register);
+        setSupportActionBar(toolbar);
     }
 
-    private void init() {
-        setContentView(R.layout.activity_play_billing_tester);
-        unbinder = ButterKnife.bind(this);
-        updateSpinners();
-        updateItemsTextView();
+    private void initRecycler() {
+        adapter = new MainAdapter(this);
+        adapter.setHasStableIds(true);
+        adapter.setCallback(new MainAdapter.OnItemCallback() {
+            @Override
+            public void onItemClicked(InAppPurchaseData item) {
+                // No op
+            }
+
+            @Override
+            public void onItemDeleted(InAppPurchaseData item) {
+                Toast.makeText(MainActivity.this, "Delete " + item, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        RecyclerView recyclerView = findViewById(R.id.list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(
+                this, DividerItemDecoration.VERTICAL));
+    }
+
+    private void initSwipeRefresh() {
+        swipeRefresh = findViewById(R.id.swiperefresh);
+        swipeRefresh.setOnRefreshListener(this);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        updatePurchases();
+        checkEmptyState();
+    }
+
+    private void updatePurchases() {
+        List<InAppPurchaseData> items = new ArrayList<>();
+        items.addAll(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION));
+        items.addAll(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP));
+        Collections.sort(items, (l, r) -> {
+            long purchaseTimeL = Long.parseLong(l.purchaseTime());
+            long purchaseTimeR = Long.parseLong(r.purchaseTime());
+            return Long.compare(purchaseTimeR, purchaseTimeL);
+        });
+        adapter.setItems(items);
+    }
+
+    private void checkEmptyState() {
+        emptyView.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override
     protected void onDestroy() {
-        if (unbinder != null) {
-            unbinder.unbind();
-        }
+        adapter.destroy();
         super.onDestroy();
-    }
-
-    void updateSpinners() {
-        ArrayAdapter<String> usersSpinnerArrayAdapter =
-                new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, config.users());
-        usersSpinner.setAdapter(usersSpinnerArrayAdapter);
-
-        // set spinners from model
-        isBillingSupportedSpinner.setSelection(getSpinnerArrayPositionFromCode(R.array.isBillingEnabled_spinner,
-                apiOverrides.getIsBillingSupportedResponse()));
-        getBuyIntentSpinner.setSelection(getSpinnerArrayPositionFromCode(R.array.getBuyIntent_spinner,
-                apiOverrides.getGetBuyIntentResponse()));
-        buySpinner.setSelection(getSpinnerArrayPositionFromCode(R.array.buy_spinner,
-                apiOverrides.getBuyResponse()));
-        getPurchasesSpinner.setSelection(getSpinnerArrayPositionFromCode(R.array.getPurchases_spinner,
-                apiOverrides.getGetPurchasesResponse()));
-        getSkuDetailsSpinner.setSelection(getSpinnerArrayPositionFromCode(R.array.getSkuDetails_spinner,
-                apiOverrides.getGetSkuDetailsResponse()));
-        consumePurchaseSpinner.setSelection(getSpinnerArrayPositionFromCode(R.array.consumePurchase_spinner,
-                apiOverrides.getConsumePurchaseResponse()));
-        usersSpinner.setSelection(getSpinnerArrayPosition(config.users(),
-                apiOverrides.getUsersResponse()));
-    }
-    void updateItemsTextView() {
-        StringBuffer buf = new StringBuffer();
-        for (InAppPurchaseData inAppPurchaseData :
-                purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION)) {
-            appendInAppPurchaseLine(buf, inAppPurchaseData);
-        }
-        for (InAppPurchaseData inAppPurchaseData :
-                purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP)) {
-            appendInAppPurchaseLine(buf, inAppPurchaseData);
-        }
-        itemsTextView.setText(buf);
-    }
-
-    private StringBuffer appendInAppPurchaseLine(StringBuffer buf, InAppPurchaseData inAppPurchaseData) {
-        return buf.append(inAppPurchaseData.productId()).append(';').append(inAppPurchaseData.purchaseToken())
-                .append('\n');
-
-    }
-
-    private int getSpinnerArrayPositionFromCode(int stringArrayId, int value) {
-        String val[] = getResources().getStringArray(stringArrayId);
-        int index = 0;
-        for (String s : val) {
-            if (s.startsWith(Integer.toString(value) + " ")) {
-                return index;
-            }
-            index++;
-        }
-        return -1;
-    }
-
-    private int getSpinnerArrayPosition(List list, String selectedItem) {
-        int i = 0;
-        for (Object item : list) {
-            if (item.equals(selectedItem)) {
-                return i;
-            }
-            i++;
-        }
-        return 0;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.play_in_app_billing_tester, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
+    @SuppressWarnings("PMD.MissingBreakInSwitch")
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            dialogBuilder
-                    .setTitle(R.string.app_name)
-                    .setMessage(String.format(Locale.getDefault(), VERSION_FMT, BuildConfig.VERSION_NAME,
-                            BuildConfig.VERSION_CODE))
-                    .show();
-            return true;
+        switch (item.getItemId()) {
+            case R.id.menu_action_delete_all:
+                purchases.purgePurchases();
+                startRefresh();
+                return true;
+            case R.id.menu_action_refresh:
+                startRefresh();
+                return true;
+            case R.id.menu_action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+            case R.id.menu_action_configure:
+                Intent configureIntent = new Intent(this, ConfigActivity.class);
+                startActivity(configureIntent);
+                overridePendingTransition(R.anim.fade_in, 0);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -196,65 +155,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         PermissionHandler.handlePermissionResult(requestCode, this, grantResults);
     }
 
-    @OnClick(R.id.purgeButton)
-    public void handlePurge(View v) {
-        purchases.purgePurchases();
-        updateItemsTextView();
-    }
-
-    @OnClick(R.id.refreshButton)
-    public void handleRefresh(View v) {
-        updateItemsTextView();
+    private void startRefresh() {
+        swipeRefresh.setRefreshing(true);
+        swipeRefresh.postDelayed(this::onRefresh, 300);
     }
 
     @Override
-    @OnItemSelected({R.id.isBillingSupported, R.id.getBuyIntent, R.id.buy, R.id.getPurchases, R.id.getSkuDetails,
-            R.id.usersSpinner})
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (checkedMap.get(parent.getId())) { // we want to ignore 1st call onCreate
-            switch (parent.getId()) {
-                case R.id.isBillingSupported:
-                    apiOverrides.setIsBillingSupportedResponse(
-                            getCodeFromSpinnerItem(R.array.isBillingEnabled_spinner, position));
-                    break;
-                case R.id.getBuyIntent:
-                    apiOverrides.setGetBuyIntentResponse(
-                            getCodeFromSpinnerItem(R.array.getBuyIntent_spinner, position));
-                    break;
-                case R.id.buy:
-                    apiOverrides.setBuyResponse(
-                            getCodeFromSpinnerItem(R.array.buy_spinner, position));
-                    break;
-                case R.id.getPurchases:
-                    apiOverrides.setGetPurchasesResponse(
-                            getCodeFromSpinnerItem(R.array.getPurchases_spinner, position));
-                    break;
-                case R.id.getSkuDetails:
-                    apiOverrides.setGetSkuDetailsResponse(
-                            getCodeFromSpinnerItem(R.array.getSkuDetails_spinner, position));
-                    break;
-                case R.id.consumePurchase:
-                    apiOverrides.setConsumePurchaseResponse(
-                            getCodeFromSpinnerItem(R.array.consumePurchase_spinner, position));
-                    break;
-                case R.id.usersSpinner:
-                    apiOverrides.setUsersReponse(config.users().get(position));
-                    break;
-                default:
-                    // unknown id
-                    break;
-            }
-        } else {
-            checkedMap.put(parent.getId(), true);
-        }
+    public void onRefresh() {
+        swipeRefresh.postDelayed(() -> swipeRefresh.setRefreshing(false), 300);
+        updatePurchases();
+        checkEmptyState();
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // intentionally empty
-    }
-
-    int getCodeFromSpinnerItem(int arrayId, int position) {
-        return Integer.decode(getResources().getStringArray(arrayId)[position].split(" ")[0]);
-    }
 }

@@ -1,14 +1,11 @@
 package com.nytimes.android.external.playbillingtester;
 
-import android.app.AlertDialog;
-import android.content.res.Resources;
+import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.nytimes.android.external.playbillingtester.model.Config;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 import com.nytimes.android.external.playbillingtesterlib.InAppPurchaseData;
 
@@ -19,23 +16,24 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
+import org.robolectric.shadow.api.Shadow;
+import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowIntent;
+import org.robolectric.shadows.ShadowLooper;
 
 import java.util.Locale;
 
-import static com.nytimes.android.external.playbillingtester.APIOverrides.RESULT_DEFAULT;
 import static com.nytimes.android.external.playbillingtester.BuyActivity.RECEIPT_FMT;
-import static com.nytimes.android.external.playbillingtester.MainActivity.VERSION_FMT;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@org.robolectric.annotation.Config(constants = BuildConfig.class)
+@org.robolectric.annotation.Config(constants = BuildConfig.class, sdk = 21)
+@SuppressWarnings("PMD.MethodNamingConventions")
 public class MainActivityTest {
 
     private static final String DEVELOPER_PAYLOAD = "devPayload";
@@ -48,15 +46,11 @@ public class MainActivityTest {
 
     private MainActivity testObject;
     private ActivityController controller;
-    @Mock
-    private APIOverrides apiOverrides;
+    private ShadowActivity shadowMain;
+
     @Mock
     private Purchases purchases;
-    @Mock
-    private Config config;
-    @Mock
-    private AlertDialog.Builder dialogBuilder;
-    private Resources resources;
+
     private final InAppPurchaseData inAppPurchaseData1 = new InAppPurchaseData.Builder()
             .orderId(Long.toString(CURRENT_TIME_MS))
             .packageName(packageName)
@@ -71,187 +65,128 @@ public class MainActivityTest {
             .productId(SKU2)
             .purchaseTime(Long.toString(CURRENT_TIME_MS))
             .developerPayload(DEVELOPER_PAYLOAD)
-            .purchaseToken(String.format(Locale.getDefault(), RECEIPT_FMT, USER1, CURRENT_TIME_MS))
+            .purchaseToken(String.format(Locale.getDefault(), RECEIPT_FMT, USER2, CURRENT_TIME_MS))
             .build();
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        resources = RuntimeEnvironment.application.getResources();
         controller = Robolectric.buildActivity(MainActivityTest.TestMainActivity.class).create();
         testObject = (MainActivity) controller.get();
-        testObject.apiOverrides = apiOverrides;
+        shadowMain = Shadow.extract(testObject);
         testObject.purchases = purchases;
-        testObject.config = config;
-        testObject.dialogBuilder = dialogBuilder;
-        when(config.users()).thenReturn(ImmutableList.of(USER1, USER2));
-        when(dialogBuilder.setTitle(anyInt())).thenReturn(dialogBuilder);
-        when(dialogBuilder.setMessage(anyString())).thenReturn(dialogBuilder);
     }
 
     @Test
-    public void testDefaults() {
-        when(apiOverrides.getIsBillingSupportedResponse()).thenReturn(RESULT_DEFAULT);
-        when(apiOverrides.getGetBuyIntentResponse()).thenReturn(RESULT_DEFAULT);
-        when(apiOverrides.getBuyResponse()).thenReturn(RESULT_DEFAULT);
-        when(apiOverrides.getGetPurchasesResponse()).thenReturn(RESULT_DEFAULT);
-        when(apiOverrides.getGetSkuDetailsResponse()).thenReturn(RESULT_DEFAULT);
-        when(apiOverrides.getUsersResponse()).thenReturn(USER1);
-
-        controller.start();
-
-        String spnDefault = resources.getString(R.string.spn_default);
-        assertThat(testObject.isBillingSupportedSpinner.getSelectedItem())
-                .isEqualTo(spnDefault);
-        assertThat(testObject.getBuyIntentSpinner.getSelectedItem())
-                .isEqualTo(spnDefault);
-        assertThat(testObject.buySpinner.getSelectedItem())
-                .isEqualTo(spnDefault);
-        assertThat(testObject.getPurchasesSpinner.getSelectedItem())
-                .isEqualTo(spnDefault);
-        assertThat(testObject.getSkuDetailsSpinner.getSelectedItem())
-                .isEqualTo(spnDefault);
-        assertThat(testObject.usersSpinner.getSelectedItem())
-                .isEqualTo(USER1);
-        assertThat(testObject.itemsTextView.getText().toString())
-                .isEmpty();
-    }
-
-    @Test
-    public void testNonDefaults() {
-        when(apiOverrides.getIsBillingSupportedResponse())
-                .thenReturn(GoogleUtil.RESULT_BILLING_UNAVAILABLE);
-        when(apiOverrides.getGetBuyIntentResponse()).thenReturn(GoogleUtil.RESULT_OK);
-        when(apiOverrides.getBuyResponse()).thenReturn(GoogleUtil.RESULT_ITEM_UNAVAILABLE);
-        when(apiOverrides.getGetPurchasesResponse()).thenReturn(GoogleUtil.RESULT_DEVELOPER_ERROR);
-        when(apiOverrides.getGetSkuDetailsResponse()).thenReturn(GoogleUtil.RESULT_ERROR);
-        when(apiOverrides.getUsersResponse()).thenReturn(USER2);
+    public void updatePurchases_whenHas_showsItems() {
+        // Setup
         when(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
-                .thenReturn(ImmutableSet.of(inAppPurchaseData1));
+                .thenReturn(ImmutableSet.of(inAppPurchaseData1));  // init
         when(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
-                .thenReturn(ImmutableSet.of(inAppPurchaseData2));
+                .thenReturn(ImmutableSet.of(inAppPurchaseData2));  // init
 
-        controller.start();
+        RecyclerView list = testObject.findViewById(R.id.list);
+        View emptyView = testObject.findViewById(R.id.empty_view);
 
-        assertThat(testObject.isBillingSupportedSpinner.getSelectedItem())
-                .isEqualTo(resources.getString(R.string.spn_billing_unavailable));
-        assertThat(testObject.getBuyIntentSpinner.getSelectedItem())
-                .isEqualTo(resources.getString(R.string.spn_ok));
-        assertThat(testObject.buySpinner.getSelectedItem())
-                .isEqualTo(resources.getString(R.string.spn_item_unavailable));
-        assertThat(testObject.getPurchasesSpinner.getSelectedItem())
-                .isEqualTo(resources.getString(R.string.spn_dev_error));
-        assertThat(testObject.getSkuDetailsSpinner.getSelectedItem())
-                .isEqualTo(resources.getString(R.string.spn_error));
-        assertThat(testObject.usersSpinner.getSelectedItem())
-                .isEqualTo(USER2);
-        assertThat(testObject.itemsTextView.getText().toString())
-                .isEqualTo(inAppPurchaseData2.productId() + ";" + inAppPurchaseData2.purchaseToken() + "\n" +
-                        inAppPurchaseData1.productId() + ";" + inAppPurchaseData1.purchaseToken() + "\n");
+        // Verify empty
+        controller.start().postResume();
+        assertThat(list.getAdapter().getItemCount()).isEqualTo(2);
+        assertThat(emptyView.getVisibility()).isEqualTo(View.GONE);
     }
 
     @Test
-    public void testHandlePurge() {
+    public void updatePurchases_whenNone_showsEmpty() {
+        // Setup
         when(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
-                .thenReturn(ImmutableSet.of(inAppPurchaseData1))    // init
-                .thenReturn(ImmutableSet.of());  // after purge
+                .thenReturn(ImmutableSet.of());  // init
         when(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
-                .thenReturn(ImmutableSet.of(inAppPurchaseData2))    // init
-                .thenReturn(ImmutableSet.of());  // after purge
+                .thenReturn(ImmutableSet.of());   // init
+
+        RecyclerView list = testObject.findViewById(R.id.list);
+        View emptyView = testObject.findViewById(R.id.empty_view);
+
+        // Verify empty
+        controller.start().postResume();
+        assertThat(list.getAdapter().getItemCount()).isEqualTo(0);
+        assertThat(emptyView.getVisibility()).isEqualTo(View.VISIBLE);
+    }
+
+    @Test
+    public void onMenuClick_whenConfigure_startsConfigure() {
+        // Setup
+        MenuItem item = mock(MenuItem.class);
+        when(item.getItemId()).thenReturn(R.id.menu_action_configure);
 
         controller.start();
+        testObject.onOptionsItemSelected(item);
 
-        assertThat(testObject.itemsTextView.getText().toString())
-                .isEqualTo(inAppPurchaseData2.productId() + ";" + inAppPurchaseData2.purchaseToken() + "\n" +
-                        inAppPurchaseData1.productId() + ";" + inAppPurchaseData1.purchaseToken() + "\n");
+        // Verify ConfigureActivity started
+        Intent startedIntent = shadowMain.getNextStartedActivity();
+        ShadowIntent shadowIntent = shadowOf(startedIntent);
+        assertThat(shadowIntent.getIntentClass()).isEqualTo(ConfigActivity.class);
+    }
 
-        testObject.handlePurge(mock(View.class));
+    @Test
+    public void onMenuClick_whenDeleteAll_showsNoItems() {
+        // Setup
+        when(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
+                .thenReturn(ImmutableSet.of(inAppPurchaseData1)) // Initial
+                .thenReturn(ImmutableSet.of()); // After purge
 
+        MenuItem item = mock(MenuItem.class);
+        when(item.getItemId()).thenReturn(R.id.menu_action_delete_all);
+
+        RecyclerView list = testObject.findViewById(R.id.list);
+
+        // Start and make sure we have 1 IAP
+        controller.start().postResume();
+        assertThat(list.getAdapter().getItemCount()).isEqualTo(1);
+
+        // Purge and make sure we are empty
+        testObject.onOptionsItemSelected(item);
         verify(purchases).purgePurchases();
-        assertThat(testObject.itemsTextView.getText().toString())
-                .isEmpty();
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+        assertThat(list.getAdapter().getItemCount()).isEqualTo(0);
     }
 
     @Test
-    public void testHandleRefresh() {
+    public void onMenuClick_whenRefresh_refreshContent() {
+        // Setup
         when(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
-                .thenReturn(ImmutableSet.of(inAppPurchaseData1))    // init
+                .thenReturn(ImmutableSet.of())   // init
                 .thenReturn(ImmutableSet.of(inAppPurchaseData1));   // after refresh
         when(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
                 .thenReturn(ImmutableSet.of())   // init
                 .thenReturn(ImmutableSet.of(inAppPurchaseData2));   // after refresh
 
-        controller.start();
+        MenuItem item = mock(MenuItem.class);
+        when(item.getItemId()).thenReturn(R.id.menu_action_refresh);
 
-        assertThat(testObject.itemsTextView.getText().toString())
-                .isEqualTo(inAppPurchaseData1.productId() + ";" + inAppPurchaseData1.purchaseToken() + "\n");
+        RecyclerView list = testObject.findViewById(R.id.list);
 
-        testObject.handleRefresh(mock(View.class));
+        // Verify empty
+        controller.start().postResume();
+        assertThat(list.getAdapter().getItemCount()).isEqualTo(0);
 
-        assertThat(testObject.itemsTextView.getText().toString())
-                .isEqualTo(inAppPurchaseData2.productId() + ";" + inAppPurchaseData2.purchaseToken() + "\n" +
-                        inAppPurchaseData1.productId() + ";" + inAppPurchaseData1.purchaseToken() + "\n");
+        //Refresh
+        testObject.onOptionsItemSelected(item);
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+        assertThat(list.getAdapter().getItemCount()).isEqualTo(2);
     }
 
     @Test
-    public void testOnItemSelected() {
+    public void onMenuClick_whenSettings_startsSettings() {
+        // Setup
+        MenuItem item = mock(MenuItem.class);
+        when(item.getItemId()).thenReturn(R.id.menu_action_settings);
+
         controller.start();
+        testObject.onOptionsItemSelected(item);
 
-        assertThat(testObject.checkedMap.get(R.id.isBillingSupported))
-                .isTrue();
-        assertThat(testObject.checkedMap.get(R.id.getBuyIntent))
-                .isTrue();
-        assertThat(testObject.checkedMap.get(R.id.buy))
-                .isTrue();
-        assertThat(testObject.checkedMap.get(R.id.getPurchases))
-                .isTrue();
-        assertThat(testObject.checkedMap.get(R.id.getSkuDetails))
-                .isTrue();
-        assertThat(testObject.checkedMap.get(R.id.usersSpinner))
-                .isTrue();
-
-        AdapterView parentView = mock(AdapterView.class);
-        View view = mock(View.class);
-
-        when(parentView.getId()).thenReturn(R.id.isBillingSupported);
-        testObject.onItemSelected(parentView, view, 0, 0L);
-        verify(apiOverrides)
-                .setIsBillingSupportedResponse(RESULT_DEFAULT);
-
-        when(parentView.getId()).thenReturn(R.id.getBuyIntent);
-        testObject.onItemSelected(parentView, view, 1, 0L);
-        verify(apiOverrides).setGetBuyIntentResponse(GoogleUtil.RESULT_OK);
-
-        when(parentView.getId()).thenReturn(R.id.buy);
-        testObject.onItemSelected(parentView, view, 2, 0L);
-        verify(apiOverrides).setBuyResponse(GoogleUtil.RESULT_ITEM_UNAVAILABLE);
-
-        when(parentView.getId()).thenReturn(R.id.getPurchases);
-        testObject.onItemSelected(parentView, view, 3, 0L);
-        verify(apiOverrides).setGetPurchasesResponse(GoogleUtil.RESULT_ERROR);
-
-        when(parentView.getId()).thenReturn(R.id.getSkuDetails);
-        testObject.onItemSelected(parentView, view, 4, 0L);
-        verify(apiOverrides).setGetSkuDetailsResponse(GoogleUtil.RESULT_ERROR);
-
-        when(parentView.getId()).thenReturn(R.id.usersSpinner);
-        testObject.onItemSelected(parentView, view, 1, 0L);
-        verify(apiOverrides).setUsersReponse(USER2);
-    }
-
-    @Test
-    public void testAbout() {
-        controller.start();
-
-        MenuItem menuItem = mock(MenuItem.class);
-        when(menuItem.getItemId()).thenReturn(R.id.action_settings);
-
-        testObject.onOptionsItemSelected(menuItem);
-
-        verify(dialogBuilder).setTitle(R.string.app_name);
-        verify(dialogBuilder).setMessage(String.format(Locale.getDefault(), VERSION_FMT, BuildConfig.VERSION_NAME,
-                BuildConfig.VERSION_CODE));
-        verify(dialogBuilder).show();
+        // Verify SettingsActivity started
+        Intent startedIntent = shadowMain.getNextStartedActivity();
+        ShadowIntent shadowIntent = shadowOf(startedIntent);
+        assertThat(shadowIntent.getIntentClass()).isEqualTo(SettingsActivity.class);
     }
 
     static class TestMainActivity extends MainActivity {
