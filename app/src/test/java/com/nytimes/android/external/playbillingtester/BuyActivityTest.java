@@ -130,7 +130,7 @@ public class BuyActivityTest {
         configSkuMapBuilder.put(SKU, configSku);
         when(config.skus()).thenReturn(configSkuMapBuilder.build());
 
-        controller.postCreate(null).start();
+        controller.start();
 
         TextView titleTextView = (TextView) testObject.findViewById(R.id.buy_title);
         TextView summaryTextView = (TextView) testObject.findViewById(R.id.buy_summary);
@@ -139,7 +139,7 @@ public class BuyActivityTest {
 
         assertThat(titleTextView.getText()).isEqualTo(TITLE);
         assertThat(summaryTextView.getText()).isEqualTo(DESCRIPTION);
-        assertThat(priceTextView.getText()).isEqualTo(PRICE);
+        assertThat(priceTextView.getText()).isEqualTo("$" + PRICE);
         assertThat(buyButton.getText()).isEqualTo(getStringResource(R.string.buy));
     }
 
@@ -153,7 +153,7 @@ public class BuyActivityTest {
         configSkuMapBuilder.put(sku2, configSku);
         when(config.skus()).thenReturn(configSkuMapBuilder.build());
 
-        controller.postCreate(null).start();
+        controller.start();
 
         assertThat(((TextView) testObject.findViewById(R.id.buy_title)).getText())
                 .isEqualTo(getStringResource(R.string.error));
@@ -170,7 +170,7 @@ public class BuyActivityTest {
         configSkuMapBuilder.put(SKU, configSku);
         when(config.skus()).thenReturn(configSkuMapBuilder.build());
 
-        controller.postCreate(null).start();
+        controller.start();
 
         assertThat(((TextView) testObject.findViewById(R.id.buy_title)).getText())
                 .isEqualTo(getStringResource(R.string.error));
@@ -184,7 +184,7 @@ public class BuyActivityTest {
 
         when(apiOverrides.getBuyResponse()).thenReturn(GoogleUtil.RESULT_ERROR);
 
-        controller.postCreate(null).start();
+        controller.start();
 
         assertThat(((TextView) testObject.findViewById(R.id.buy_title)).getText())
                 .isEqualTo(getStringResource(R.string.error));
@@ -203,7 +203,7 @@ public class BuyActivityTest {
         String inAppPurchaseDataStr = gson.toJson(inAppPurchaseData);
         when(purchases.addPurchase(inAppPurchaseDataStr, TYPE)).thenReturn(true);
 
-        controller.postCreate(null).start();
+        controller.start();
         testObject.currentTimeMillis = CURRENT_TIME_MS;
         testObject.findViewById(R.id.buy_button).callOnClick();
 
@@ -227,7 +227,7 @@ public class BuyActivityTest {
         configSkuMapBuilder.put(NEW_SKU, configSku);
         when(config.skus()).thenReturn(configSkuMapBuilder.build());
 
-        controller.postCreate(null).start();
+        controller.start();
         testObject.findViewById(R.id.buy_button).callOnClick();
 
         assertThat(shadowActivity.getResultCode()).isEqualTo(RESULT_OK);
@@ -246,7 +246,7 @@ public class BuyActivityTest {
         configSkuMapBuilder.put(SKU, configSku);
         when(config.skus()).thenReturn(configSkuMapBuilder.build());
 
-        controller.postCreate(null).start();
+        controller.start();
         testObject.findViewById(R.id.buy_button).callOnClick();
 
         assertThat(shadowActivity.getResultCode())
@@ -261,7 +261,7 @@ public class BuyActivityTest {
         configSkuMapBuilder.put(SKU, configSku);
         when(config.skus()).thenReturn(configSkuMapBuilder.build());
 
-        controller.postCreate(null).start();
+        controller.start();
         testObject.onBackPressed();
 
         assertThat(shadowActivity.getResultCode()).isEqualTo(RESULT_OK);

@@ -3,7 +3,6 @@ package com.nytimes.android.external.playbillingtester;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -64,16 +63,11 @@ public class BuyActivity extends AppCompatActivity {
         inject();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy);
+        initPurchaseData();
     }
 
     protected void inject() {
         Injector.create(this).inject(this);
-    }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        initPurchaseData();
     }
 
     private void initPurchaseData() {
@@ -227,7 +221,7 @@ public class BuyActivity extends AppCompatActivity {
 
                 bundle.putString(RESPONSE_EXTRA_TITLE, configSku.title());
                 bundle.putString(RESPONSE_EXTRA_SUMMARY, configSku.description());
-                bundle.putString(RESPONSE_EXTRA_PRICE, configSku.price());
+                bundle.putString(RESPONSE_EXTRA_PRICE, "$" + configSku.price());
 
                 if (isReplace) {
                     ArrayList<String> oldSkuTitles = new ArrayList<>();
