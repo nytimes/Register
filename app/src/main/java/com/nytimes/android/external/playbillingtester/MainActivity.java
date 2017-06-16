@@ -27,10 +27,8 @@ import javax.inject.Inject;
  * Controller app for Play Billing Tester Service
  * Allows user to
  * * Start/stop service
- * * Override default return values from API calls
  * * Display/Purge purchased items
  */
-@SuppressWarnings("PMD.UseVarargs")
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
     @Inject
