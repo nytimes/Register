@@ -53,7 +53,7 @@
         android:layout_below="@+id/div"
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
-        tools:listitem="@layout/support_simple_spinner_dropdown_item" />
+        tools:listitem="@layout/simple_list_item" />
 
     <TextView
         android:id="@+id/logo"

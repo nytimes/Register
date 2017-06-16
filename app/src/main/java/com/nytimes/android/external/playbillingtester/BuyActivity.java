@@ -3,6 +3,7 @@ package com.nytimes.android.external.playbillingtester;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,16 +32,16 @@ import javax.inject.Inject;
 /**
  * Activity that displays dialog allowing user to purchase item
  */
-@SuppressWarnings("PMD.UseVarargs")
+@SuppressWarnings("PMD.GodClass")
 public class BuyActivity extends AppCompatActivity {
+
+    static final String RECEIPT_FMT = "%s.playBillingTesterToken%d";
+    static final String ERROR_FMT =  "%s: %d";
 
     private static final String RESPONSE_EXTRA_TITLE = "RESPONSE_EXTRA_TITLE";
     private static final String RESPONSE_EXTRA_SUMMARY = "RESPONSE_EXTRA_SUMMARY";
     private static final String RESPONSE_EXTRA_PRICE = "RESPONSE_EXTRA_PRICE";
     private static final String RESPONSE_EXTRA_REPLACE_OLD_SKU = "RESPONSE_EXTRA_REPLACE_OLD_SKU";
-
-    static final String RECEIPT_FMT = "%s.playBillingTesterToken%d";
-    static final String ERROR_FMT =  "%s: %d";
 
     @Inject
     protected APIOverrides apiOverrides;
@@ -51,23 +52,28 @@ public class BuyActivity extends AppCompatActivity {
     @Inject
     protected Config config;
 
-    String sku, newSku;
-    List<String> oldSkus;
-    String itemtype;
-    String developerPayload;
     long currentTimeMillis;
-    boolean isReplace = false;
+    private String sku, newSku;
+    private List<String> oldSkus;
+    private String itemtype;
+    private String developerPayload;
+    private boolean isReplace = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         inject();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy);
-        initPurchaseData();
     }
 
     protected void inject() {
         Injector.create(this).inject(this);
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        initPurchaseData();
     }
 
     private void initPurchaseData() {
