@@ -15,7 +15,7 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField "String", "GITHUB_BASE_URL", '"https://api.github.com"'
-        buildConfigField "String", "GITHUB_ENDPOINT", '"/repos/NYTimes/Store"'
+        buildConfigField "String", "GITHUB_ENDPOINT", '"/repos/NYTimes/Register"'
 
     }
     compileOptions {
