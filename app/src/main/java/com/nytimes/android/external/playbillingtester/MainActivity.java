@@ -37,6 +37,7 @@ import javax.inject.Inject;
  * * Start/stop service
  * * Display/Purge purchased items
  */
+@SuppressWarnings("PMD.GodClass")
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
     @Inject
