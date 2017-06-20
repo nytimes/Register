@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.google.common.io.Files;
 import com.google.gson.Gson;
+import com.nytimes.android.external.playbillingtester.BuildConfig;
 import com.nytimes.android.external.playbillingtester.GithubApi;
 import com.nytimes.android.external.playbillingtester.PermissionHandler;
 import com.nytimes.android.external.playbillingtester.R;
@@ -77,7 +78,7 @@ public class ActivityModule {
     GithubApi provideRetrofit(OkHttpClient client, @Named("gson_retrofit") Gson gson) {
         return new Retrofit.Builder()
                 .client(client)
-                .baseUrl(GithubApi.API_BASE_URL)
+                .baseUrl(BuildConfig.GITHUB_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .build()

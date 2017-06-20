@@ -7,9 +7,6 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 
 public interface GithubApi {
-    String API_BASE_URL = "https://api.github.com";
-    String API_ENDPOINT = "/repos/NYTimes/Register";
-
-    @GET(API_ENDPOINT)
+    @GET(BuildConfig.GITHUB_ENDPOINT)
     Observable<Repository> getPlayBillingRepository();
 }

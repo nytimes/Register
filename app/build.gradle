@@ -13,6 +13,10 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+
+        buildConfigField "String", "GITHUB_BASE_URL", '"https://api.github.com"'
+        buildConfigField "String", "GITHUB_ENDPOINT", '"/repos/NYTimes/Store"'
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
