@@ -52,15 +52,18 @@
             android:id="@+id/settings_item_tos"
             layout="@layout/layout_settings_item_clickable" />
 
-        <include layout="@layout/layout_settings_div" />
+        <include layout="@layout/layout_settings_div"
+            android:visibility="gone"/>
 
         <include
             android:id="@+id/settings_header_dev"
-            layout="@layout/layout_settings_header" />
+            layout="@layout/layout_settings_header"
+            android:visibility="gone"/>
 
         <include
             android:id="@+id/settings_item_dev"
-            layout="@layout/layout_settings_item" />
+            layout="@layout/layout_settings_item"
+            android:visibility="gone"/>
 
         <include layout="@layout/layout_settings_div" />
 

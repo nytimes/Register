@@ -35,7 +35,11 @@ public class LegalAdapter extends RecyclerView.Adapter<LegalViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull LegalViewHolder holder, int position) {
-        holder.onBind(items.get(position));
+        holder.onBind(getItem(position));
+    }
+
+    Map.Entry<String, String> getItem(int position) {
+        return items.get(position);
     }
 
     @Override

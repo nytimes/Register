@@ -68,7 +68,6 @@ public class SettingsActivity extends AppCompatActivity {
         initRoot();
         initGithub();
         initOther();
-        initDevelopedBy();
         initLicense();
     }
 
@@ -154,6 +153,7 @@ public class SettingsActivity extends AppCompatActivity {
         v.setOnClickListener(clickListener);
     }
 
+    @SuppressWarnings("PMD.UnusedPrivateMethod")
     private void initDevelopedBy() {
         View.OnClickListener onClick = view -> startWebIntent(getString(R.string.url_jobs));
 
