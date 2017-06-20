@@ -5,6 +5,10 @@
     <string name="app_name">Register Sample</string>
     <string name="register">Register</string>
 
+    <!-- Debug-->
+    <string name="lorem_ipsum">Lorem Ipsum</string>
+    <string name="lorem_ipsum_sentence">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eros ligula, tincidunt non bibendum et, aliquam sed tortor.</string>
+
     <!-- Menu-->
     <string name="action_refresh">Refresh</string>
     <string name="action_delete_all">Delete All</string>
@@ -12,8 +16,6 @@
 
     <!-- Main-->
     <string name="main_name">Register Config</string>
-
-
 
     <string name="error">Error</string>
     <string name="config_not_found">Config file not found</string>
@@ -46,8 +48,25 @@
     <!-- Settings -->
     <string name="settings_name">Settings</string>
     <string name="action_configure">Configure</string>
-    <string name="confirm_save_search">Save</string>
-    <string name="confirm_save_dribbble_search">Save Dribbble</string>
-    <string name="transition_app_bar">transitions_app_bar</string>
+    <string name="settings_general">General</string>
+    <string name="settings_general_import_title">Import from local storage</string>
+    <string name="settings_general_import_summ">Import your configuration file from the local storage of the phone. This populates the data fields within the main screen.</string>
+    <string name="settings_other">Other</string>
+    <string name="settings_other_legal">Legal</string>
+    <string name="settings_other_priv">Privacy Policy</string>
+    <string name="settings_other_tos">Terms of Service</string>
+    <string name="settings_dev_by">Developed By</string>
+    <string name="settings_dev_by_text"><![CDATA[John Smith, Jane Doe, Bob Snow, Adam Rock, Burt Paper, Adam
+        Jack, Tom Sink, Angie Dot, William Bottle, Judy Maple and support from the entire Mobile
+        team <font color=\"#248CD0\">@NYTimes</font>]]>.</string>
+    <string name="settings_license">License</string>
+    <string name="settings_license_text">Copyright © 2017 The New York Times Company\n\nLicensed under the Apache License, Version 2.0 (the \"License\"); you may not use this library except in compliance with the License. You may obtain a copy of the License at\n\nwww.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</string>
+    <string name="error_cannot_load_url">No app exists to view the URL.</string>
+
+    <string name="url_tos" translatable="false">https://www.nytimes.com/content/help/rights/terms/terms-of-service.html</string>
+    <string name="url_priv" translatable="false">https://www.nytimes.com/content/help/rights/privacy/policy/privacy-policy.html</string>
+    <string name="url_jobs">https://jobs.nytco.com</string>
+    <string name="settings_github_error">An error occurred when trying to fetch the repo information. Tap to try again.</string>
+
 
 </resources>

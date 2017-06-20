@@ -49,6 +49,12 @@ dependencies {
     annotationProcessor libraries.daggerCompiler
     testProvided(libraries.daggerCompiler)
 
+    compile libraries.rxJava
+    compile libraries.rxAndroid
+    compile libraries.retrofit
+    compile libraries.retrofitConverter
+    compile libraries.retrofitAdapter
+
     annotationProcessor libraries.immutablesValue
     provided libraries.immutablesValue
     provided libraries.immutablesGson

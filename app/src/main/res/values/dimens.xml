@@ -9,10 +9,9 @@
     <dimen name="z_fab">6dp</dimen>
     <dimen name="spacing_huge">64dp</dimen>
     <dimen name="fab_size">56dp</dimen>
+    <dimen name="padding_horizontal_settings">20dp</dimen>
 
-    <array name="autosize_text_sizes">
-        <item>8sp</item>
-        <item>12sp</item>
-    </array>
-
+    <dimen name="settings_github_logo_offset">20dp</dimen>
+    <dimen name="settings_github_logo_size">24dp</dimen>
+    <dimen name="settings_github_error_offset">0dp</dimen>
 </resources>

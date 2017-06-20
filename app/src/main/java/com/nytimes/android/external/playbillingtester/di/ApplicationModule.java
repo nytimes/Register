@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.common.base.Optional;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nytimes.android.external.playbillingtester.APIOverrides;
@@ -15,6 +16,7 @@ import com.nytimes.android.external.playbillingtester.R;
 import com.nytimes.android.external.playbillingtester.Signer;
 import com.nytimes.android.external.playbillingtester.model.GsonAdaptersConfig;
 import com.nytimes.android.external.playbillingtester.model.GsonAdaptersConfigSku;
+import com.nytimes.android.external.playbillingtester.model.GsonAdaptersRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,10 +32,12 @@ import java.security.Signature;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
 
 import static com.nytimes.android.external.playbillingtester.APIOverrides.PREF_NAME;
 
@@ -61,6 +65,25 @@ public class ApplicationModule {
                 .registerTypeAdapterFactory(new GsonAdaptersConfig())
                 .registerTypeAdapterFactory(new GsonAdaptersConfigSku())
                 .create();
+    }
+
+    @Singleton
+    @Provides
+    @Named("gson_retrofit")
+    Gson provideRetrofitGson() {
+        return new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .registerTypeAdapterFactory(new GsonAdaptersRepository())
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
+    }
+
+    @Singleton
+    @Provides
+    OkHttpClient provideOkHttpClient() {
+        return new OkHttpClient.Builder()
+                .cache(null)
+                .build();
     }
 
     @Provides
