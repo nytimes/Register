@@ -53,7 +53,7 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.register);
         toolbar.setNavigationOnClickListener(view -> onBackPressed());
         setSupportActionBar(toolbar);
@@ -79,14 +79,14 @@ public class ConfigActivity extends AppCompatActivity {
         View container = findViewById(containerLayoutId);
 
         // Set title
-        TextView title = container.findViewById(R.id.config_title);
+        TextView title = (TextView) container.findViewById(R.id.config_title);
         title.setText(titleResId);
 
         // Get data
         List<ConfigResponse> items = getData(entriesResId);
 
         // Init Spinner
-        Spinner spinner = container.findViewById(R.id.config_spinner);
+        Spinner spinner = (Spinner) container.findViewById(R.id.config_spinner);
         spinner.setTag("IGNORE_FIRST_SELECT");
         ConfigSpinnerAdapter configResponseAdapter =
                 new ConfigSpinnerAdapter(this, items);

@@ -17,19 +17,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="@dimen/recycler_empty_title_margin_top"
+        android:layout_marginBottom="@dimen/recycler_empty_title_margin_top"
         android:gravity="center"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="@dimen/recycler_empty_title_size"
         android:text="@string/empty_message_title" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:gravity="center"
+        android:maxWidth="400dp"
         android:textColor="?android:textColorSecondary"
-        android:textSize="14sp"
         android:text="@string/empty_message_text" />
 
 </LinearLayout>

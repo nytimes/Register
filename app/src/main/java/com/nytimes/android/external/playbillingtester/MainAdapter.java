@@ -108,9 +108,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
             contentView = itemView.findViewById(R.id.item_main_top);
             bottomView = itemView.findViewById(R.id.item_main_bottom);
-            productTitle = itemView.findViewById(R.id.item_product_name);
-            productTypeView = itemView.findViewById(R.id.item_product_type);
-            purchaseDateView = itemView.findViewById(R.id.item_product_purchase_date);
+            productTitle = (TextView) itemView.findViewById(R.id.item_product_name);
+            productTypeView = (TextView) itemView.findViewById(R.id.item_product_type);
+            purchaseDateView = (TextView) itemView.findViewById(R.id.item_product_purchase_date);
             delete = itemView.findViewById(R.id.item_product_delete);
 
             swipeLayout = (SwipeLayout) itemView;

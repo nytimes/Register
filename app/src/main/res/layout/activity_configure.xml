@@ -24,50 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <include
-                    android:id="@+id/isBillingSupported"
-                    layout="@layout/layout_config_spinner" />
-
-                <include
-                    android:id="@+id/getBuyIntent"
-                    layout="@layout/layout_config_spinner" />
-
-                <include
-                    android:id="@+id/buy"
-                    layout="@layout/layout_config_spinner" />
-
-                <include
-                    android:id="@+id/getPurchases"
-                    layout="@layout/layout_config_spinner" />
-
-                <include
-                    android:id="@+id/getSkuDetails"
-                    layout="@layout/layout_config_spinner" />
-
-                <include
-                    android:id="@+id/consumePurchase"
-                    layout="@layout/layout_config_spinner" />
-
-                <include
-                    android:id="@+id/getBuyIntentToReplaceSkus"
-                    layout="@layout/layout_config_spinner" />
-
-                <include
-                    android:id="@+id/replace"
-                    layout="@layout/layout_config_spinner" />
-            </LinearLayout>
-
-        </ScrollView>
-
     </android.support.design.widget.AppBarLayout>
 
 </android.support.design.widget.CoordinatorLayout>

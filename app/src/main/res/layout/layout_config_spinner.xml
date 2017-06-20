@@ -9,8 +9,6 @@
     android:minHeight="40dp"
     android:orientation="horizontal"
     android:paddingBottom="3dp"
-    android:paddingEnd="16dp"
-    android:paddingStart="16dp"
     android:paddingTop="3dp">
 
     <TextView
@@ -18,15 +16,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:autoSizeMinTextSize="8dp"
-        android:autoSizeTextType="uniform"
+        android:fontFamily="monospace"
         android:paddingEnd="16dp"
         android:singleLine="true"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="12sp"
-        android:fontFamily="monospace"
-        app:autoSizeMinTextSize="8dp"
-        app:autoSizeTextType="uniform"
         tools:ignore="MissingPrefix"
         tools:targetApi="o"
         tools:text="configName()" />
@@ -38,7 +32,7 @@
         android:layout_weight="1"
         android:background="@drawable/bg_config_spinner"
         android:spinnerMode="dropdown"
-        tools:listitem="@layout/item_config"
-        tools:entries="@array/debug_spinner" />
+        tools:entries="@array/debug_spinner"
+        tools:listitem="@layout/item_config" />
 
 </LinearLayout>

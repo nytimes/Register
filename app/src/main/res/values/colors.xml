@@ -9,7 +9,7 @@
 
     <!-- Spinner Colors -->
     <color name="config_spinner_background">#1AFFFFFF</color>
-    <color name="config_gray">#D1D1D1</color>
+    <color name="config_gray">@color/textColorSecondary</color>
     <color name="config_yellow">#EBDE8C</color>
     <color name="config_red">#CF6764</color>
     <color name="config_green">#7AB881</color>
