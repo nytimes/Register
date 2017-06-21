@@ -139,4 +139,10 @@ public class ApplicationModule {
     Signer provideSigner(@Nullable Optional<PrivateKey> privateKey, @Nullable Optional<Signature> signature) {
         return new Signer(privateKey, signature);
     }
+
+    @Provides
+    @Singleton
+    SchedulerProvider provideScheduler(){
+        return new AppSchedulerProvider();
+    }
 }

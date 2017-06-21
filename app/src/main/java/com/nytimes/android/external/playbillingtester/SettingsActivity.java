@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nytimes.android.external.playbillingtester.di.Injector;
+import com.nytimes.android.external.playbillingtester.di.SchedulerProvider;
 import com.nytimes.android.external.playbillingtester.legal.LegalActivity;
 import com.nytimes.android.external.playbillingtester.model.Repository;
 
@@ -34,13 +35,14 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class SettingsActivity extends AppCompatActivity {
 
     @Inject
     GithubApi api;
+    @Inject
+    SchedulerProvider provider;
 
     private ViewGroup githubCardRoot;
     private TextView githubCardName;
@@ -136,7 +138,8 @@ public class SettingsActivity extends AppCompatActivity {
                 v -> startWebIntent(getString(R.string.url_priv)));
     }
 
-    private void initItemNested(@IdRes int layout, @StringRes int titleRes, @StringRes int summaryRes, View.OnClickListener clickListener) {
+    private void initItemNested(@IdRes int layout, @StringRes int titleRes, @StringRes int summaryRes,
+                                View.OnClickListener clickListener) {
         View v = findViewById(layout);
 
         TextView title = v.findViewById(R.id.settings_item_title);
@@ -186,38 +189,31 @@ public class SettingsActivity extends AppCompatActivity {
     private void startWebIntent(String url) {
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        } else {
+        if (intent.resolveActivity(getPackageManager()) == null) {
             View root = findViewById(android.R.id.content);
             Snackbar.make(root, R.string.error_cannot_load_url, Snackbar.LENGTH_SHORT).show();
+        } else {
+            startActivity(intent);
         }
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        loadGithubRepoData(false);
+        loadGithubRepoData(savedInstanceState != null);
     }
 
     private void loadGithubRepoData(boolean immediate) {
         subs.add(api.getPlayBillingRepository()
                 .delay(immediate ? 0 : 2000, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::showData, this::showError));
+                .observeOn(provider.getMainThread())
+                .subscribe(this::showData, this::showError, () -> {
+                    Log.e(SettingsActivity.class.getSimpleName(), "onComplete");
+                }));
     }
 
     private void showData(Repository repository) {
         TransitionManager.beginDelayedTransition(githubCardRoot, showDataTransition);
-
-        githubCardName.setText(repository.fullName());
-        githubCardCommit.setText(DateUtils.getRelativeTimeSpanString (repository.pushedAt().getTime(),
-                System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS, DateUtils.FORMAT_ABBREV_ALL));
-        githubCardDesc.setText(repository.description());
-        githubCardForks.setText(numberFormat.format(repository.forksCount()));
-        githubCardStars.setText(numberFormat.format(repository.stargazersCount()));
-        githubCardRoot.setOnClickListener(view ->
-                startWebIntent(repository.htmlUrl()));
 
         int logoSize = getResources()
                 .getDimensionPixelSize(R.dimen.settings_github_logo_size);
@@ -234,6 +230,15 @@ public class SettingsActivity extends AppCompatActivity {
         githubCardDesc.setVisibility(View.VISIBLE);
         githubCardForks.setVisibility(View.VISIBLE);
         githubCardStars.setVisibility(View.VISIBLE);
+
+        githubCardName.setText(repository.fullName());
+        githubCardCommit.setText(DateUtils.getRelativeTimeSpanString (repository.pushedAt().getTime(),
+                System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS, DateUtils.FORMAT_ABBREV_ALL));
+        githubCardDesc.setText(repository.description());
+        githubCardForks.setText(numberFormat.format(repository.forksCount()));
+        githubCardStars.setText(numberFormat.format(repository.stargazersCount()));
+        githubCardRoot.setOnClickListener(view ->
+                startWebIntent(repository.htmlUrl()));
     }
 
     private void showError(Throwable throwable) {
