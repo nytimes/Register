@@ -180,14 +180,14 @@ public class MainActivityTest {
         assertThat(shadowIntent.getIntentClass()).isEqualTo(SettingsActivity.class);
     }
 
-
     @Test
     public void onCreate_whenDefaultValues_showsDefaultValues() {
         when(mockApiOverrides.getIsBillingSupportedResponse()).thenReturn(RESULT_DEFAULT);
         when(mockApiOverrides.getGetBuyIntentResponse()).thenReturn(RESULT_DEFAULT);
         when(mockApiOverrides.getBuyResponse()).thenReturn(RESULT_DEFAULT);
         when(mockApiOverrides.getGetPurchasesResponse()).thenReturn(RESULT_DEFAULT);
-        when(mockApiOverrides.getGetSkuDetailsResponse()).thenReturn(RESULT_DEFAULT);
+        when(mockApiOverrides.getGetSkuDetailsResponse()).thenReturn(RESULT_DEFAULT);;
+        when(mockApiOverrides.getGetBuyIntentToReplaceSkusResponse()).thenReturn(RESULT_DEFAULT);
 
         controller.postCreate(null).start();
 
@@ -196,6 +196,7 @@ public class MainActivityTest {
         assertThat(getSpinnerValue(R.id.buy)).isEqualTo(RESULT_DEFAULT);
         assertThat(getSpinnerValue(R.id.getPurchases)).isEqualTo(RESULT_DEFAULT);
         assertThat(getSpinnerValue(R.id.getSkuDetails)).isEqualTo(RESULT_DEFAULT);
+        assertThat(getSpinnerValue(R.id.getBuyIntentToReplaceSkus)).isEqualTo(RESULT_DEFAULT);
     }
 
     @Test
@@ -206,6 +207,7 @@ public class MainActivityTest {
         when(mockApiOverrides.getBuyResponse()).thenReturn(GoogleUtil.RESULT_ITEM_UNAVAILABLE);
         when(mockApiOverrides.getGetPurchasesResponse()).thenReturn(GoogleUtil.RESULT_DEVELOPER_ERROR);
         when(mockApiOverrides.getGetSkuDetailsResponse()).thenReturn(GoogleUtil.RESULT_ERROR);
+        when(mockApiOverrides.getGetBuyIntentToReplaceSkusResponse()).thenReturn(GoogleUtil.RESULT_ITEM_NOT_OWNED);
 
         controller.postCreate(null).start();
 
@@ -214,8 +216,8 @@ public class MainActivityTest {
         assertThat(getSpinnerValue(R.id.buy)).isEqualTo(GoogleUtil.RESULT_ITEM_UNAVAILABLE);
         assertThat(getSpinnerValue(R.id.getPurchases)).isEqualTo(GoogleUtil.RESULT_DEVELOPER_ERROR);
         assertThat(getSpinnerValue(R.id.getSkuDetails)).isEqualTo(GoogleUtil.RESULT_ERROR);
+        assertThat(getSpinnerValue(R.id.getBuyIntentToReplaceSkus)).isEqualTo(GoogleUtil.RESULT_ITEM_NOT_OWNED);
     }
-
 
     @Test
     public void onItemSelected_whenChanged_setsApiOverrides() {
@@ -226,12 +228,14 @@ public class MainActivityTest {
         AdapterView<Adapter> buySpinner = getInternalSpinner(R.id.buy);
         AdapterView<Adapter> getPurchasesSpinner = getInternalSpinner(R.id.getPurchases);
         AdapterView<Adapter> getSkuDetailsSpinner = getInternalSpinner(R.id.getSkuDetails);
+        AdapterView<Adapter> getGetBuyIntentToReplaceSkusResponseSpinner = getInternalSpinner(R.id.getBuyIntentToReplaceSkus);
 
         assertThat(isBillingSupportedSpinner.getTag()).isNull();
         assertThat(getBuyIntentSpinner.getTag()).isNull();
         assertThat(buySpinner.getTag()).isNull();
         assertThat(getPurchasesSpinner.getTag()).isNull();
         assertThat(getSkuDetailsSpinner.getTag()).isNull();
+        assertThat(getGetBuyIntentToReplaceSkusResponseSpinner.getTag()).isNull();
 
         AdapterView parentView = mock(AdapterView.class);
         View view = mock(View.class);
@@ -250,6 +254,9 @@ public class MainActivityTest {
 
         getSkuDetailsSpinner.getOnItemSelectedListener().onItemSelected(parentView, view, 4, 0L);
         verify(mockApiOverrides).setGetSkuDetailsResponse(GoogleUtil.RESULT_ERROR);
+
+        getGetBuyIntentToReplaceSkusResponseSpinner.getOnItemSelectedListener().onItemSelected(parentView, view, 5, 0L);
+        verify(mockApiOverrides).setGetBuyIntentToReplaceSkusResponse(GoogleUtil.RESULT_ITEM_ALREADY_OWNED);
     }
 
     public long getSpinnerValue(int parentId) {
@@ -260,7 +267,6 @@ public class MainActivityTest {
         return (AdapterView<Adapter>) (testObject.findViewById(parentId)
                 .findViewById(R.id.config_spinner));
     }
-
 
     static class TestMainActivity extends MainActivity {
         @Override

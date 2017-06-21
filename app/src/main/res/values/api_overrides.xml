@@ -88,4 +88,14 @@
         <item>spn_item_not_owned</item>
     </string-array>
 
+    <string-array name="buy_intent_replace_skus_spinner">
+        <item>spn_default</item>
+        <item>spn_ok</item>
+        <item>spn_item_unavailable</item>
+        <item>spn_dev_error</item>
+        <item>spn_error</item>
+        <item>spn_item_owned</item>
+        <item>spn_item_not_owned</item>
+    </string-array>
+
 </resources>

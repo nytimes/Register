@@ -53,10 +53,10 @@
             style="@style/Config.Row.Left"
             layout="@layout/layout_config_spinner" />
 
-        <include
+        <Space
             android:id="@+id/replace"
             style="@style/Config.Row.Right"
-            layout="@layout/layout_config_spinner" />
+            android:layout_height="wrap_content"/>
 
     </TableRow>
 

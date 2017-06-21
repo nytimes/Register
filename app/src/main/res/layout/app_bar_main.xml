@@ -40,9 +40,4 @@
         style="@style/Config.Row"
         layout="@layout/layout_config_spinner" />
 
-    <include
-        android:id="@+id/replace"
-        style="@style/Config.Row"
-        layout="@layout/layout_config_spinner" />
-
 </LinearLayout>

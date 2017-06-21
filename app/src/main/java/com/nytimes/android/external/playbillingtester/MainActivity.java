@@ -136,8 +136,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         initSpinner(R.id.getPurchases, R.string.get_purchases, R.array.getPurchases_spinner);
         initSpinner(R.id.getSkuDetails, R.string.get_sku_details, R.array.getSkuDetails_spinner);
         initSpinner(R.id.consumePurchase, R.string.consume_purchases, R.array.consumePurchase_spinner);
-        initSpinner(R.id.getBuyIntentToReplaceSkus, R.string.buy_intent_replace_skus, R.array.debug_spinner);
-        initSpinner(R.id.replace, R.string.config_replace, R.array.debug_spinner);
+        initSpinner(R.id.getBuyIntentToReplaceSkus, R.string.buy_intent_replace_skus, R.array.buy_intent_replace_skus_spinner);
     }
 
     private void initSpinner(@IdRes int containerLayoutId, @StringRes int titleResId, @ArrayRes int entriesResId) {
@@ -227,7 +226,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 apiOverrides.setConsumePurchaseResponse(item.responseCode());
                 break;
             case R.id.getBuyIntentToReplaceSkus:
-            case R.id.replace:
+                apiOverrides.setGetBuyIntentToReplaceSkusResponse(item.responseCode());
+                break;
             default:
                 // unknown id
                 break;
@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             case R.id.consumePurchase:
                 return apiOverrides.getConsumePurchaseResponse();
             case R.id.getBuyIntentToReplaceSkus:
-            case R.id.replace:
+                return apiOverrides.getGetBuyIntentToReplaceSkusResponse();
             default:
                 return -1;
         }
