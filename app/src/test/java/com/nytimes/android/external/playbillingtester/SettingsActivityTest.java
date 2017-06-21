@@ -42,7 +42,6 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @org.robolectric.annotation.Config(constants = BuildConfig.class, sdk = 21)
-@SuppressWarnings("PMD.MethodNamingConventions")
 public class SettingsActivityTest {
 
     @Mock
@@ -85,7 +84,7 @@ public class SettingsActivityTest {
     }
 
     @Test
-    public void onCreate_setsOther() {
+    public void onCreateSetsOther() {
         assertTextViewText(R.id.settings_header_other, R.string.settings_other);
 
         // Legal
@@ -111,7 +110,7 @@ public class SettingsActivityTest {
     }
 
     @Test
-    public void onClick_whenLegal_opensLegalActivity() {
+    public void onClickWhenLegalOpensLegalActivity() {
         testObject.findViewById(R.id.settings_item_legal).callOnClick();
         Intent nextActivity = shadowActivity.getNextStartedActivity();
         assertThat(nextActivity.getComponent().getClassName()).isEqualTo(
@@ -119,7 +118,7 @@ public class SettingsActivityTest {
     }
 
     @Test
-    public void onClick_whenTos_opensTosWeb() {
+    public void onClickWhenTosOpensTosWeb() {
         Uri uri = Uri.parse(getStringResource(R.string.url_tos));
         shadowPackageManager.setQueryIntentImplicitly(true);
         shadowPackageManager.addResolveInfoForIntent(new Intent(Intent.ACTION_VIEW, uri),
@@ -132,7 +131,7 @@ public class SettingsActivityTest {
     }
 
     @Test
-    public void onClick_whenPriv_opensPrivWeb() {
+    public void onClickWhenPrivOpensPrivWeb() {
         Uri uri = Uri.parse(getStringResource(R.string.url_priv));
         shadowPackageManager.setQueryIntentImplicitly(true);
         shadowPackageManager.addResolveInfoForIntent(new Intent(Intent.ACTION_VIEW, uri),
@@ -145,13 +144,13 @@ public class SettingsActivityTest {
     }
 
     @Test
-    public void onCreate_setsLicense() {
+    public void onCreateSetsLicense() {
         assertTextViewText(R.id.settings_header_license, R.string.settings_license);
         assertTextViewText(R.id.settings_item_license, R.string.settings_license_text);
     }
 
     @Test
-    public void onOptionsItemSelected_whenHome_finishes() {
+    public void onOptionsItemSelectedWhenHomeFinishes() {
         controller.start();
 
         MenuItem item = mock(MenuItem.class);
@@ -162,7 +161,7 @@ public class SettingsActivityTest {
     }
 
     @Test
-    public void loadData_whenError_showsErrorView() {
+    public void loadDataWhenErrorShowsErrorView() {
         when(api.getPlayBillingRepository())
                 .thenReturn(Observable.error(new Throwable()));
 
@@ -173,7 +172,7 @@ public class SettingsActivityTest {
     }
 
     @Test
-    public void loadData_whenSuccess_showsDataViews() {
+    public void loadDataWhenSuccessShowsDataViews() {
         Repository repository = RepositoryFactory.create();
         when(api.getPlayBillingRepository())
                 .thenReturn(Observable.just(repository));
@@ -185,7 +184,7 @@ public class SettingsActivityTest {
     }
 
     @Test
-    public void showGitHubDataWhenFailureThenSuccess() {
+    public void loadDataWhenFailThenSuccessShowsDataViews() {
         Repository repository = RepositoryFactory.create();
 
         when(api.getPlayBillingRepository())
