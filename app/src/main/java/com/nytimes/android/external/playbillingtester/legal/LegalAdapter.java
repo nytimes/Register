@@ -1,6 +1,5 @@
 package com.nytimes.android.external.playbillingtester.legal;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,9 +21,9 @@ public class LegalAdapter extends RecyclerView.Adapter<LegalViewHolder> {
     @NonNull
     private final LayoutInflater inflater;
 
-    LegalAdapter(@NonNull Context context, List<Map.Entry<String, String>> licenseList) {
-        inflater = LayoutInflater.from(context);
-        items = new ArrayList<>(licenseList);
+    LegalAdapter(@NonNull LayoutInflater inflater, @NonNull List<Map.Entry<String, String>> items) {
+        this.inflater = inflater;
+        this.items = new ArrayList<>(items);
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 
 import com.nytimes.android.external.playbillingtester.R;
@@ -42,7 +43,8 @@ public class LegalActivity extends AppCompatActivity {
         legalRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         List<Map.Entry<String, String>> items = inflateData();
-        LegalAdapter legalAdapter = new LegalAdapter(this, items);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        LegalAdapter legalAdapter = new LegalAdapter(inflater, items);
         legalRecyclerView.setAdapter(legalAdapter);
     }
 
