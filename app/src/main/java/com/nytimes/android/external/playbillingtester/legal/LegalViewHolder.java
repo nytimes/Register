@@ -21,8 +21,8 @@ public class LegalViewHolder extends RecyclerView.ViewHolder {
 
     public LegalViewHolder(@NonNull View itemView) {
         super(itemView);
-        title = itemView.findViewById(R.id.legal_item_title);
-        body = itemView.findViewById(R.id.legal_item_body);
+        title = (TextView) itemView.findViewById(R.id.legal_item_title);
+        body = (TextView) itemView.findViewById(R.id.legal_item_body);
     }
 
     public void onBind(@NonNull Map.Entry<String, String> legalText) {

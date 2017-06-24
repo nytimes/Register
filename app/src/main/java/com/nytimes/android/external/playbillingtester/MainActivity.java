@@ -38,7 +38,7 @@ import javax.inject.Inject;
  * * Display/Purge purchased items
  */
 @SuppressWarnings("PMD.GodClass")
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     @Inject
     protected Purchases purchases;
@@ -235,24 +235,34 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private int getApiOverridesValue(@IdRes int containerLayoutId) {
+        int apiValue;
         switch (containerLayoutId) {
             case R.id.isBillingSupported:
-                return apiOverrides.getIsBillingSupportedResponse();
+                apiValue = apiOverrides.getIsBillingSupportedResponse();
+                break;
             case R.id.getBuyIntent:
-                return apiOverrides.getGetBuyIntentResponse();
+                apiValue = apiOverrides.getGetBuyIntentResponse();
+                break;
             case R.id.buy:
-                return apiOverrides.getBuyResponse();
+                apiValue = apiOverrides.getBuyResponse();
+                break;
             case R.id.getPurchases:
-                return apiOverrides.getGetPurchasesResponse();
+                apiValue = apiOverrides.getGetPurchasesResponse();
+                break;
             case R.id.getSkuDetails:
-                return apiOverrides.getGetSkuDetailsResponse();
+                apiValue = apiOverrides.getGetSkuDetailsResponse();
+                break;
             case R.id.consumePurchase:
-                return apiOverrides.getConsumePurchaseResponse();
+                apiValue = apiOverrides.getConsumePurchaseResponse();
+                break;
             case R.id.getBuyIntentToReplaceSkus:
-                return apiOverrides.getGetBuyIntentToReplaceSkusResponse();
+                apiValue = apiOverrides.getGetBuyIntentToReplaceSkusResponse();
+                break;
             default:
-                return -1;
+                apiValue = -1;
+                break;
         }
+        return apiValue;
     }
 
     private int getResponseCodeListIndex(int responseCode, List<ConfigResponse> items) {

@@ -72,12 +72,12 @@ public class SettingsActivityTest {
         testObject.api = api;
         testObject.provider = new TestSchedulerProvider();
 
-        githubCardRoot = testObject.findViewById(R.id.settings_github);
-        githubCardName = testObject.findViewById(R.id.github_repo_name);
-        githubCardCommit = testObject.findViewById(R.id.github_repo_last_commit);
-        githubCardDesc = testObject.findViewById(R.id.github_repo_desc);
-        githubCardForks = testObject.findViewById(R.id.github_repo_forks);
-        githubCardStars = testObject.findViewById(R.id.github_repo_stars);
+        githubCardRoot = (ViewGroup) testObject.findViewById(R.id.settings_github);
+        githubCardName = (TextView) testObject.findViewById(R.id.github_repo_name);
+        githubCardCommit = (TextView) testObject.findViewById(R.id.github_repo_last_commit);
+        githubCardDesc = (TextView) testObject.findViewById(R.id.github_repo_desc);
+        githubCardForks = (TextView) testObject.findViewById(R.id.github_repo_forks);
+        githubCardStars = (TextView) testObject.findViewById(R.id.github_repo_stars);
         githubError = testObject.findViewById(R.id.github_error);
 
         shadowActivity = Shadow.extract(testObject);
