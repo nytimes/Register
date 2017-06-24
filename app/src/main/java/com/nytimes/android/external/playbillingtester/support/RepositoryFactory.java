@@ -8,7 +8,9 @@ import java.util.Random;
 
 public final class RepositoryFactory {
 
-    static final String[] ORG_NAMES = new String[]{
+    private static final Random RANDOM = new Random();
+
+    private static final String[] ORG_NAMES = new String[]{
             "nytimes", "google", "square", "usa", "poland", "newyork", "california", "dog"
     };
 
@@ -56,15 +58,15 @@ public final class RepositoryFactory {
     }
 
     private static int getRandomStargazersCount() {
-        return new Random().nextInt(1000);
+        return RANDOM.nextInt(1000);
     }
 
     private static int getRandomForksCount() {
-        return new Random().nextInt(1000);
+        return RANDOM.nextInt(1000);
     }
 
     private static String getRandomRepoName() {
-        return REPO_NAMES[new Random().nextInt(REPO_NAMES.length)];
+        return REPO_NAMES[RANDOM.nextInt(REPO_NAMES.length)];
     }
 
     private static String getRandomFullName() {
@@ -74,18 +76,18 @@ public final class RepositoryFactory {
     }
 
     private static Date getRandomPushedAt() {
-        long startTime = 100000000L + new Random().nextInt(100000);
+        long startTime = 100000000L + RANDOM.nextInt(100000);
         return new Date(startTime);
     }
 
     private static String getRandomDesc() {
-        int start = new Random().nextInt(DESCRIPTION.length() / 2);
-        int end = start + new Random().nextInt(DESCRIPTION.length() / 2);
+        int start = RANDOM.nextInt(DESCRIPTION.length() / 2);
+        int end = start + RANDOM.nextInt(DESCRIPTION.length() / 2);
         return DESCRIPTION.substring(start, end);
     }
 
     private static String getRandomLanguage() {
-        return LANGUAGES[new Random().nextInt(LANGUAGES.length)];
+        return LANGUAGES[RANDOM.nextInt(LANGUAGES.length)];
     }
 
     private static String getRandomHtmlUrl() {
@@ -95,7 +97,7 @@ public final class RepositoryFactory {
     }
 
     private static String getRandomOrganizationName() {
-        return ORG_NAMES[new Random().nextInt(ORG_NAMES.length)];
+        return ORG_NAMES[RANDOM.nextInt(ORG_NAMES.length)];
     }
 
     private RepositoryFactory () {}
