@@ -39,6 +39,7 @@ ext.versions = [
         javaxInject          : '1',
         rxJava               : '2.1.0',
         rxAndroid            : '2.0.1',
+        retrofit             : '2.3.0',
 
         // Debugging & Inspecting.
         slf4j                : '1.7.19',
@@ -73,6 +74,9 @@ ext.libraries = [
         javaxInject             : "javax.inject:javax.inject:$versions.javaxInject",
         rxJava                  : "io.reactivex.rxjava2:rxjava:$versions.rxJava",
         rxAndroid               : "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid",
+        retrofit                : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+        retrofitConverter       : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+        retrofitAdapter         : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
 
         // Debugging & Inspecting.
         slf4jTesting            : "org.slf4j:slf4j-simple:$versions.slf4j",

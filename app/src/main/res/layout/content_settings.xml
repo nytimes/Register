@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/settings_github"
+            layout="@layout/layout_github_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp" />
+
+        <include
+            android:id="@+id/settings_header_general"
+            layout="@layout/layout_settings_header"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/settings_item_import"
+            layout="@layout/layout_settings_item_clickable"
+            android:visibility="gone" />
+
+        <include
+            layout="@layout/layout_settings_div"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/settings_header_other"
+            layout="@layout/layout_settings_header" />
+
+        <include
+            android:id="@+id/settings_item_legal"
+            layout="@layout/layout_settings_item_clickable" />
+
+        <include
+            android:id="@+id/settings_item_priv"
+            layout="@layout/layout_settings_item_clickable" />
+
+        <include
+            android:id="@+id/settings_item_tos"
+            layout="@layout/layout_settings_item_clickable" />
+
+        <include layout="@layout/layout_settings_div"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/settings_header_dev"
+            layout="@layout/layout_settings_header"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/settings_item_dev"
+            layout="@layout/layout_settings_item"
+            android:visibility="gone"/>
+
+        <include layout="@layout/layout_settings_div" />
+
+        <include
+            android:id="@+id/settings_header_license"
+            layout="@layout/layout_settings_header" />
+
+        <include
+            android:id="@+id/settings_item_license"
+            layout="@layout/layout_settings_item" />
+
+    </LinearLayout>
+
+</ScrollView>

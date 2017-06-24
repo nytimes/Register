@@ -59,7 +59,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
     private CharSequence getTimeLapsed(String timeString){
         long purchaseTime = Long.parseLong(timeString);
-        return DateUtils.getRelativeTimeSpanString(purchaseTime);
+        return DateUtils.getRelativeTimeSpanString(purchaseTime,
+                System.currentTimeMillis(),
+                DateUtils.SECOND_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_ALL);
     }
 
     @Override

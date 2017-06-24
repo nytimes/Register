@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nytimes.android.external.playbillingtester">
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
@@ -22,11 +23,13 @@
         <activity
             android:name=".ConfigActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.Register.Translucent">
-        </activity>
+            android:theme="@style/Theme.Register.Translucent"/>
 
         <activity android:name=".SettingsActivity"
             android:label="@string/settings_name"/>
+
+        <activity android:name=".legal.LegalActivity"
+            android:label="@string/settings_other_legal"/>
 
         <service
             android:name=".PlayBillingTesterService"

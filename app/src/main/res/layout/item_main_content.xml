@@ -14,29 +14,40 @@
         android:textColor="?android:attr/textColorPrimary"
         tools:text="com.nytimes.googleplay.bundle.x.v1.Monthly" />
 
-    <TextView
-        android:id="@+id/item_product_type"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/item_product_type_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_product_name"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="6dp"
-        android:gravity="center"
-        android:fontFamily="monospace"
-        android:paddingStart="5dp"
-        android:paddingTop="3dp"
-        android:paddingEnd="5dp"
-        android:paddingBottom="3dp"
-        android:background="@drawable/bg_product_type"
-        android:textSize="12sp"
-        tools:text="SUB" />
+        android:layout_toStartOf="@+id/item_product_purchase_date">
+
+        <TextView
+            android:id="@+id/item_product_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:fontFamily="monospace"
+            android:paddingStart="5dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="5dp"
+            android:maxLines="2"
+            android:paddingBottom="3dp"
+            android:background="@drawable/bg_product_type"
+            android:textSize="12sp"
+            tools:text="SUB" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/item_product_purchase_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignBaseline="@+id/item_product_type"
+        android:gravity="center"
+        android:layout_alignTop="@+id/item_product_type_container"
+        android:layout_alignBottom="@+id/item_product_type_container"
         android:textSize="12sp"
         tools:text="2 Days ago" />
 
