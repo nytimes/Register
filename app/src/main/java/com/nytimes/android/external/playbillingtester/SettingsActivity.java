@@ -233,7 +233,7 @@ public class SettingsActivity extends AppCompatActivity {
         githubCardStars.setVisibility(View.VISIBLE);
 
         githubCardName.setText(repository.fullName());
-        githubCardCommit.setText(DateUtils.getRelativeTimeSpanString (repository.pushedAt().getTime(),
+        githubCardCommit.setText(DateUtils.getRelativeTimeSpanString(repository.pushedAt().getTime(),
                 System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS, DateUtils.FORMAT_ABBREV_ALL));
         githubCardDesc.setText(repository.description());
         githubCardForks.setText(numberFormat.format(repository.forksCount()));
@@ -291,31 +291,31 @@ public class SettingsActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public static class TransitionListenerAdapter implements Transition.TransitionListener{
+    private static class TransitionListenerAdapter implements Transition.TransitionListener {
 
         @Override
         public void onTransitionStart(Transition transition) {
-
+            // No op
         }
 
         @Override
         public void onTransitionEnd(Transition transition) {
-
+            // No op
         }
 
         @Override
         public void onTransitionCancel(Transition transition) {
-
+            // No op
         }
 
         @Override
         public void onTransitionPause(Transition transition) {
-
+            // No op
         }
 
         @Override
         public void onTransitionResume(Transition transition) {
-
+            // No op
         }
     }
 }

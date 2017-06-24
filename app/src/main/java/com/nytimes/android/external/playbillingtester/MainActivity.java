@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nytimes.android.external.playbillingtester.di.Injector;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
@@ -37,13 +36,12 @@ import javax.inject.Inject;
  * * Start/stop service
  * * Display/Purge purchased items
  */
-@SuppressWarnings("PMD.GodClass")
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     @Inject
     protected Purchases purchases;
     @Inject
-    protected APIOverrides apiOverrides;
+    protected APIOverridesDelegate apiDelegate;
 
     private MainAdapter adapter;
     private SwipeRefreshLayout swipeRefresh;
@@ -60,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         initToolbar();
         initAppBarLayout();
         initRecycler();
-        initSwipeRefresh();
 
         emptyView = findViewById(R.id.empty_view);
     }
@@ -100,30 +97,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void initRecycler() {
+        swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        swipeRefresh.setOnRefreshListener(this);
+
         adapter = new MainAdapter(this);
         adapter.setHasStableIds(true);
-        adapter.setCallback(new MainAdapter.OnItemCallback() {
-            @Override
-            public void onItemClicked(InAppPurchaseData item) {
-                // No op
-            }
-
-            @Override
-            public void onItemDeleted(InAppPurchaseData item) {
-                Toast.makeText(MainActivity.this, "Delete " + item, Toast.LENGTH_SHORT).show();
-            }
-        });
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(
                 this, DividerItemDecoration.VERTICAL));
-    }
-
-    private void initSwipeRefresh() {
-        swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
-        swipeRefresh.setOnRefreshListener(this);
     }
 
     @Override
@@ -136,7 +120,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         initSpinner(R.id.getPurchases, R.string.get_purchases, R.array.getPurchases_spinner);
         initSpinner(R.id.getSkuDetails, R.string.get_sku_details, R.array.getSkuDetails_spinner);
         initSpinner(R.id.consumePurchase, R.string.consume_purchases, R.array.consumePurchase_spinner);
-        initSpinner(R.id.getBuyIntentToReplaceSkus, R.string.buy_intent_replace_skus, R.array.buy_intent_replace_skus_spinner);
+        initSpinner(R.id.getBuyIntentToReplaceSkus, R.string.buy_intent_replace_skus,
+                R.array.buy_intent_replace_skus_spinner);
     }
 
     private void initSpinner(@IdRes int containerLayoutId, @StringRes int titleResId, @ArrayRes int entriesResId) {
@@ -160,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (spinner.getTag() == null) {
                     ConfigResponse item = (ConfigResponse) configResponseAdapter.getItem(position);
-                    setApiOverridesValue(containerLayoutId, item);
+                    apiDelegate.setApiOverridesValue(containerLayoutId, item);
                 } else {
                     spinner.setTag(null);
                 }
@@ -172,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
 
-        int currentConfigResponseCode = getApiOverridesValue(containerLayoutId);
+        int currentConfigResponseCode = apiDelegate.getApiOverridesValue(containerLayoutId);
         int spinnerSelectionIndex = getResponseCodeListIndex(currentConfigResponseCode, items);
         if (spinnerSelectionIndex != -1) {
             spinner.setSelection(spinnerSelectionIndex, false);
@@ -203,66 +188,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         String resourceCodeName = name + "_code";
         int resId = getResources().getIdentifier(resourceCodeName, "integer", getPackageName());
         return getResources().getInteger(resId);
-    }
-
-    private void setApiOverridesValue(int containerLayoutId, ConfigResponse item) {
-        switch (containerLayoutId) {
-            case R.id.isBillingSupported:
-                apiOverrides.setIsBillingSupportedResponse(item.responseCode());
-                break;
-            case R.id.getBuyIntent:
-                apiOverrides.setGetBuyIntentResponse(item.responseCode());
-                break;
-            case R.id.buy:
-                apiOverrides.setBuyResponse(item.responseCode());
-                break;
-            case R.id.getPurchases:
-                apiOverrides.setGetPurchasesResponse(item.responseCode());
-                break;
-            case R.id.getSkuDetails:
-                apiOverrides.setGetSkuDetailsResponse(item.responseCode());
-                break;
-            case R.id.consumePurchase:
-                apiOverrides.setConsumePurchaseResponse(item.responseCode());
-                break;
-            case R.id.getBuyIntentToReplaceSkus:
-                apiOverrides.setGetBuyIntentToReplaceSkusResponse(item.responseCode());
-                break;
-            default:
-                // unknown id
-                break;
-        }
-    }
-
-    private int getApiOverridesValue(@IdRes int containerLayoutId) {
-        int apiValue;
-        switch (containerLayoutId) {
-            case R.id.isBillingSupported:
-                apiValue = apiOverrides.getIsBillingSupportedResponse();
-                break;
-            case R.id.getBuyIntent:
-                apiValue = apiOverrides.getGetBuyIntentResponse();
-                break;
-            case R.id.buy:
-                apiValue = apiOverrides.getBuyResponse();
-                break;
-            case R.id.getPurchases:
-                apiValue = apiOverrides.getGetPurchasesResponse();
-                break;
-            case R.id.getSkuDetails:
-                apiValue = apiOverrides.getGetSkuDetailsResponse();
-                break;
-            case R.id.consumePurchase:
-                apiValue = apiOverrides.getConsumePurchaseResponse();
-                break;
-            case R.id.getBuyIntentToReplaceSkus:
-                apiValue = apiOverrides.getGetBuyIntentToReplaceSkusResponse();
-                break;
-            default:
-                apiValue = -1;
-                break;
-        }
-        return apiValue;
     }
 
     private int getResponseCodeListIndex(int responseCode, List<ConfigResponse> items) {
@@ -301,12 +226,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
-    protected void onDestroy() {
-        adapter.destroy();
-        super.onDestroy();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -315,15 +234,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
-    @SuppressWarnings("PMD.MissingBreakInSwitch")
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_action_delete_all:
                 purchases.purgePurchases();
-                startRefresh();
+                swipeRefresh.setRefreshing(true);
+                swipeRefresh.postDelayed(this::onRefresh, 300);
                 return true;
             case R.id.menu_action_refresh:
-                startRefresh();
+                swipeRefresh.setRefreshing(true);
+                swipeRefresh.postDelayed(this::onRefresh, 300);
                 return true;
             case R.id.menu_action_settings:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
@@ -341,11 +261,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         PermissionHandler.handlePermissionResult(requestCode, this, grantResults);
-    }
-
-    private void startRefresh() {
-        swipeRefresh.setRefreshing(true);
-        swipeRefresh.postDelayed(this::onRefresh, 300);
     }
 
     @Override
