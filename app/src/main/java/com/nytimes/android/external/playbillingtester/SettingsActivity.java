@@ -11,13 +11,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
-import android.support.transition.Transition;
-import android.support.transition.TransitionInflater;
-import android.support.transition.TransitionManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,17 +78,18 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void initRoot() {
-        ViewGroup layout = findViewById(R.id.root);
+        ViewGroup layout = (ViewGroup) findViewById(R.id.root);
         LayoutTransition layoutTransition = layout.getLayoutTransition();
         layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
     }
 
     private void initGithub() {
+
         TransitionInflater inflater = TransitionInflater.from(this);
         showDataTransition = inflater.inflateTransition(R.transition.transition_github_data);
         showErrorTransition = inflater.inflateTransition(R.transition.transition_github_error);
         showDefaultTransition = inflater.inflateTransition(R.transition.transition_github_default);
-        showDefaultTransition.addListener(new Transition.TransitionListenerAdapter() {
+        showDefaultTransition.addListener(new TransitionListenerAdapter() {
             @Override
             public void onTransitionEnd(@NonNull Transition transition) {
                 loadGithubRepoData(true);
@@ -97,18 +98,18 @@ public class SettingsActivity extends AppCompatActivity {
 
         numberFormat = NumberFormat.getIntegerInstance();
 
-        githubCardRoot = findViewById(R.id.settings_github);
-        githubCardName = findViewById(R.id.github_repo_name);
-        githubCardCommit = findViewById(R.id.github_repo_last_commit);
-        githubCardDesc = findViewById(R.id.github_repo_desc);
-        githubCardForks = findViewById(R.id.github_repo_forks);
-        githubCardStars = findViewById(R.id.github_repo_stars);
+        githubCardRoot = (ViewGroup) findViewById(R.id.settings_github);
+        githubCardName = (TextView) findViewById(R.id.github_repo_name);
+        githubCardCommit = (TextView) findViewById(R.id.github_repo_last_commit);
+        githubCardDesc = (TextView) findViewById(R.id.github_repo_desc);
+        githubCardForks = (TextView) findViewById(R.id.github_repo_forks);
+        githubCardStars = (TextView) findViewById(R.id.github_repo_stars);
         githubError = findViewById(R.id.github_error);
         githubImage = findViewById(R.id.github_logo);
     }
 
     private void initToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -142,10 +143,10 @@ public class SettingsActivity extends AppCompatActivity {
                                 View.OnClickListener clickListener) {
         View v = findViewById(layout);
 
-        TextView title = v.findViewById(R.id.settings_item_title);
+        TextView title = (TextView) v.findViewById(R.id.settings_item_title);
         title.setText(titleRes);
 
-        TextView desc = v.findViewById(R.id.settings_item_summary);
+        TextView desc = (TextView) v.findViewById(R.id.settings_item_summary);
         if (summaryRes > -1) {
             desc.setText(summaryRes);
             desc.setVisibility(View.VISIBLE);
@@ -165,7 +166,7 @@ public class SettingsActivity extends AppCompatActivity {
         title.setOnClickListener(onClick);
 
         String source = getString(R.string.settings_dev_by_text);
-        TextView summ = findViewById(R.id.settings_item_dev);
+        TextView summ = (TextView) findViewById(R.id.settings_item_dev);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             summ.setText(Html.fromHtml(source, Html.FROM_HTML_MODE_LEGACY));
         } else {
@@ -181,7 +182,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private TextView setText(@IdRes int viewId, @StringRes int stringResId) {
-        TextView v = findViewById(viewId);
+        TextView v = (TextView) findViewById(viewId);
         v.setText(stringResId);
         return v;
     }
@@ -232,7 +233,7 @@ public class SettingsActivity extends AppCompatActivity {
         githubCardStars.setVisibility(View.VISIBLE);
 
         githubCardName.setText(repository.fullName());
-        githubCardCommit.setText(DateUtils.getRelativeTimeSpanString (repository.pushedAt().getTime(),
+        githubCardCommit.setText(DateUtils.getRelativeTimeSpanString(repository.pushedAt().getTime(),
                 System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS, DateUtils.FORMAT_ABBREV_ALL));
         githubCardDesc.setText(repository.description());
         githubCardForks.setText(numberFormat.format(repository.forksCount()));
@@ -288,5 +289,33 @@ public class SettingsActivity extends AppCompatActivity {
             subs = null;
         }
         super.onDestroy();
+    }
+
+    private static class TransitionListenerAdapter implements Transition.TransitionListener {
+
+        @Override
+        public void onTransitionStart(Transition transition) {
+            // No op
+        }
+
+        @Override
+        public void onTransitionEnd(Transition transition) {
+            // No op
+        }
+
+        @Override
+        public void onTransitionCancel(Transition transition) {
+            // No op
+        }
+
+        @Override
+        public void onTransitionPause(Transition transition) {
+            // No op
+        }
+
+        @Override
+        public void onTransitionResume(Transition transition) {
+            // No op
+        }
     }
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="12dp">
+
+    <TableRow android:weightSum="2">
+
+        <include
+            android:id="@+id/isBillingSupported"
+            style="@style/Config.Row.Left"
+            layout="@layout/layout_config_spinner" />
+
+        <include
+            android:id="@+id/getBuyIntent"
+            style="@style/Config.Row.Right"
+            layout="@layout/layout_config_spinner" />
+
+    </TableRow>
+
+    <TableRow android:weightSum="2">
+
+        <include
+            android:id="@+id/buy"
+            style="@style/Config.Row.Left"
+            layout="@layout/layout_config_spinner" />
+
+        <include
+            android:id="@+id/getPurchases"
+            style="@style/Config.Row.Right"
+            layout="@layout/layout_config_spinner" />
+
+    </TableRow>
+
+    <TableRow android:weightSum="2">
+
+        <include
+            android:id="@+id/getSkuDetails"
+            style="@style/Config.Row.Left"
+            layout="@layout/layout_config_spinner" />
+
+        <include
+            android:id="@+id/consumePurchase"
+            style="@style/Config.Row.Right"
+            layout="@layout/layout_config_spinner" />
+
+    </TableRow>
+
+    <TableRow android:weightSum="2">
+
+        <include
+            android:id="@+id/getBuyIntentToReplaceSkus"
+            style="@style/Config.Row.Left"
+            layout="@layout/layout_config_spinner" />
+
+        <Space
+            android:id="@+id/replace"
+            style="@style/Config.Row.Right"
+            android:layout_height="wrap_content"/>
+
+    </TableRow>
+
+</TableLayout>

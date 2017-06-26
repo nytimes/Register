@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.daimajia.swipe.SwipeLayout;
 import com.nytimes.android.external.playbillingtesterlib.InAppPurchaseData;
 
 import java.util.ArrayList;
@@ -16,8 +15,7 @@ import java.util.List;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
 
-    private OnItemCallback callback;
-    private LayoutInflater inflater;
+    private final LayoutInflater inflater;
     private final List<InAppPurchaseData> items;
 
     MainAdapter(Context context){
@@ -44,17 +42,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
         holder.productTitle.setText(item.purchaseToken());
         holder.productTypeView.setText(item.productId());
         holder.purchaseDateView.setText(getTimeLapsed(item.purchaseTime()));
-        holder.contentView.setOnClickListener(v -> {
-            if (holder.swipeLayout.getDragDistance() == 0){
-                if (callback != null){
-                    callback.onItemClicked(item);
-                }
-            } else {
-                holder.swipeLayout.close(true);
-            }
-        });
-        holder.delete.setOnClickListener(callback == null ?
-                null : v -> callback.onItemDeleted(item));
     }
 
     private CharSequence getTimeLapsed(String timeString){
@@ -77,50 +64,18 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
         notifyDataSetChanged();
     }
 
-    void destroy(){
-        callback = null;
-        inflater = null;
-        items.clear();
-    }
-
-    void setCallback(OnItemCallback callback) {
-        this.callback = callback;
-    }
-
-    @Override
-    public void onViewRecycled(MainViewHolder holder) {
-        super.onViewRecycled(holder);
-        holder.swipeLayout.close(false, false);
-    }
-
     static class MainViewHolder extends RecyclerView.ViewHolder {
 
-        private final SwipeLayout swipeLayout;
-        private final View contentView;
-        private final View bottomView;
         private final TextView productTitle;
         private final TextView productTypeView;
         private final TextView purchaseDateView;
-        private final View delete;
 
         MainViewHolder(View itemView) {
             super(itemView);
 
-            contentView = itemView.findViewById(R.id.item_main_top);
-            bottomView = itemView.findViewById(R.id.item_main_bottom);
-            productTitle = itemView.findViewById(R.id.item_product_name);
-            productTypeView = itemView.findViewById(R.id.item_product_type);
-            purchaseDateView = itemView.findViewById(R.id.item_product_purchase_date);
-            delete = itemView.findViewById(R.id.item_product_delete);
-
-            swipeLayout = (SwipeLayout) itemView;
-            swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
-            swipeLayout.addDrag(SwipeLayout.DragEdge.Left, bottomView);
+            productTitle = (TextView) itemView.findViewById(R.id.item_product_name);
+            productTypeView = (TextView) itemView.findViewById(R.id.item_product_type);
+            purchaseDateView = (TextView) itemView.findViewById(R.id.item_product_purchase_date);
         }
-    }
-
-    interface OnItemCallback {
-        void onItemClicked(InAppPurchaseData item);
-        void onItemDeleted(InAppPurchaseData item);
     }
 }

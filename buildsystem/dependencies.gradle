@@ -4,7 +4,6 @@ allprojects {
         maven {
             url 'https://plugins.gradle.org/m2/'
         }
-
         maven {
             url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
         }
@@ -20,12 +19,12 @@ allprojects {
 
 ext.versions = [
         minSdk               : 16,
-        targetSdk            : 26,
-        compileSdk           : 26,
+        targetSdk            : 25,
+        compileSdk           : 25,
         buildTools           : '26.0.0-beta2',
 
         // UI libs.
-        supportLibs          : '26.0.0-beta2',
+        supportLibs          : '25.4.0',
         constraint           : '1.0.2',
         butterKnife          : '8.5.1',
         swipeLayout          : '1.2.0@aar',

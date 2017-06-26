@@ -2,7 +2,12 @@ package com.nytimes.android.external.playbillingtester;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.ArrayRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -11,7 +16,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.nytimes.android.external.playbillingtester.di.Injector;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
@@ -29,14 +36,18 @@ import javax.inject.Inject;
  * * Start/stop service
  * * Display/Purge purchased items
  */
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     @Inject
     protected Purchases purchases;
+    @Inject
+    protected APIOverridesDelegate apiDelegate;
 
     private MainAdapter adapter;
     private SwipeRefreshLayout swipeRefresh;
     private View emptyView;
+    private AppBarLayout appBarLayout;
+    private MenuItem configureMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +56,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         setContentView(R.layout.activity_main);
 
         initToolbar();
+        initAppBarLayout();
         initRecycler();
-        initSwipeRefresh();
 
         emptyView = findViewById(R.id.empty_view);
     }
@@ -56,36 +67,139 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void initToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.register);
         setSupportActionBar(toolbar);
     }
 
+    private void initAppBarLayout() {
+        View appBarContent = findViewById(R.id.app_bar_content);
+        appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        appBarLayout.setExpanded(false, false);
+        appBarLayout.addOnOffsetChangedListener((layout, verticalOffset) -> {
+            appBarContent.setTranslationY(-verticalOffset);
+
+            float verticalOffsetAbs = Math.abs(verticalOffset);
+            float totalScrollRange = appBarLayout.getTotalScrollRange();
+            float normalizedOffset = verticalOffsetAbs / totalScrollRange;
+
+            if (configureMenuItem != null) {
+                configureMenuItem.getIcon().setAlpha((int) (normalizedOffset * 255));
+                configureMenuItem.setVisible(normalizedOffset > 0);
+            }
+
+            float inverseVerticalOffset = totalScrollRange + verticalOffset;
+            float startCenter = emptyView.getHeight() / 2f;
+            float endCenter = (emptyView.getHeight() - inverseVerticalOffset) / 2;
+            float emptyYOffset = startCenter - endCenter;
+            emptyView.setTranslationY(-emptyYOffset);
+        });
+    }
+
     private void initRecycler() {
+        swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        swipeRefresh.setOnRefreshListener(this);
+
         adapter = new MainAdapter(this);
         adapter.setHasStableIds(true);
-        adapter.setCallback(new MainAdapter.OnItemCallback() {
-            @Override
-            public void onItemClicked(InAppPurchaseData item) {
-                // No op
-            }
 
-            @Override
-            public void onItemDeleted(InAppPurchaseData item) {
-                Toast.makeText(MainActivity.this, "Delete " + item, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        RecyclerView recyclerView = findViewById(R.id.list);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(
                 this, DividerItemDecoration.VERTICAL));
     }
 
-    private void initSwipeRefresh() {
-        swipeRefresh = findViewById(R.id.swiperefresh);
-        swipeRefresh.setOnRefreshListener(this);
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        initSpinner(R.id.isBillingSupported, R.string.is_billing_supported, R.array.isBillingEnabled_spinner);
+        initSpinner(R.id.getBuyIntent, R.string.get_buy_intent, R.array.getBuyIntent_spinner);
+        initSpinner(R.id.buy, R.string.buy_label, R.array.buy_spinner);
+        initSpinner(R.id.getPurchases, R.string.get_purchases, R.array.getPurchases_spinner);
+        initSpinner(R.id.getSkuDetails, R.string.get_sku_details, R.array.getSkuDetails_spinner);
+        initSpinner(R.id.consumePurchase, R.string.consume_purchases, R.array.consumePurchase_spinner);
+        initSpinner(R.id.getBuyIntentToReplaceSkus, R.string.buy_intent_replace_skus,
+                R.array.buy_intent_replace_skus_spinner);
+    }
+
+    private void initSpinner(@IdRes int containerLayoutId, @StringRes int titleResId, @ArrayRes int entriesResId) {
+        View container = findViewById(containerLayoutId);
+
+        // Set title
+        TextView title = (TextView) container.findViewById(R.id.config_title);
+        title.setText(titleResId);
+
+        // Get data
+        List<ConfigResponse> items = getData(entriesResId);
+
+        // Init Spinner
+        Spinner spinner = (Spinner) container.findViewById(R.id.config_spinner);
+        spinner.setTag("IGNORE_FIRST_SELECT");
+        ConfigSpinnerAdapter configResponseAdapter =
+                new ConfigSpinnerAdapter(this, items);
+        spinner.setAdapter(configResponseAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (spinner.getTag() == null) {
+                    ConfigResponse item = (ConfigResponse) configResponseAdapter.getItem(position);
+                    apiDelegate.setApiOverridesValue(containerLayoutId, item);
+                } else {
+                    spinner.setTag(null);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // No op
+            }
+        });
+
+        int currentConfigResponseCode = apiDelegate.getApiOverridesValue(containerLayoutId);
+        int spinnerSelectionIndex = getResponseCodeListIndex(currentConfigResponseCode, items);
+        if (spinnerSelectionIndex != -1) {
+            spinner.setSelection(spinnerSelectionIndex, false);
+        }
+    }
+
+    @NonNull
+    private List<ConfigResponse> getData(@ArrayRes int entriesResId) {
+        List<ConfigResponse> items = new ArrayList<>();
+        String[] entries = getResources().getStringArray(entriesResId);
+        for (String id : entries) {
+            items.add(ImmutableConfigResponse.builder()
+                    .responseId(id)
+                    .responseCode(getConfigResponseCode(id))
+                    .responseName(getConfigResponseName(id))
+                    .build());
+        }
+        return items;
+    }
+
+    @NonNull
+    private String getConfigResponseName(String name) {
+        int resId = getResources().getIdentifier(name, "string", getPackageName());
+        return getResources().getString(resId);
+    }
+
+    private int getConfigResponseCode(String name) {
+        String resourceCodeName = name + "_code";
+        int resId = getResources().getIdentifier(resourceCodeName, "integer", getPackageName());
+        return getResources().getInteger(resId);
+    }
+
+    private int getResponseCodeListIndex(int responseCode, List<ConfigResponse> items) {
+        int index = 0;
+        for (int i = 0, size = items.size(); i < size; i++) {
+            ConfigResponse item = items.get(i);
+            if (item.responseCode() == responseCode) {
+                index = i;
+                break;
+            }
+        }
+        return index;
     }
 
     @Override
@@ -112,37 +226,31 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
-    protected void onDestroy() {
-        adapter.destroy();
-        super.onDestroy();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        configureMenuItem = menu.findItem(R.id.menu_action_configure);
         return true;
     }
 
     @Override
-    @SuppressWarnings("PMD.MissingBreakInSwitch")
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_action_delete_all:
                 purchases.purgePurchases();
-                startRefresh();
+                swipeRefresh.setRefreshing(true);
+                swipeRefresh.postDelayed(this::onRefresh, 300);
                 return true;
             case R.id.menu_action_refresh:
-                startRefresh();
+                swipeRefresh.setRefreshing(true);
+                swipeRefresh.postDelayed(this::onRefresh, 300);
                 return true;
             case R.id.menu_action_settings:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
                 return true;
             case R.id.menu_action_configure:
-                Intent configureIntent = new Intent(this, ConfigActivity.class);
-                startActivity(configureIntent);
-                overridePendingTransition(R.anim.fade_in, 0);
+                appBarLayout.setExpanded(true, true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -153,11 +261,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         PermissionHandler.handlePermissionResult(requestCode, this, grantResults);
-    }
-
-    private void startRefresh() {
-        swipeRefresh.setRefreshing(true);
-        swipeRefresh.postDelayed(this::onRefresh, 300);
     }
 
     @Override

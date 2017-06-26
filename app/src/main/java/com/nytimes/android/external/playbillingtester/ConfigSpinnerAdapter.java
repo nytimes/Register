@@ -1,7 +1,6 @@
 package com.nytimes.android.external.playbillingtester;
 
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
@@ -77,12 +76,6 @@ public class ConfigSpinnerAdapter extends BaseAdapter {
         }
     }
 
-    @TargetApi(26)
-    @Override
-    public CharSequence[] getAutofillOptions() {
-        return new CharSequence[0];
-    }
-
     private static class ConfigViewHolder {
 
         private final View itemView;
@@ -94,9 +87,9 @@ public class ConfigSpinnerAdapter extends BaseAdapter {
             itemView = v;
             itemView.setTag(this);
 
-            codeView = itemView.findViewById(R.id.item_config_code);
-            nameView = itemView.findViewById(R.id.item_config_name);
-            iconView = itemView.findViewById(R.id.item_config_down_icon);
+            codeView = (TextView) itemView.findViewById(R.id.item_config_code);
+            nameView = (TextView) itemView.findViewById(R.id.item_config_name);
+            iconView = (ImageView) itemView.findViewById(R.id.item_config_down_icon);
         }
 
         void bind(ConfigResponse item, @ViewMode int mode) {

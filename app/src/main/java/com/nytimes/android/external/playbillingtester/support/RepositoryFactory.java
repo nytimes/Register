@@ -31,6 +31,9 @@ public final class RepositoryFactory {
             " Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit" +
             " anim id est laborum.";
 
+
+    private RepositoryFactory () {}
+
     public static Repository create() {
         return create(
                 getRandomRepoName(),
@@ -99,7 +102,5 @@ public final class RepositoryFactory {
     private static String getRandomOrganizationName() {
         return ORG_NAMES[RANDOM.nextInt(ORG_NAMES.length)];
     }
-
-    private RepositoryFactory () {}
 
 }

@@ -1,7 +1,6 @@
 package com.nytimes.android.external.playbillingtester.di;
 
 import com.nytimes.android.external.playbillingtester.BuyActivity;
-import com.nytimes.android.external.playbillingtester.ConfigActivity;
 import com.nytimes.android.external.playbillingtester.MainActivity;
 import com.nytimes.android.external.playbillingtester.SettingsActivity;
 
@@ -12,6 +11,5 @@ import dagger.Subcomponent;
 public interface ActivityComponent {
     void inject(MainActivity activity);
     void inject(BuyActivity activity);
-    void inject(ConfigActivity activity);
     void inject(SettingsActivity activity);
 }

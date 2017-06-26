@@ -33,13 +33,13 @@ public class LegalActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initRecycler() {
-        RecyclerView legalRecyclerView = findViewById(R.id.list);
+        RecyclerView legalRecyclerView = (RecyclerView) findViewById(R.id.list);
         legalRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         List<Map.Entry<String, String>> items = inflateData();
