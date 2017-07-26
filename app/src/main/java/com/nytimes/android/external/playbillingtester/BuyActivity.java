@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
@@ -50,7 +52,7 @@ public class BuyActivity extends AppCompatActivity {
     @Inject
     protected Gson gson;
     @Inject
-    protected Config config;
+    protected Optional<Config> config;
 
     long currentTimeMillis;
     private String sku, newSku;
@@ -106,10 +108,12 @@ public class BuyActivity extends AppCompatActivity {
 
     private void initTextBody(Bundle content) {
         TextView title = (TextView) findViewById(R.id.buy_title);
-        title.setText(content.getString(RESPONSE_EXTRA_TITLE));
+        title.setText(config.isPresent() ?
+                content.getString(RESPONSE_EXTRA_TITLE) : getString(R.string.no_config_title));
 
         TextView summary = (TextView) findViewById(R.id.buy_summary);
-        summary.setText(content.getString(RESPONSE_EXTRA_SUMMARY));
+        summary.setText(config.isPresent() ?
+                content.getString(RESPONSE_EXTRA_SUMMARY) : getString(R.string.no_config_text));
     }
 
     private void initBodyResultSuccess(Bundle content) {
@@ -137,7 +141,7 @@ public class BuyActivity extends AppCompatActivity {
         usersSpinner.setVisibility(View.VISIBLE);
 
         String currentUser = apiOverrides.getUsersResponse();
-        List<String> users = config.users();
+        List<String> users = config.isPresent() ? config.get().users() : ImmutableList.of();
         int index = users.indexOf(currentUser);
         int selectedItem = index == -1 ? 0 : index;
 
@@ -176,29 +180,31 @@ public class BuyActivity extends AppCompatActivity {
     }
 
     private void onBuy() {
-        String newReceipt = String.format(Locale.getDefault(), RECEIPT_FMT,
-                apiOverrides.getUsersResponse(), currentTimeMillis);
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_OK);
-        String skuToPurchase  = isReplace ? newSku : sku;
-        InAppPurchaseData inAppPurchaseData = new InAppPurchaseData.Builder()
-                .orderId(Long.toString(currentTimeMillis))
-                .packageName(config.skus().get(skuToPurchase).packageName())
-                .productId(skuToPurchase)
-                .purchaseTime(Long.toString(currentTimeMillis))
-                .developerPayload(developerPayload)
-                .purchaseToken(newReceipt)
-                .build();
-        String inAppPurchaseDataStr = gson.toJson(inAppPurchaseData);
-        boolean result;
-        if (isReplace) {
-            result = purchases.replacePurchase(inAppPurchaseDataStr, oldSkus);
-        } else {
-            result = purchases.addPurchase(inAppPurchaseDataStr, itemtype);
+        if (config.isPresent()) {
+            String newReceipt = String.format(Locale.getDefault(), RECEIPT_FMT,
+                    apiOverrides.getUsersResponse(), currentTimeMillis);
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_OK);
+            String skuToPurchase = isReplace ? newSku : sku;
+            InAppPurchaseData inAppPurchaseData = new InAppPurchaseData.Builder()
+                    .orderId(Long.toString(currentTimeMillis))
+                    .packageName(config.get().skus().get(skuToPurchase).packageName())
+                    .productId(skuToPurchase)
+                    .purchaseTime(Long.toString(currentTimeMillis))
+                    .developerPayload(developerPayload)
+                    .purchaseToken(newReceipt)
+                    .build();
+            String inAppPurchaseDataStr = gson.toJson(inAppPurchaseData);
+            boolean result;
+            if (isReplace) {
+                result = purchases.replacePurchase(inAppPurchaseDataStr, oldSkus);
+            } else {
+                result = purchases.addPurchase(inAppPurchaseDataStr, itemtype);
+            }
+            resultIntent.putExtra(GoogleUtil.INAPP_PURCHASE_DATA, inAppPurchaseDataStr);
+            setResult(result ? RESULT_OK : RESULT_CANCELED, resultIntent);
+            finish();
         }
-        resultIntent.putExtra(GoogleUtil.INAPP_PURCHASE_DATA, inAppPurchaseDataStr);
-        setResult(result ? RESULT_OK : RESULT_CANCELED, resultIntent);
-        finish();
     }
 
     private void onBuyAlreadyOwned() {
@@ -218,18 +224,20 @@ public class BuyActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         switch (buyResponse) {
             case GoogleUtil.RESULT_OK:
-                ConfigSku configSku = config.skus().get(isReplace ? newSku : sku);
+                if (config.isPresent()) {
+                    ConfigSku configSku = config.get().skus().get(isReplace ? newSku : sku);
 
-                bundle.putString(RESPONSE_EXTRA_TITLE, configSku.title());
-                bundle.putString(RESPONSE_EXTRA_SUMMARY, configSku.description());
-                bundle.putString(RESPONSE_EXTRA_PRICE, String.format(PRICE_FMT, configSku.price()));
+                    bundle.putString(RESPONSE_EXTRA_TITLE, configSku.title());
+                    bundle.putString(RESPONSE_EXTRA_SUMMARY, configSku.description());
+                    bundle.putString(RESPONSE_EXTRA_PRICE, String.format(PRICE_FMT, configSku.price()));
 
-                if (isReplace) {
-                    ArrayList<String> oldSkuTitles = new ArrayList<>();
-                    for (String oldSku : oldSkus) {
-                        oldSkuTitles.add(config.skus().get(oldSku).title());
+                    if (isReplace) {
+                        ArrayList<String> oldSkuTitles = new ArrayList<>();
+                        for (String oldSku : oldSkus) {
+                            oldSkuTitles.add(config.get().skus().get(oldSku).title());
+                        }
+                        bundle.putStringArrayList(RESPONSE_EXTRA_REPLACE_OLD_SKU, oldSkuTitles);
                     }
-                    bundle.putStringArrayList(RESPONSE_EXTRA_REPLACE_OLD_SKU, oldSkuTitles);
                 }
                 break;
             case GoogleUtil.RESULT_ITEM_UNAVAILABLE:
@@ -256,10 +264,13 @@ public class BuyActivity extends AppCompatActivity {
         return bundle;
     }
 
+    @SuppressWarnings("PMD.ConfusingTernary")
     private int getBuyResponse() {
         int response = apiOverrides.getBuyResponse();
         if (response == APIOverrides.RESULT_DEFAULT) {
-            if (config.skus().get(sku) == null) {
+            if (!config.isPresent()) {
+                response = GoogleUtil.RESULT_ERROR;
+            } else if (config.get().skus().get(sku) == null) {
                 response = GoogleUtil.RESULT_ITEM_UNAVAILABLE;
             } else if (purchases.getReceiptsForSkus(ImmutableSet.of(sku), itemtype).size() > 0) {
                 response = GoogleUtil.RESULT_ITEM_ALREADY_OWNED;
@@ -270,10 +281,13 @@ public class BuyActivity extends AppCompatActivity {
         return response;
     }
 
+    @SuppressWarnings("PMD.ConfusingTernary")
     private int getReplaceResponse() {
         int response = apiOverrides.getReplaceResponse();
         if (response == APIOverrides.RESULT_DEFAULT) {
-            if (config.skus().get(newSku) == null) {
+            if (!config.isPresent()) {
+                response = GoogleUtil.RESULT_ERROR;
+            } else if (config.get().skus().get(newSku) == null) {
                 response = GoogleUtil.RESULT_ITEM_UNAVAILABLE;
             } else if (GoogleUtil.BILLING_TYPE_IAP.equals(itemtype)) {
                 response = GoogleUtil.RESULT_ERROR;

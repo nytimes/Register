@@ -2,6 +2,7 @@ package com.nytimes.android.external.playbillingtester.bundle;
 
 import android.os.Bundle;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.nytimes.android.external.playbillingtester.APIOverrides;
@@ -47,7 +48,7 @@ public class SkuDetailsBundleBuilderTest {
         String title = "caps for sale";
         String price = "1.98";
 
-        testObject = new SkuDetailsBundleBuilder(apiOverrides, config, create());
+        testObject = new SkuDetailsBundleBuilder(apiOverrides, Optional.of(config), create());
         when(config.skus()).thenReturn(new ImmutableMap.Builder<String, ConfigSku>()
                 .put(SKU1, ImmutableConfigSku.builder()
                         .itemType(TYPE)

@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
+import com.nytimes.android.external.playbillingtester.model.Config;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 import com.nytimes.android.external.playbillingtesterlib.InAppPurchaseData;
 
@@ -57,6 +59,8 @@ public class MainActivityTest {
     private Purchases purchases;
     @Mock
     private APIOverridesDelegate mockApiDelegate;
+    @Mock
+    private Config config;
 
     private final InAppPurchaseData inAppPurchaseData1 = new InAppPurchaseData.Builder()
             .orderId(Long.toString(CURRENT_TIME_MS))
@@ -82,6 +86,7 @@ public class MainActivityTest {
         testObject = (MainActivity) controller.get();
         testObject.apiDelegate = mockApiDelegate;
         testObject.purchases = purchases;
+        testObject.config = Optional.of(config);
         shadowMain = Shadow.extract(testObject);
     }
 

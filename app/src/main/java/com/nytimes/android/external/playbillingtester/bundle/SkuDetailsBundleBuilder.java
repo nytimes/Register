@@ -2,6 +2,7 @@ package com.nytimes.android.external.playbillingtester.bundle;
 
 import android.os.Bundle;
 
+import com.google.common.base.Optional;
 import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtester.APIOverrides;
 import com.nytimes.android.external.playbillingtester.model.Config;
@@ -17,11 +18,11 @@ import javax.inject.Inject;
 public class SkuDetailsBundleBuilder extends BaseBundleBuilder {
 
     private List<String> detailsList;
-    private final Config config;
+    private final Optional<Config> config;
     private final Gson gson;
 
     @Inject
-    public SkuDetailsBundleBuilder(APIOverrides apiOverrides, Config config, Gson gson) {
+    public SkuDetailsBundleBuilder(APIOverrides apiOverrides, Optional<Config> config, Gson gson) {
         super(apiOverrides);
         this.config = config;
         this.gson = gson;
@@ -34,14 +35,16 @@ public class SkuDetailsBundleBuilder extends BaseBundleBuilder {
     }
 
     public SkuDetailsBundleBuilder skus(List<String> skus, String type) {
-        for (String sku : skus) {
-            sku(sku, type);
+        if (config.isPresent()) {
+            for (String sku : skus) {
+                sku(sku, type);
+            }
         }
         return this;
     }
 
     private void sku(String sku, String type) {
-        ConfigSku configSku = config.skus().get(sku);
+        ConfigSku configSku = config.get().skus().get(sku);
         if (configSku != null) {
             GoogleProductResponse googleProductResponse = new GoogleProductResponse.Builder()
                     .productId(sku)

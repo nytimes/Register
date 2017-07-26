@@ -6,11 +6,10 @@ import android.os.RemoteException;
 
 import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
-import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentToReplaceSkusBundleBuilder;
+import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.SkuDetailsBundleBuilder;
-import com.nytimes.android.external.playbillingtester.model.Config;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 
 import java.util.List;
@@ -20,7 +19,6 @@ import javax.inject.Inject;
 public class BillingServiceStubImpl extends IInAppBillingService.Stub {
 
     final Gson gson;
-    final Config config;
     private final APIOverrides apiOverrides;
     private final BuyIntentBundleBuilder buyIntentBundleBuilder;
     private final SkuDetailsBundleBuilder skuDetailsBundleBuilder;
@@ -29,7 +27,7 @@ public class BillingServiceStubImpl extends IInAppBillingService.Stub {
     private final BuyIntentToReplaceSkusBundleBuilder buyIntentToReplaceSkusBundleBuilder;
 
     @Inject
-    public BillingServiceStubImpl(APIOverrides apiOverrides, Gson gson, Config config,
+    public BillingServiceStubImpl(APIOverrides apiOverrides, Gson gson,
                                   BuyIntentBundleBuilder buyIntentBundleBuilder,
                                   SkuDetailsBundleBuilder skuDetailsBundleBuilder,
                                   PurchasesBundleBuilder purchasesBundleBuilder,
@@ -37,7 +35,6 @@ public class BillingServiceStubImpl extends IInAppBillingService.Stub {
                                   BuyIntentToReplaceSkusBundleBuilder buyIntentToReplaceSkusBundleBuilder) {
         this.apiOverrides = apiOverrides;
         this.gson = gson;
-        this.config = config;
         this.buyIntentBundleBuilder = buyIntentBundleBuilder;
         this.skuDetailsBundleBuilder = skuDetailsBundleBuilder;
         this.purchasesBundleBuilder = purchasesBundleBuilder;

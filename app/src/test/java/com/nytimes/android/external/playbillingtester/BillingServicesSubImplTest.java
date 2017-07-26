@@ -5,11 +5,10 @@ import android.os.RemoteException;
 
 import com.google.common.collect.ImmutableList;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
-import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentToReplaceSkusBundleBuilder;
+import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.SkuDetailsBundleBuilder;
-import com.nytimes.android.external.playbillingtester.model.Config;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 
 import org.junit.Before;
@@ -39,9 +38,6 @@ public class BillingServicesSubImplTest {
 
     @Mock
     private APIOverrides apiOverrides;
-
-    @Mock
-    private Config config;
 
     @Mock
     private BuyIntentBundleBuilder buyIntentBundleBuilder;
@@ -86,7 +82,7 @@ public class BillingServicesSubImplTest {
                 .thenReturn(buyIntentToReplaceSkusBundleBuilder);
         when(buyIntentToReplaceSkusBundleBuilder.type(anyString())).thenReturn(buyIntentToReplaceSkusBundleBuilder);
         when(buyIntentToReplaceSkusBundleBuilder.build()).thenReturn(expected);
-        testObject = new BillingServiceStubImpl(apiOverrides, create(), config,
+        testObject = new BillingServiceStubImpl(apiOverrides, create(),
                 buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder,
                 mock(ConsumePurchaseResponse.class), buyIntentToReplaceSkusBundleBuilder);
     }
