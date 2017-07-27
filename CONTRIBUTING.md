@@ -1,5 +1,5 @@
-Contributing to Play Billing Tester
-===================================
+Contributing to Register
+========================
 
 The New York Times team welcomes contributions of all kinds, from simple bug reports through documentation, test cases,
 bugfixes, and features.
