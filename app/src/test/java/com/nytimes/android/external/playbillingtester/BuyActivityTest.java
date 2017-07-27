@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
@@ -115,7 +116,7 @@ public class BuyActivityTest {
         testObject.apiOverrides = apiOverrides;
         testObject.purchases = purchases;
         testObject.gson = gson;
-        testObject.config = config;
+        testObject.config = Optional.of(config);
         shadowActivity = shadowOf(testObject);
 
         when(purchases.getPurchasesLists(TYPE, CONTINUATION_TOKEN)).thenReturn(purchasesLists);

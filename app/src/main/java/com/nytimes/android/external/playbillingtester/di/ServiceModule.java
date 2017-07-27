@@ -5,6 +5,7 @@ import android.app.Service;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 
+import com.google.common.base.Optional;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtester.APIOverrides;
@@ -14,12 +15,11 @@ import com.nytimes.android.external.playbillingtester.PermissionHandler;
 import com.nytimes.android.external.playbillingtester.Purchases;
 import com.nytimes.android.external.playbillingtester.R;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
-import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentToReplaceSkusBundleBuilder;
+import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
 import com.nytimes.android.external.playbillingtester.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.SkuDetailsBundleBuilder;
 import com.nytimes.android.external.playbillingtester.model.Config;
-import com.nytimes.android.external.playbillingtester.model.ImmutableConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,29 +51,29 @@ public class ServiceModule {
 
     @Provides
     @ScopeService
-    Config provideConfig(Gson gson) {
+    Optional<Config> provideConfig(Gson gson) {
         if (PermissionHandler.hasPermission(service)) {
             try {
-                return gson.fromJson(Files.newReader(new File(Environment.getExternalStorageDirectory().getPath(),
-                        CONFIG_FILE), UTF_8), Config.class);
+                return Optional.of(gson.fromJson(Files.newReader(new File(
+                        Environment.getExternalStorageDirectory().getPath(), CONFIG_FILE), UTF_8), Config.class));
             } catch (FileNotFoundException exc) {
                 LOGGER.error(service.getString(R.string.config_not_found), exc);
             }
         }
-        return ImmutableConfig.builder().build();
+        return Optional.absent();
     }
 
     @Provides
     @ScopeService
     IInAppBillingService.Stub provideBillingServiceStubImpl(APIOverrides apiOverrides,
-                                                            Gson gson, Config config,
+                                                            Gson gson,
                                                             BuyIntentBundleBuilder buyIntentBundleBuilder,
                                                             SkuDetailsBundleBuilder skuDetailsBundleBuilder,
                                                             PurchasesBundleBuilder purchasesBundleBuilder,
                                                             ConsumePurchaseResponse consumePurchaseResponse,
                                                             BuyIntentToReplaceSkusBundleBuilder
                                                                     buyIntentToReplaceSkusBundleBuilder) {
-        return new BillingServiceStubImpl(apiOverrides, gson, config, buyIntentBundleBuilder, skuDetailsBundleBuilder,
+        return new BillingServiceStubImpl(apiOverrides, gson, buyIntentBundleBuilder, skuDetailsBundleBuilder,
                 purchasesBundleBuilder, consumePurchaseResponse, buyIntentToReplaceSkusBundleBuilder);
     }
 
@@ -87,7 +87,7 @@ public class ServiceModule {
     @Provides
     @ScopeService
     SkuDetailsBundleBuilder provideSkuDetailsBundleBuilder(APIOverrides apiOverrides,
-                                                           Config config, Gson gson) {
+                                                           Optional<Config> config, Gson gson) {
         return new SkuDetailsBundleBuilder(apiOverrides, config, gson);
     }
 

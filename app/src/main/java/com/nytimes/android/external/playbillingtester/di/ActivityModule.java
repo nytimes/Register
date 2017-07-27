@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 
+import com.google.common.base.Optional;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtester.BuildConfig;
@@ -12,7 +13,6 @@ import com.nytimes.android.external.playbillingtester.GithubApi;
 import com.nytimes.android.external.playbillingtester.PermissionHandler;
 import com.nytimes.android.external.playbillingtester.R;
 import com.nytimes.android.external.playbillingtester.model.Config;
-import com.nytimes.android.external.playbillingtester.model.ImmutableConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,18 +53,18 @@ public class ActivityModule {
 
     @Provides
     @ScopeActivity
-    Config provideConfig(Gson gson) {
+    Optional<Config> provideConfig(Gson gson) {
         if (PermissionHandler.hasPermission(activity)) {
             try {
-                return gson.fromJson(Files.newReader(new File(Environment.getExternalStorageDirectory().getPath(),
-                        CONFIG_FILE), UTF_8), Config.class);
+                return Optional.of(gson.fromJson(Files.newReader(new File(
+                        Environment.getExternalStorageDirectory().getPath(), CONFIG_FILE), UTF_8), Config.class));
             } catch (FileNotFoundException exc) {
                 LOGGER.error(activity.getString(R.string.config_not_found), exc);
             }
         } else {
             PermissionHandler.requestPermission(activity);
         }
-        return ImmutableConfig.builder().build();
+        return Optional.absent();
     }
 
     @Provides

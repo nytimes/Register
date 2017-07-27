@@ -6,7 +6,6 @@ import com.google.common.collect.ImmutableList;
 import com.nytimes.android.external.playbillingtester.APIOverrides;
 import com.nytimes.android.external.playbillingtester.BillingServiceStubImpl;
 import com.nytimes.android.external.playbillingtester.Purchases;
-import com.nytimes.android.external.playbillingtester.model.Config;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 
 import org.junit.Before;
@@ -44,9 +43,6 @@ public class ConsumePurchaseResponseTest {
     private Purchases.PurchasesLists subscriptionsPurchasesLists;
 
     @Mock
-    private Config config;
-
-    @Mock
     private BuyIntentBundleBuilder buyIntentBundleBuilder;
 
     @Mock
@@ -80,7 +76,7 @@ public class ConsumePurchaseResponseTest {
         when(purchasesBundleBuilder.continuationToken(anyString())).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.build()).thenReturn(expected);
         ConsumePurchaseResponse consumePurchaseResponse = new ConsumePurchaseResponse(apiOverrides, purchases);
-        testObject = new BillingServiceStubImpl(apiOverrides, create(), config,
+        testObject = new BillingServiceStubImpl(apiOverrides, create(),
                 buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseResponse,
                 buyIntentToReplaceSkusBundleBuilder);
     }

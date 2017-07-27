@@ -39,9 +39,10 @@
     <string name="config_replace">replace()</string>
 
 
-    <string name="empty_message_text">There are no purchases available, please integrate the Register Library into your app if you haven\'t done so already.</string>
+    <string name="empty_message_text">There are no purchases available. Please integrate the Register Library into your app if you haven\'t done so already.</string>
     <string name="empty_message_title">No purchases</string>
-
+    <string name="no_config_text">There is no config file. Please push playbillingtester.json file to sdcard/, restart the app, and accept file permissions.</string>
+    <string name="no_config_title">No config file</string>
     <!-- Buy-->
     <string name="title_activity_buy">BuyActivity</string>
 

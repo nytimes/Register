@@ -20,7 +20,9 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.common.base.Optional;
 import com.nytimes.android.external.playbillingtester.di.Injector;
+import com.nytimes.android.external.playbillingtester.model.Config;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 import com.nytimes.android.external.playbillingtesterlib.InAppPurchaseData;
 
@@ -42,12 +44,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected Purchases purchases;
     @Inject
     protected APIOverridesDelegate apiDelegate;
+    @Inject
+    protected Optional<Config> config;
 
     private MainAdapter adapter;
     private SwipeRefreshLayout swipeRefresh;
     private View emptyView;
     private AppBarLayout appBarLayout;
     private MenuItem configureMenuItem;
+    private TextView emptyViewTitle;
+    private TextView emptyViewText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         initRecycler();
 
         emptyView = findViewById(R.id.empty_view);
+        emptyViewText = (TextView) findViewById(R.id.empty_view_text);
+        emptyViewTitle = (TextView) findViewById(R.id.empty_view_title);
     }
 
     protected void inject() {
@@ -210,19 +218,25 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void updatePurchases() {
-        List<InAppPurchaseData> items = new ArrayList<>();
-        items.addAll(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION));
-        items.addAll(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP));
-        Collections.sort(items, (l, r) -> {
-            long purchaseTimeL = Long.parseLong(l.purchaseTime());
-            long purchaseTimeR = Long.parseLong(r.purchaseTime());
-            return Long.compare(purchaseTimeR, purchaseTimeL);
-        });
-        adapter.setItems(items);
+        if (config.isPresent()) {
+            List<InAppPurchaseData> items = new ArrayList<>();
+            items.addAll(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION));
+            items.addAll(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP));
+            Collections.sort(items, (l, r) -> {
+                long purchaseTimeL = Long.parseLong(l.purchaseTime());
+                long purchaseTimeR = Long.parseLong(r.purchaseTime());
+                return Long.compare(purchaseTimeR, purchaseTimeL);
+            });
+            adapter.setItems(items);
+        }
     }
 
     private void checkEmptyState() {
-        emptyView.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+        emptyView.setVisibility(!config.isPresent() || adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+        if (emptyView.getVisibility() == View.VISIBLE) {
+            emptyViewText.setText(config.isPresent() ? R.string.empty_message_text : R.string.no_config_text);
+            emptyViewTitle.setText(config.isPresent() ? R.string.empty_message_title : R.string.no_config_title);
+        }
     }
 
     @Override
