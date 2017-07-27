@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.common.base.Optional;
+import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtester.di.Injector;
 import com.nytimes.android.external.playbillingtester.model.Config;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
@@ -31,6 +33,8 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Controller app for Play Billing Tester Service
@@ -46,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected APIOverridesDelegate apiDelegate;
     @Inject
     protected Optional<Config> config;
+    @Inject
+    protected Gson gson;
+
+    private CompositeDisposable disposables = new CompositeDisposable();
 
     private MainAdapter adapter;
     private SwipeRefreshLayout swipeRefresh;
@@ -110,6 +118,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         adapter = new MainAdapter(this);
         adapter.setHasStableIds(true);
+        disposables.add(adapter.getDeleteSubject().subscribe(pair -> {
+            String inAppPurchaseDataStr = gson.toJson(pair.second);
+            if (purchases.removePurchase(inAppPurchaseDataStr, pair.first)) {
+                adapter.remove(pair);
+                checkEmptyState();
+            }
+        }));
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
@@ -219,12 +234,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private void updatePurchases() {
         if (config.isPresent()) {
-            List<InAppPurchaseData> items = new ArrayList<>();
-            items.addAll(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION));
-            items.addAll(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP));
+            List<Pair<String, InAppPurchaseData>> items = new ArrayList<>();
+            for (InAppPurchaseData sub : purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION)) {
+                items.add(new Pair<>(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, sub));
+            }
+            for (InAppPurchaseData iap : purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP)) {
+                items.add(new Pair<>(GoogleUtil.BILLING_TYPE_IAP, iap));
+            }
             Collections.sort(items, (l, r) -> {
-                long purchaseTimeL = Long.parseLong(l.purchaseTime());
-                long purchaseTimeR = Long.parseLong(r.purchaseTime());
+                long purchaseTimeL = Long.parseLong(l.second.purchaseTime());
+                long purchaseTimeR = Long.parseLong(r.second.purchaseTime());
                 return Long.compare(purchaseTimeR, purchaseTimeL);
             });
             adapter.setItems(items);
@@ -284,4 +303,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         checkEmptyState();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposables.clear();
+    }
 }
