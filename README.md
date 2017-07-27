@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/NYTimes/Register.svg?branch=master)](https://travis-ci.org/NYTimes/Register)
 
-![Register Logo](https://raw.githubusercontent.com/nytm/playBillingTester/master/images/register-logo.png)
+![Register Logo](https://github.com/nytm/playBillingTester/blob/master/images/register-logo.png?raw=true)
 
 Register is an Android library for easier testing of Google Play billing
 
