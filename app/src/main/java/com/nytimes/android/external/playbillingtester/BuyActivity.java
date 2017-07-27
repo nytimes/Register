@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentToReplaceSkusBundleBuilder;
 import com.nytimes.android.external.playbillingtester.di.Injector;
@@ -49,8 +48,6 @@ public class BuyActivity extends AppCompatActivity {
     protected APIOverrides apiOverrides;
     @Inject
     protected Purchases purchases;
-    @Inject
-    protected Gson gson;
     @Inject
     protected Optional<Config> config;
 
@@ -194,7 +191,7 @@ public class BuyActivity extends AppCompatActivity {
                     .developerPayload(developerPayload)
                     .purchaseToken(newReceipt)
                     .build();
-            String inAppPurchaseDataStr = gson.toJson(inAppPurchaseData);
+            String inAppPurchaseDataStr = InAppPurchaseData.toJson(inAppPurchaseData);
             boolean result;
             if (isReplace) {
                 result = purchases.replacePurchase(inAppPurchaseDataStr, oldSkus);
@@ -208,11 +205,11 @@ public class BuyActivity extends AppCompatActivity {
     }
 
     private void onBuyAlreadyOwned() {
-        Iterator iterator = purchases.getInAppPurchaseData(itemtype).iterator();
+        Iterator<InAppPurchaseData> iterator = purchases.getInAppPurchaseData(itemtype).iterator();
         if (iterator.hasNext()) {
             Intent intent = new Intent();
             intent.putExtra(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_ITEM_ALREADY_OWNED);
-            intent.putExtra(GoogleUtil.INAPP_PURCHASE_DATA, gson.toJson(iterator.next()));
+            intent.putExtra(GoogleUtil.INAPP_PURCHASE_DATA, InAppPurchaseData.toJson(iterator.next()));
             setResult(RESULT_OK, intent);
         } else {
             setResult(RESULT_CANCELED);

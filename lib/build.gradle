@@ -19,7 +19,6 @@ android {
 }
 
 dependencies {
-    compile libraries.gson
     androidTestCompile(libraries.espresso, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

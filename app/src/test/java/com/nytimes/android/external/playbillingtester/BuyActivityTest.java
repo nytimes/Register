@@ -7,10 +7,8 @@ import android.widget.TextView;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentToReplaceSkusBundleBuilder;
-import com.nytimes.android.external.playbillingtester.di.GsonFactory;
 import com.nytimes.android.external.playbillingtester.model.Config;
 import com.nytimes.android.external.playbillingtester.model.ConfigSku;
 import com.nytimes.android.external.playbillingtester.model.ImmutableConfigSku;
@@ -82,7 +80,6 @@ public class BuyActivityTest {
             .build();
 
     private ActivityController controller;
-    private Gson gson = GsonFactory.create();
 
     @Mock
     private APIOverrides apiOverrides;
@@ -115,7 +112,6 @@ public class BuyActivityTest {
         testObject = (BuyActivity) controller.get();
         testObject.apiOverrides = apiOverrides;
         testObject.purchases = purchases;
-        testObject.gson = gson;
         testObject.config = Optional.of(config);
         shadowActivity = shadowOf(testObject);
 
@@ -202,7 +198,7 @@ public class BuyActivityTest {
         when(apiOverrides.getUsersResponse()).thenReturn(USER);
         configSkuMapBuilder.put(SKU, configSku);
         when(config.skus()).thenReturn(configSkuMapBuilder.build());
-        String inAppPurchaseDataStr = gson.toJson(inAppPurchaseData);
+        String inAppPurchaseDataStr = InAppPurchaseData.toJson(inAppPurchaseData);
         when(purchases.addPurchase(inAppPurchaseDataStr, TYPE)).thenReturn(true);
 
         controller.start();

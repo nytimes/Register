@@ -21,7 +21,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.common.collect.ImmutableList;
-import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtesterlib.GoogleProductResponse;
 import com.nytimes.android.external.playbillingtesterlib.GoogleServiceProvider;
 import com.nytimes.android.external.playbillingtesterlib.GoogleServiceProviderImpl;
@@ -55,7 +54,6 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
 
     private PrefsManager prefsManager;
     private GoogleServiceProvider googleServiceProvider;
-    private Gson gson;
     private Set<ServiceConnection> boundSet;
     private CompositeDisposable compositeDisposable;
     private BuyServiceConnection buyServiceConnection;
@@ -156,7 +154,6 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
 
     private void initFields() {
         prefsManager = new PrefsManager(PreferenceManager.getDefaultSharedPreferences(this));
-        gson = new Gson();
         compositeDisposable = new CompositeDisposable();
         boundSet = new LinkedHashSet<>();
     }
@@ -266,7 +263,7 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
                     .addAll(iapBundle.getStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST))
                     .addAll(subBundle.getStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST))
                     .build()) {
-                InAppPurchaseData inAppPurchaseData = gson.fromJson(json, InAppPurchaseData.class);
+                InAppPurchaseData inAppPurchaseData = InAppPurchaseData.fromJson(json);
                 adapter.addPurchase(inAppPurchaseData);
             }
         } else {
@@ -282,7 +279,7 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
                     .addAll(iapBundle.getStringArrayList(GoogleUtil.DETAILS_LIST))
                     .addAll(subBundle.getStringArrayList(GoogleUtil.DETAILS_LIST))
                     .build()) {
-                GoogleProductResponse googleProductResponse = gson.fromJson(json, GoogleProductResponse.class);
+                GoogleProductResponse googleProductResponse = GoogleProductResponse.fromJson(json);
                 adapter.addItem(googleProductResponse);
             }
         } else {

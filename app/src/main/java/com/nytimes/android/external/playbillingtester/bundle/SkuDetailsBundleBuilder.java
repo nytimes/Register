@@ -3,7 +3,6 @@ package com.nytimes.android.external.playbillingtester.bundle;
 import android.os.Bundle;
 
 import com.google.common.base.Optional;
-import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtester.APIOverrides;
 import com.nytimes.android.external.playbillingtester.model.Config;
 import com.nytimes.android.external.playbillingtester.model.ConfigSku;
@@ -19,13 +18,11 @@ public class SkuDetailsBundleBuilder extends BaseBundleBuilder {
 
     private List<String> detailsList;
     private final Optional<Config> config;
-    private final Gson gson;
 
     @Inject
-    public SkuDetailsBundleBuilder(APIOverrides apiOverrides, Optional<Config> config, Gson gson) {
+    public SkuDetailsBundleBuilder(APIOverrides apiOverrides, Optional<Config> config) {
         super(apiOverrides);
         this.config = config;
-        this.gson = gson;
     }
 
     public SkuDetailsBundleBuilder newBuilder() {
@@ -55,7 +52,7 @@ public class SkuDetailsBundleBuilder extends BaseBundleBuilder {
                     .priceAmountMicros((int) (Double.parseDouble(configSku.price()) * 1000000))
                     .priceCurrencyCode("USD")
                     .build();
-            detailsList.add(gson.toJson(googleProductResponse, GoogleProductResponse.class));
+            detailsList.add(GoogleProductResponse.toJson(googleProductResponse));
         }
     }
 

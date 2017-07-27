@@ -2,18 +2,30 @@ package com.nytimes.android.external.playbillingtesterlib;
 
 
 import android.text.TextUtils;
+import android.util.Log;
 
-import com.google.gson.annotations.SerializedName;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Objects;
 
+import static com.nytimes.android.external.playbillingtesterlib.JsonHelper.addToObjIfNotNull;
+import static com.nytimes.android.external.playbillingtesterlib.JsonHelper.getFieldAsStringOrNull;
+
 /**
- * Gson-friendly class structure representing INAPP_PURCHASE_DATA.
+ * class structure representing INAPP_PURCHASE_DATA.
  */
 public class InAppPurchaseData {
+    private static final String TAG = InAppPurchaseData.class.getSimpleName();
+    private static final String FLD_ORDER_ID = "orderId";
+    private static final String FLD_PACKAGE = "package";
+    private static final String FLD_PRODUCT_ID = "productId";
+    private static final String FLD_PURCHASE_TIME = "purchaseTime";
+    private static final String FLD_PURCHASE_STATE = "purchaseState";
+    private static final String FLD_DEV_PAYLOAD = "developerPayload";
+    private static final String FLD_PURCHASE_TOKEN = "purchaseToken";
 
     String orderId;
-    @SerializedName("package")
     String packageName;
     String productId;
     String purchaseTime;
@@ -74,6 +86,36 @@ public class InAppPurchaseData {
     public int hashCode() {
         return Objects.hash(orderId, packageName, productId, purchaseTime, purchaseState, developerPayload,
                 purchaseToken);
+    }
+
+    public static InAppPurchaseData fromJson(String json) {
+        JSONObject obj = null;
+        try {
+            obj = new JSONObject(json);
+        } catch (JSONException exc) {
+            Log.e(TAG, "Error creating json", exc);
+        }
+        return new Builder()
+                .orderId(getFieldAsStringOrNull(obj, FLD_ORDER_ID))
+                .packageName(getFieldAsStringOrNull(obj, FLD_PACKAGE))
+                .productId(getFieldAsStringOrNull(obj, FLD_PRODUCT_ID))
+                .purchaseTime(getFieldAsStringOrNull(obj, FLD_PURCHASE_TIME))
+                .purchaseState(getFieldAsStringOrNull(obj, FLD_PURCHASE_STATE))
+                .developerPayload(getFieldAsStringOrNull(obj, FLD_DEV_PAYLOAD))
+                .purchaseToken(getFieldAsStringOrNull(obj, FLD_PURCHASE_TOKEN))
+                .build();
+    }
+
+    public static String toJson(InAppPurchaseData inAppPurchaseData) {
+        JSONObject obj = new JSONObject();
+        addToObjIfNotNull(FLD_ORDER_ID, inAppPurchaseData.orderId(), obj);
+        addToObjIfNotNull(FLD_PACKAGE, inAppPurchaseData.packageName(), obj);
+        addToObjIfNotNull(FLD_PRODUCT_ID, inAppPurchaseData.productId(), obj);
+        addToObjIfNotNull(FLD_PURCHASE_TIME, inAppPurchaseData.purchaseTime(), obj);
+        addToObjIfNotNull(FLD_PURCHASE_STATE, inAppPurchaseData.purchaseState(), obj);
+        addToObjIfNotNull(FLD_DEV_PAYLOAD, inAppPurchaseData.developerPayload(), obj);
+        addToObjIfNotNull(FLD_PURCHASE_TOKEN, inAppPurchaseData.purchaseToken(), obj);
+        return obj.toString();
     }
 
     public static class Builder {

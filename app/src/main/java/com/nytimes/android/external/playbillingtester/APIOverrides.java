@@ -3,8 +3,6 @@ package com.nytimes.android.external.playbillingtester;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
-import com.google.gson.Gson;
-
 import javax.inject.Inject;
 
 /**
@@ -27,15 +25,11 @@ public class APIOverrides {
     private static final String DEFAULT_USER = "200nyttest1@nytimes.com";
 
     @NonNull
-    protected Gson gson;
-
-    @NonNull
     private final SharedPreferences sharedPreferences;
 
     @Inject
-    public APIOverrides(@NonNull SharedPreferences sharedPreferences, @NonNull Gson gson) {
+    public APIOverrides(@NonNull SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
-        this.gson = gson;
     }
 
     int getIsBillingSupportedResponse() {
