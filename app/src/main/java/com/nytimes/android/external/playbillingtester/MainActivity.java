@@ -22,7 +22,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.common.base.Optional;
-import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtester.di.Injector;
 import com.nytimes.android.external.playbillingtester.model.Config;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
@@ -50,8 +49,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected APIOverridesDelegate apiDelegate;
     @Inject
     protected Optional<Config> config;
-    @Inject
-    protected Gson gson;
 
     private CompositeDisposable disposables = new CompositeDisposable();
 
@@ -119,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         adapter = new MainAdapter(this);
         adapter.setHasStableIds(true);
         disposables.add(adapter.getDeleteSubject().subscribe(pair -> {
-            String inAppPurchaseDataStr = gson.toJson(pair.second);
+            String inAppPurchaseDataStr = InAppPurchaseData.toJson(pair.second);
             if (purchases.removePurchase(inAppPurchaseDataStr, pair.first)) {
                 adapter.remove(pair);
                 checkEmptyState();
