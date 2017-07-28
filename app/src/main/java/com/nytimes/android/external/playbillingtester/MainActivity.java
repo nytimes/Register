@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         disposables.clear();
+        super.onDestroy();
     }
 }
