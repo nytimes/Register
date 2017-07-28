@@ -111,6 +111,10 @@ public class BuyActivity extends AppCompatActivity {
         TextView summary = (TextView) findViewById(R.id.buy_summary);
         summary.setText(config.isPresent() ?
                 content.getString(RESPONSE_EXTRA_SUMMARY) : getString(R.string.no_config_text));
+
+        if (config.isPresent() && content.containsKey(RESPONSE_EXTRA_REPLACE_OLD_SKU)){
+            summary.append("\n\n" + content.getString(RESPONSE_EXTRA_REPLACE_OLD_SKU));
+        }
     }
 
     private void initBodyResultSuccess(Bundle content) {
@@ -231,7 +235,7 @@ public class BuyActivity extends AppCompatActivity {
                     if (isReplace) {
                         ArrayList<String> oldSkuTitles = new ArrayList<>();
                         for (String oldSku : oldSkus) {
-                            oldSkuTitles.add(config.get().skus().get(oldSku).title());
+                            oldSkuTitles.add(config.get().skus().get(oldSku).title() + "\n");
                         }
                         bundle.putStringArrayList(RESPONSE_EXTRA_REPLACE_OLD_SKU, oldSkuTitles);
                     }
