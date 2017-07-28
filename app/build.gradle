@@ -5,7 +5,7 @@ android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
     defaultConfig {
-        applicationId "com.nytimes.android.external.playbillingtester"
+        applicationId "com.nytimes.android.external.register"
         minSdkVersion 19
         compileSdkVersion versions.compileSdk
         targetSdkVersion versions.targetSdk
