@@ -52,12 +52,12 @@ ext {
     GROUP = "com.nytimes.android"
     VERSION_NAME = "0.0.1-SNAPSHOT"
     POM_PACKAGING = "pom"
-    POM_DESCRIPTION = "playBillingTester"
+    POM_DESCRIPTION = "register"
 
-    POM_URL = "https://github.com/nytimes/playBillingTester/"
-    POM_SCM_URL = "https://github.com/nytimes/playBillingTester/"
-    POM_SCM_CONNECTION = "scm:git:https://github.com/nytm/playBillingTester.git"
-    POM_SCM_DEV_CONNECTION = "scm:git:git@github.com:nytm/playBillingTester.git"
+    POM_URL = "https://github.com/nytimes/register/"
+    POM_SCM_URL = "https://github.com/nytimes/register/"
+    POM_SCM_CONNECTION = "scm:git:https://github.com/nytm/register.git"
+    POM_SCM_DEV_CONNECTION = "scm:git:git@github.com:nytm/register.git"
 
     POM_LICENCE_NAME = "Apache License"
     POM_LICENCE_URL = "http://www.apache.org/licenses/"

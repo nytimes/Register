@@ -16,7 +16,7 @@
         android:paddingRight="@dimen/recycler_padding_horizontal"
         android:paddingTop="@dimen/recycler_padding_vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        tools:context="com.nytimes.android.external.playbillingtester.sample.SampleActivity"
+        tools:context="com.nytimes.android.external.register.sample.SampleActivity"
         tools:listitem="@layout/item_card"
         tools:showIn="@layout/activity_sample" />
 
