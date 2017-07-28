@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtesterlib.GoogleUtil;
 import com.nytimes.android.external.playbillingtesterlib.InAppPurchaseData;
 
@@ -20,7 +19,6 @@ import java.util.List;
 import java.util.Set;
 
 import static com.nytimes.android.external.playbillingtester.APIOverrides.PREF_NAME;
-import static com.nytimes.android.external.playbillingtester.di.GsonFactory.create;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -50,12 +48,10 @@ public class PurchasesTest {
     private InAppPurchaseData inAppPurchaseData1, inAppPurchaseData2;
     private String inAppPurchaseData1Str, inAppPurchaseData2Str;
     private String continuationToken;
-    private Gson gson;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        gson = create();
 
         SharedPreferences sharedPreferences =
                 RuntimeEnvironment.application.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -80,10 +76,10 @@ public class PurchasesTest {
                 .purchaseToken(PURCHASE_TOKEN_2)
                 .build();
 
-        inAppPurchaseData1Str = gson.toJson(inAppPurchaseData1);
-        inAppPurchaseData2Str = gson.toJson(inAppPurchaseData2);
+        inAppPurchaseData1Str = InAppPurchaseData.toJson(inAppPurchaseData1);
+        inAppPurchaseData2Str = InAppPurchaseData.toJson(inAppPurchaseData2);
 
-        testObject = new Purchases(sharedPreferences, gson, signer);
+        testObject = new Purchases(sharedPreferences, signer);
 
         when(signer.signData(anyString())).thenReturn("signedData");
     }
@@ -134,7 +130,7 @@ public class PurchasesTest {
                     .developerPayload(DEV_PAYLOAD_1)
                     .purchaseToken(PURCHASE_TOKEN_1)
                     .build();
-            String inAppPurchaseDataStr = gson.toJson(inAppPurchaseData);
+            String inAppPurchaseDataStr = InAppPurchaseData.toJson(inAppPurchaseData);
             testObject.addPurchase(inAppPurchaseDataStr, GoogleUtil.BILLING_TYPE_SUBSCRIPTION);
         }
 

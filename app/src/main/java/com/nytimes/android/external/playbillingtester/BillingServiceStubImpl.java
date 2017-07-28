@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 
-import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.BuyIntentToReplaceSkusBundleBuilder;
 import com.nytimes.android.external.playbillingtester.bundle.ConsumePurchaseResponse;
@@ -18,7 +17,6 @@ import javax.inject.Inject;
 
 public class BillingServiceStubImpl extends IInAppBillingService.Stub {
 
-    final Gson gson;
     private final APIOverrides apiOverrides;
     private final BuyIntentBundleBuilder buyIntentBundleBuilder;
     private final SkuDetailsBundleBuilder skuDetailsBundleBuilder;
@@ -27,14 +25,13 @@ public class BillingServiceStubImpl extends IInAppBillingService.Stub {
     private final BuyIntentToReplaceSkusBundleBuilder buyIntentToReplaceSkusBundleBuilder;
 
     @Inject
-    public BillingServiceStubImpl(APIOverrides apiOverrides, Gson gson,
+    public BillingServiceStubImpl(APIOverrides apiOverrides,
                                   BuyIntentBundleBuilder buyIntentBundleBuilder,
                                   SkuDetailsBundleBuilder skuDetailsBundleBuilder,
                                   PurchasesBundleBuilder purchasesBundleBuilder,
                                   ConsumePurchaseResponse consumePurchaseResponse,
                                   BuyIntentToReplaceSkusBundleBuilder buyIntentToReplaceSkusBundleBuilder) {
         this.apiOverrides = apiOverrides;
-        this.gson = gson;
         this.buyIntentBundleBuilder = buyIntentBundleBuilder;
         this.skuDetailsBundleBuilder = skuDetailsBundleBuilder;
         this.purchasesBundleBuilder = purchasesBundleBuilder;

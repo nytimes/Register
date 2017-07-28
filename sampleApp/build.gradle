@@ -43,7 +43,6 @@ dependencies {
     annotationProcessor libraries.butterKnifeCompiler
     compile libraries.rxAndroid
     compile libraries.rxJava
-    compile libraries.gson
     compile libraries.guava
     annotationProcessor libraries.immutablesValue
     provided libraries.immutablesValue

@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
-import com.google.gson.Gson;
 import com.nytimes.android.external.playbillingtesterlib.InAppPurchaseData;
 
 import org.immutables.value.Value;
@@ -35,18 +34,14 @@ public class Purchases {
     private static final Logger LOGGER = LoggerFactory.getLogger(Purchases.class);
 
     @NonNull
-    protected Gson gson;
-
-    @NonNull
     private final SharedPreferences sharedPreferences;
 
     @NonNull
     private final Signer signer;
 
     @Inject
-    public Purchases(@NonNull SharedPreferences sharedPreferences, @NonNull Gson gson, @NonNull Signer signer) {
+    public Purchases(@NonNull SharedPreferences sharedPreferences, @NonNull Signer signer) {
         this.sharedPreferences = sharedPreferences;
-        this.gson = gson;
         this.signer = signer;
     }
 
@@ -58,7 +53,7 @@ public class Purchases {
         int first = getFirst(continuationToken);
         int limit = Math.min(first + PAGE_LIMIT, data.size());
         for (int i = first; i < limit; i++) {
-            String jsonData = gson.toJson(data.get(i), InAppPurchaseData.class);
+            String jsonData = InAppPurchaseData.toJson(data.get(i));
             builder.addPurchaseItemList(data.get(i).productId());
             builder.addPurchaseDataList(jsonData);
             String signedData = "";
@@ -115,7 +110,7 @@ public class Purchases {
     Set<InAppPurchaseData> getInAppPurchaseData(@NonNull String itemType) {
         Set<InAppPurchaseData> ret = new LinkedHashSet<>();
         for (String json : getPurchases(itemType)) {
-            ret.add(gson.fromJson(json, InAppPurchaseData.class));
+            ret.add(InAppPurchaseData.fromJson(json));
         }
         return ret;
     }
@@ -124,7 +119,7 @@ public class Purchases {
     Set<String> getReceiptsForSkus(@NonNull Set<String> skus, @NonNull String itemType) {
         ImmutableSet.Builder<String> builder = ImmutableSet.builder();
         for (String json : getPurchases(itemType)) {
-            InAppPurchaseData inAppPurchaseData = gson.fromJson(json, InAppPurchaseData.class);
+            InAppPurchaseData inAppPurchaseData = InAppPurchaseData.fromJson(json);
             if (skus.contains(inAppPurchaseData.productId())) {
                 builder.add(inAppPurchaseData.purchaseToken());
             }
@@ -142,13 +137,13 @@ public class Purchases {
 
     private Set<String> getPurchasesExceptForSkus(@NonNull String itemType, @NonNull Set<String> skuFilter) {
         return ImmutableSet.copyOf(Collections2.filter(getPurchases(itemType),
-                json -> !skuFilter.contains(gson.fromJson(json, InAppPurchaseData.class).productId())));
+                json -> !skuFilter.contains(InAppPurchaseData.fromJson(json).productId())));
     }
 
     private Set<String> getPurchasedSkus(String itemType) {
         ImmutableSet.Builder<String> builder = ImmutableSet.builder();
         for (String inAppPurchaseDataStr : getPurchases(itemType)) {
-            builder.add(gson.fromJson(inAppPurchaseDataStr, InAppPurchaseData.class).productId());
+            builder.add(InAppPurchaseData.fromJson(inAppPurchaseDataStr).productId());
         }
         return builder.build();
     }

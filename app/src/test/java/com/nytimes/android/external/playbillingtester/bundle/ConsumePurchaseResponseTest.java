@@ -18,7 +18,6 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.nytimes.android.external.playbillingtester.di.GsonFactory.create;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
@@ -76,9 +75,8 @@ public class ConsumePurchaseResponseTest {
         when(purchasesBundleBuilder.continuationToken(anyString())).thenReturn(purchasesBundleBuilder);
         when(purchasesBundleBuilder.build()).thenReturn(expected);
         ConsumePurchaseResponse consumePurchaseResponse = new ConsumePurchaseResponse(apiOverrides, purchases);
-        testObject = new BillingServiceStubImpl(apiOverrides, create(),
-                buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder, consumePurchaseResponse,
-                buyIntentToReplaceSkusBundleBuilder);
+        testObject = new BillingServiceStubImpl(apiOverrides, buyIntentBundleBuilder, skuDetailsBundleBuilder,
+                purchasesBundleBuilder, consumePurchaseResponse, buyIntentToReplaceSkusBundleBuilder);
     }
 
     @Test

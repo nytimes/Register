@@ -94,14 +94,14 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    APIOverrides provideAPIOverrides(SharedPreferences sharedPreferences, Gson gson) {
-        return new APIOverrides(sharedPreferences, gson);
+    APIOverrides provideAPIOverrides(SharedPreferences sharedPreferences) {
+        return new APIOverrides(sharedPreferences);
     }
 
     @Provides
     @Singleton
-    Purchases providePurchases(SharedPreferences sharedPreferences, Gson gson, Signer signer) {
-        return new Purchases(sharedPreferences, gson, signer);
+    Purchases providePurchases(SharedPreferences sharedPreferences, Signer signer) {
+        return new Purchases(sharedPreferences, signer);
     }
 
     @Provides

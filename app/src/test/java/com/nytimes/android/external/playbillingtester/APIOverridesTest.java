@@ -3,8 +3,6 @@ package com.nytimes.android.external.playbillingtester;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.gson.Gson;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +11,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static com.nytimes.android.external.playbillingtester.APIOverrides.PREF_NAME;
-import static com.nytimes.android.external.playbillingtester.di.GsonFactory.create;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
@@ -31,12 +28,11 @@ public class APIOverridesTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        Gson gson = create();
 
         SharedPreferences sharedPreferences =
                 RuntimeEnvironment.application.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 
-        testObject = new APIOverrides(sharedPreferences, gson);
+        testObject = new APIOverrides(sharedPreferences);
     }
 
     @Test

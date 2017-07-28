@@ -66,14 +66,13 @@ public class ServiceModule {
     @Provides
     @ScopeService
     IInAppBillingService.Stub provideBillingServiceStubImpl(APIOverrides apiOverrides,
-                                                            Gson gson,
                                                             BuyIntentBundleBuilder buyIntentBundleBuilder,
                                                             SkuDetailsBundleBuilder skuDetailsBundleBuilder,
                                                             PurchasesBundleBuilder purchasesBundleBuilder,
                                                             ConsumePurchaseResponse consumePurchaseResponse,
                                                             BuyIntentToReplaceSkusBundleBuilder
                                                                     buyIntentToReplaceSkusBundleBuilder) {
-        return new BillingServiceStubImpl(apiOverrides, gson, buyIntentBundleBuilder, skuDetailsBundleBuilder,
+        return new BillingServiceStubImpl(apiOverrides, buyIntentBundleBuilder, skuDetailsBundleBuilder,
                 purchasesBundleBuilder, consumePurchaseResponse, buyIntentToReplaceSkusBundleBuilder);
     }
 
@@ -87,8 +86,8 @@ public class ServiceModule {
     @Provides
     @ScopeService
     SkuDetailsBundleBuilder provideSkuDetailsBundleBuilder(APIOverrides apiOverrides,
-                                                           Optional<Config> config, Gson gson) {
-        return new SkuDetailsBundleBuilder(apiOverrides, config, gson);
+                                                           Optional<Config> config) {
+        return new SkuDetailsBundleBuilder(apiOverrides, config);
     }
 
     @Provides

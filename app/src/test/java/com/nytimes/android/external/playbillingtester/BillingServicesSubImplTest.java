@@ -21,7 +21,6 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.ArrayList;
 
 import static com.nytimes.android.external.playbillingtester.APIOverrides.RESULT_DEFAULT;
-import static com.nytimes.android.external.playbillingtester.di.GsonFactory.create;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
@@ -82,9 +81,8 @@ public class BillingServicesSubImplTest {
                 .thenReturn(buyIntentToReplaceSkusBundleBuilder);
         when(buyIntentToReplaceSkusBundleBuilder.type(anyString())).thenReturn(buyIntentToReplaceSkusBundleBuilder);
         when(buyIntentToReplaceSkusBundleBuilder.build()).thenReturn(expected);
-        testObject = new BillingServiceStubImpl(apiOverrides, create(),
-                buyIntentBundleBuilder, skuDetailsBundleBuilder, purchasesBundleBuilder,
-                mock(ConsumePurchaseResponse.class), buyIntentToReplaceSkusBundleBuilder);
+        testObject = new BillingServiceStubImpl(apiOverrides, buyIntentBundleBuilder, skuDetailsBundleBuilder,
+                purchasesBundleBuilder, mock(ConsumePurchaseResponse.class), buyIntentToReplaceSkusBundleBuilder);
     }
 
     @Test

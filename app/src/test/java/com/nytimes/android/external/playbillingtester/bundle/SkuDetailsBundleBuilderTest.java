@@ -20,7 +20,6 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 
-import static com.nytimes.android.external.playbillingtester.di.GsonFactory.create;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -48,7 +47,7 @@ public class SkuDetailsBundleBuilderTest {
         String title = "caps for sale";
         String price = "1.98";
 
-        testObject = new SkuDetailsBundleBuilder(apiOverrides, Optional.of(config), create());
+        testObject = new SkuDetailsBundleBuilder(apiOverrides, Optional.of(config));
         when(config.skus()).thenReturn(new ImmutableMap.Builder<String, ConfigSku>()
                 .put(SKU1, ImmutableConfigSku.builder()
                         .itemType(TYPE)
@@ -79,12 +78,12 @@ public class SkuDetailsBundleBuilderTest {
                 .isEqualTo(GoogleUtil.RESULT_OK);
         ArrayList<String> detailsList =  bundle.getStringArrayList(GoogleUtil.DETAILS_LIST);
         assertThat(detailsList.get(0))
-                .isEqualTo("{\"productId\":\"sku1\",\"itemType\":\"subs\",\"price\":\"$1.98\"," +
-                        "\"title\":\"caps for sale\",\"description\":\"some description\"," +
+                .isEqualTo("{\"itemType\":\"subs\",\"productId\":\"sku1\",\"price\":\"$1.98\"," +
+                        "\"description\":\"some description\",\"title\":\"caps for sale\"," +
                         "\"price_amount_micros\":1980000,\"price_currency_code\":\"USD\"}");
         assertThat(detailsList.get(1))
-                .isEqualTo("{\"productId\":\"sku2\",\"itemType\":\"subs\",\"price\":\"$1.98\"," +
-                        "\"title\":\"caps for sale\",\"description\":\"some description\"," +
+                .isEqualTo("{\"itemType\":\"subs\",\"productId\":\"sku2\",\"price\":\"$1.98\"," +
+                        "\"description\":\"some description\",\"title\":\"caps for sale\"," +
                         "\"price_amount_micros\":1980000,\"price_currency_code\":\"USD\"}");
     }
 
