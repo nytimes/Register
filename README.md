@@ -7,8 +7,8 @@ Register is an Android library for easier testing of Google Play billing
 ### The Problems:
 
 + In App Billing implementations on Android are  hard to get right
-+ When payments are involved developers sleep better having a way to test their functionality prior to release
-+ Before an App is promoted to Alpha within the Play Store we do not have an offical way to test payments
++ When payments are involved, developers sleep better having a way to test their functionality prior to release
++ Before an App is promoted to Alpha within the Play Store, we do not have an offical way to test payments
 
 The New York Times Android Team developed a fake implementation of Google Play Store's In-App Billing called Register
 which can be used as a companion app for In-App Billing purchases and subscriptions.  Similar to a mock web server, 
@@ -33,7 +33,7 @@ you'll find Register's workflow to be very familiar.
 
 **Step 0:** Register needs a configuration file that declares mock purchases, subscriptions and users that you will be testing against.  
 
-Here's a sample that we use at NYTimes, the format needs to be same as below when creating your own fake purchases
+Here's a sample that we use at NYTimes. The format needs to be the same as below when creating your own fake purchases
 ```json
 {
 	"skus": {
@@ -61,10 +61,10 @@ Here's a sample that we use at NYTimes, the format needs to be same as below whe
 ```
 **Step 1:** `adb push register.json /sdcard/` where `register.json` is a json file in the same format as above
 
-**Step2:** install `RegisterCompanion` onto the phone that wants to mock the In App Billing, 
+**Step 2:** Install `RegisterCompanion` onto the phone that wants to mock the In App Billing, 
 you can find the latest version in the [Release Tab](https://github.com/nytm/Register/releases)
 
-**Step3:** add Register as a dependency to your client app 
+**Step 3:** Add Register as a dependency to your client app 
 ```groovy 
 compile 'com.nytimes.android.register:0.0.1'
 ```
@@ -75,7 +75,7 @@ or, on Android Gradle Plugin 3.0 or later:
 implementation 'com.nytimes.android.register:0.0.1'
 ```
 
-**Step4:** Create a the test google services provider(or a real provider)
+**Step 4:** Create a test google services provider(or a real provider)
 
 ```java
  private void initGoogleServiceProvider() {
@@ -91,7 +91,7 @@ implementation 'com.nytimes.android.register:0.0.1'
 
 ![Register Sample](https://github.com/nytm/register/blob/master/images/purchase.png?raw=true)
 
-**Step 6:** Go to Your companion app to see the purchase 
+**Step 6:** Go to your companion app to see the purchase 
 
 ![Register Sample](https://github.com/nytm/register/blob/master/images/purchased.png?raw=true)
 
