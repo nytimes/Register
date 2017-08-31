@@ -12,7 +12,7 @@ The New York Times Android team developed a fake implementation of Google Play S
 which runs as a companion app.  Similar to a mock web server, you can then point your app to use Register 
 rather than the real Play Store Billing implementation.  Using register you'll be able to validate whether your purchasing flows work correctly.
 
-![Register Sample](https://github.com/nytm/register/blob/master/images/registersample.png?raw=true)
+![Register Sample](https://github.com/nytm/register/blob/master/images/registerCompanion.png?raw=true)
 
 
 
@@ -22,7 +22,8 @@ Explain technical
 
 ### Using Register
 
-Register needs a configuration file that defines your particular PlayStore settings.  Here's a  sample that we use at NYTimes
+**Step 0:** Register needs a configuration file that declares mock purchases and users that you will be testing against.  
+Here's a  sample that we use at NYTimes, the format needs to be same as below when creating your own fake purchases
 ```json
 {
 	"skus": {
@@ -48,17 +49,17 @@ Register needs a configuration file that defines your particular PlayStore setti
 }
 
 ```
-Step 1: `adb push register.json /sdcard/` where `register.json` 
-is a json file in the same format as above
+**Step 1:** `adb push register.json /sdcard/` where `register.json` is a json file in the same format as above
 
-Step2: install `RegisterCompanion` onto the phone that wants to mock the In App Billing
+**Step2:** install `RegisterCompanion` onto the phone that wants to mock the In App Billing, 
+you can find the latest version in the [Release Tab](https://github.com/nytm/Register/releases/new)
 
-Step3: add Register dependency to your client app 
+**Step3:** add Register as a dependency to your client app 
 ```groovy 
 compile 'com.nytimes.android.register:0.0.1'
 ```
 
-Step4: Init the test provider(or a real provider)
+**Step4:** Create a the test google services provider(or a real provider)
 
 ```java
  private void initGoogleServiceProvider() {
@@ -70,25 +71,27 @@ Step4: Init the test provider(or a real provider)
     }
 ```
 
-Step 4: Make a purchase same as regular play store
+**Step 5:** Make a purchase same as regular play store
 
 ![Register Sample](https://github.com/nytm/register/blob/master/images/purchase.png?raw=true)
 
-Step 5: Go to Your companion app to see the purchase 
+**Step 6:** Go to Your companion app to see the purchase 
 
 ![Register Sample](https://github.com/nytm/register/blob/master/images/purchased.png?raw=true)
 
 
 
 ### Fully Configurable (Configuration App)
+Register Companion allows you to see purchases that were successfully or unsuccessfully made.  
+Additionally you can control responses back to your client app for values such as `getSkuDetails` 
+See image below for all configurable options on a response
 
 ![Register Sample](https://github.com/nytm/register/blob/master/images/registerCompanion.png?raw=true)
 
-
 ### Sample App
 
-`sampleApp` is an sample implementation of how to work with
- Register as well as the real Play Store Billing.  See `SampleActivity` for a demo  purchasing flow
+**SampleApp** is a client app to showcase working with Register 
+See [SampleActivity](https://github.com/nytm/Register/blob/master/sampleApp/src/main/java/com/nytimes/android/external/register/sample/SampleActivity.java) for a demo  purchasing flow
 
 ### Gradle
 
