@@ -18,7 +18,9 @@ rather than the real Play Store Billing implementation.  Using register you'll b
 
 ### Overview
 
-Explain technical
+Register is a library and companion app that allow proxying and manipulation of calls to Google in app billing. 
+The premise is to reimplement the AIDL interfaces that are used by the real play store. 
+From a clients perspective there is no difference in how you work with Google's In App Billing or Register's implementation.
 
 ### Using Register
 
