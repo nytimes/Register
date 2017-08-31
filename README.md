@@ -14,7 +14,8 @@ The New York Times Android Team developed a fake implementation of Google Play S
 which can be used as a companion app for In-App Billing purchases and subscriptions.  Similar to a mock web server, 
 you can point your app to use Register rather than the real Play Store Billing implementation.  
 Using register you'll be able to validate whether your purchasing flows work correctly.  
-Register has been used to test purchasing flows of our flagship reader app & nyt crosswords for 3 years
+Register has been used to test purchasing flows of our [flagship reader app](https://play.google.com/store/apps/details?id=com.nytimes.android&hl=en) 
+& [NYT Crosswords](https://play.google.com/store/apps/details?id=com.nytimes.crossword&hl=en) for 3 years
 
 ![Register Sample](https://github.com/nytm/register/blob/master/images/registerCompanion.png?raw=true)
 
@@ -24,6 +25,9 @@ Register has been used to test purchasing flows of our flagship reader app & nyt
 Register is a library and companion app that allow seamless mocking of responses from Google in app billing. 
 Register works by implementing the same interface as Google’s in app billing library [InApp Billing Service](https://github.com/googlesamples/android-play-billing/blob/master/TrivialDrive/app/src/main/aidl/com/android/vending/billing/IInAppBillingService.aidl)
 From a clients perspective there is no difference in how you work with Google's In App Billing or Register's implementation.
+
+If you've used [Amazon's IAP tester utility](https://developer.amazon.com/public/apis/earn/in-app-purchasing/docs-v2/testing-iap), 
+you'll find Register's workflow to be very familiar.
 
 ### Using Register
 
@@ -64,6 +68,12 @@ you can find the latest version in the [Release Tab](https://github.com/nytm/Reg
 compile 'com.nytimes.android.register:0.0.1'
 ```
 
+or, on Android Gradle Plugin 3.0 or later:
+
+```groovy 
+implementation 'com.nytimes.android.register:0.0.1'
+```
+
 **Step4:** Create a the test google services provider(or a real provider)
 
 ```java
@@ -76,7 +86,7 @@ compile 'com.nytimes.android.register:0.0.1'
     }
 ```
 
-**Step 5:** Make a purchase similar to how you work with the regular play store In App Billing api
+**Step 5:** Make a purchase similar to how you work with the regular play store In App Billing API 
 
 ![Register Sample](https://github.com/nytm/register/blob/master/images/purchase.png?raw=true)
 
@@ -100,6 +110,14 @@ See image below for all configurable options on a response
 See [SampleActivity](https://github.com/nytm/Register/blob/master/sampleApp/src/main/java/com/nytimes/android/external/register/sample/SampleActivity.java) for a demo  purchasing flow
 
 ### Gradle
+
+**For Android Gradle Plugin 3.0**
+
+```groovy 
+implementation 'com.nytimes.android.register:0.0.1'
+```
+
+**for project using older versions of the plugin**
 
 ```groovy
 compile 'com.nytimes.android.register:0.0.1'
