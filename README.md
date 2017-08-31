@@ -77,6 +77,7 @@ Step 4: Make a purchase same as regular play store
 ![Register Sample](https://github.com/nytm/register/blob/master/images/purchase.png?raw=true)
 
 Step 5: Go to Your companion app to see the purchase 
+
 ![Register Sample](https://github.com/nytm/register/blob/master/images/purchased.png?raw=true)
 
 
