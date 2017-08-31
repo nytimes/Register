@@ -21,7 +21,7 @@ rather than the real Play Store Billing implementation.  Using register you'll b
 ### Overview
 
 Register is a library and companion app that allow proxying and manipulation of calls to Google in app billing. 
-The premise is to reimplement the AIDL interfaces that are used by the real play store. 
+Register works by implementing an interface identical to Google’s in app billing library [InApp Billing Service](https://github.com/googlesamples/android-play-billing/blob/master/TrivialDrive/app/src/main/aidl/com/android/vending/billing/IInAppBillingService.aidl)
 From a clients perspective there is no difference in how you work with Google's In App Billing or Register's implementation.
 
 ### Using Register
