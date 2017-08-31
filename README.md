@@ -7,8 +7,8 @@ Register is an Android library for easier testing of Google Play billing
 ### The Problems:
 
 + In App Billing implementations on Android are  hard to get right
-+ When payments are involved developers sleep better having a way to test their functionality prior to release
-+ Before an App is promoted to Alpha within the Play Store we do not have an offical way to test payments
++ When payments are involved, developers sleep better having a way to test their functionality prior to release
++ Before an App is promoted to Alpha within the Play Store, we do not have an offical way to test payments
 
 The New York Times Android Team developed a fake implementation of Google Play Store's In-App Billing called Register
 which can be used as a companion app for In-App Billing purchases and subscriptions.  Similar to a mock web server, 
@@ -33,7 +33,7 @@ you'll find Register's workflow to be very familiar.
 
 **Step 0:** Register needs a configuration file that declares mock purchases, subscriptions and users that you will be testing against.  
 
-Here's a sample that we use at NYTimes, the format needs to be same as below when creating your own fake purchases
+Here's a sample that we use at NYTimes. The format needs to be the same as below when creating your own fake purchases
 ```json
 {
 	"skus": {
