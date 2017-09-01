@@ -1,0 +1,24 @@
+def loadJsonFileName() {
+    return loadProperty("file.json.name")
+}
+
+private def loadProperty(String key) {
+    return loadConfigurationProperties().getProperty(key)
+}
+
+private def loadConfigurationProperties() {
+    def localProperties = loadConfigurationFile()
+    Properties properties = new Properties()
+    localProperties.withInputStream {
+        instr -> properties.load(instr)
+    }
+    return properties
+}
+
+private def loadConfigurationFile() {
+    def file = new File(project.rootDir, "configuration.properties")
+    if(!file.exists()) {
+        throw new StopExecutionException("configuration.properties file is missing!")
+    }
+    return file
+}
