@@ -7,7 +7,7 @@ task prepareEnvironment(type: Exec) {
     commandLine adb, 'push', getJsonFilePath(configuration), '/sdcard/'
 }
 
-def findAdb() {
+private def findAdb() {
     def root = System.env.ANDROID_HOME ?: extractFromLocalProperties()
     return "$root/platform-tools/adb"
 }
@@ -16,7 +16,7 @@ def extractFromLocalProperties() {
     return loadPropertiesFile("", "local.properties").getProperty("sdk.dir")
 }
 
-def loadPropertiesFile(String subdir, String fileName) {
+private def loadPropertiesFile(String subdir, String fileName) {
     def localProperties = fetchFile(project.rootDir, subdir + fileName)
     Properties properties = new Properties()
     localProperties.withInputStream {
@@ -25,21 +25,21 @@ def loadPropertiesFile(String subdir, String fileName) {
     return properties
 }
 
-static def fetchFile(File rootDir, String path) {
+private static def fetchFile(File rootDir, String path) {
     def file = new File(rootDir, path)
-    println(file.absolutePath)
     if(!file.exists()) {
         throw new StopExecutionException("$path file is missing!")
     }
     return file
 }
 
-def fetchConfiguration() {
+private def fetchConfiguration() {
     return loadPropertiesFile("configuration/", "configuration.properties")
 }
 
-def getJsonFilePath(Properties configuration) {
-    print(project.rootDir)
-    def jsonFile = fetchFile(project.rootDir, configuration.getProperty("config.json"))
+private def getJsonFilePath(Properties configuration) {
+    def path = configuration.getProperty("ide.json.path")
+    def fileName = configuration.getProperty("file.json.name")
+    def jsonFile = fetchFile(project.rootDir, "$path/$fileName")
     return jsonFile.absolutePath
 }
