@@ -40,6 +40,8 @@ def fetchConfiguration() {
 
 def getJsonFilePath(Properties configuration) {
     print(project.rootDir)
-    def jsonFile = fetchFile(project.rootDir, configuration.getProperty("config.json"))
+    def path = configuration.getProperty("ide.json.path")
+    def fileName = configuration.getProperty("file.json.name")
+    def jsonFile = fetchFile(project.rootDir, "$path/$fileName")
     return jsonFile.absolutePath
 }
