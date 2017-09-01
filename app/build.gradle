@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -74,7 +73,6 @@ dependencies {
         exclude module: 'guava'
     }
     testCompile libraries.javaxInject
-    retrolambdaConfig libraries.retrolambda
 }
 
 buildscript {
