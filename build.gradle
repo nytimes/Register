@@ -11,31 +11,24 @@ buildscript {
         maven {
             url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
         }
-
+        google()
         jcenter()
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0-beta2'
-        classpath 'me.tatarka:gradle-retrolambda:3.6.1'
-        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
         classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.10'
     }
-    // this corresponds to the lombok.ast included above. fixes lint for retro-lambda
-    configurations.classpath.exclude group: 'com.android.tools.com.nytimes.android.external.lombok'
 
 }
 
 allprojects {
-    buildscript {
-
-    }
-
     repositories {
         maven {
             url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
         }
         mavenCentral()
+        google()
     }
 
     // Workaround to prevent Gradle from stealing focus from other apps during tests run/etc.
