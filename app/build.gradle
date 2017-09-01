@@ -82,6 +82,14 @@ buildscript {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
 }
 apply from: rootProject.file("gradle/checkstyle.gradle")
 apply from: rootProject.file("gradle/pmd.gradle")
+apply from: rootProject.file("setup.gradle")
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'installDebug') {
+        task.dependsOn prepareEnvironment
+    }
+}

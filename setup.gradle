@@ -1,0 +1,45 @@
+task prepareEnvironment(type: Exec) {
+    description 'Copying configuration JSON to the connected device'
+    def adb = findAdb()
+    def configuration = fetchConfiguration()
+
+    //Copy configuration file on device
+    commandLine adb, 'push', getJsonFilePath(configuration), '/sdcard/'
+}
+
+def findAdb() {
+    def root = System.env.ANDROID_HOME ?: extractFromLocalProperties()
+    return "$root/platform-tools/adb"
+}
+
+def extractFromLocalProperties() {
+    return loadPropertiesFile("", "local.properties").getProperty("sdk.dir")
+}
+
+def loadPropertiesFile(String subdir, String fileName) {
+    def localProperties = fetchFile(project.rootDir, subdir + fileName)
+    Properties properties = new Properties()
+    localProperties.withInputStream {
+        instr -> properties.load(instr)
+    }
+    return properties
+}
+
+static def fetchFile(File rootDir, String path) {
+    def file = new File(rootDir, path)
+    println(file.absolutePath)
+    if(!file.exists()) {
+        throw new StopExecutionException("$path file is missing!")
+    }
+    return file
+}
+
+def fetchConfiguration() {
+    return loadPropertiesFile("configuration/", "configuration.properties")
+}
+
+def getJsonFilePath(Properties configuration) {
+    print(project.rootDir)
+    def jsonFile = fetchFile(project.rootDir, configuration.getProperty("config.json"))
+    return jsonFile.absolutePath
+}
