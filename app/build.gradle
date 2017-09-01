@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply from: rootProject.file("configuration/register.gradle")
 
 android {
     compileSdkVersion versions.compileSdk
@@ -15,6 +16,7 @@ android {
 
         buildConfigField "String", "GITHUB_BASE_URL", '"https://api.github.com"'
         buildConfigField "String", "GITHUB_ENDPOINT", '"/repos/NYTimes/Register"'
+        buildConfigField "String", "CONFIGURATION_FILE_NAME", "\"$configFileName\""
 
     }
     compileOptions {

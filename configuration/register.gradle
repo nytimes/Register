@@ -1,6 +1,4 @@
-def loadJsonFileName() {
-    return loadProperty("file.json.name")
-}
+ext.configFileName = loadProperty("file.json.name")
 
 private def loadProperty(String key) {
     return loadConfigurationProperties().getProperty(key)
@@ -16,8 +14,8 @@ private def loadConfigurationProperties() {
 }
 
 private def loadConfigurationFile() {
-    def file = new File(project.rootDir, "configuration.properties")
-    if(!file.exists()) {
+    def file = new File(project.rootDir, "configuration/configuration.properties")
+    if (!file.exists()) {
         throw new StopExecutionException("configuration.properties file is missing!")
     }
     return file
