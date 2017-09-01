@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 public class APIOverrides {
     public static final String PREF_NAME = "RegisterModel";
-    public static final String CONFIG_FILE = "register.json";
+    public static final String CONFIG_FILE = BuildConfig.CONFIGURATION_FILE_NAME;
     public static final int RESULT_DEFAULT = -1;            // - no user override
     private static final String IS_BILLING_SUPPORTED = "isBillingSupported";
     private static final String GET_BUY_INTENT = "getBuyIntent";
