@@ -41,25 +41,25 @@ import static com.nytimes.android.external.register.sample.BuyServiceConnection.
 
 public class SampleActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
-    private static final String TAG = "SampleActivity";
-    private static final String SKU_IAP = "register.sample.iap";
-    private static final String SKU_SUB = "register.sample.sub";
-    private static final String DEV_PAYLOAD = "devPayload";
+    static final String TAG = "SampleActivity";
+    static final String SKU_IAP = "register.sample.iap";
+    static final String SKU_SUB = "register.sample.sub";
+    static final String DEV_PAYLOAD = "devPayload";
 
-    private Switch billingApiSwitch;
-    private ValueAnimator appBarColorAnimator;
-    private SampleAdapter adapter;
-    private View emptyView;
-    private TextView emptyTitle;
+    Switch billingApiSwitch;
+    ValueAnimator appBarColorAnimator;
+    SampleAdapter adapter;
+    View emptyView;
+    TextView emptyTitle;
 
-    private PrefsManager prefsManager;
-    private GoogleServiceProvider googleServiceProvider;
-    private Set<ServiceConnection> boundSet;
-    private CompositeDisposable compositeDisposable;
-    private BuyServiceConnection buyServiceConnection;
-    private GetPurchasesAndSkuDetailsConnection getPurchasesConn;
+    PrefsManager prefsManager;
+    GoogleServiceProvider googleServiceProvider;
+    Set<ServiceConnection> boundSet;
+    CompositeDisposable compositeDisposable;
+    BuyServiceConnection buyServiceConnection;
+    GetPurchasesAndSkuDetailsConnection getPurchasesConn;
 
-    private final Consumer<GetPurchasesAndSkuDetailsConnection.Response> purchasesAndSkuDetailsConsumer =
+    final Consumer<GetPurchasesAndSkuDetailsConnection.Response> purchasesAndSkuDetailsConsumer =
             new Consumer<GetPurchasesAndSkuDetailsConnection.Response>() {
                 @Override
                 public void accept(GetPurchasesAndSkuDetailsConnection.Response response) {
@@ -71,7 +71,7 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
                 }
             };
 
-    private final Consumer<Throwable> purchasesAndSkuDetailsError = new Consumer<Throwable>() {
+    final Consumer<Throwable> purchasesAndSkuDetailsError = new Consumer<Throwable>() {
         @Override
         public void accept(Throwable throwable) {
             unbindConnection(getPurchasesConn);
@@ -79,7 +79,7 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         }
     };
 
-    private final Consumer<PendingIntent> buyPendingIntentConsumer = new Consumer<PendingIntent>() {
+    final Consumer<PendingIntent> buyPendingIntentConsumer = new Consumer<PendingIntent>() {
         @Override
         public void accept(PendingIntent pendingIntent) throws IntentSender.SendIntentException {
             unbindConnection(buyServiceConnection);
@@ -88,7 +88,7 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         }
     };
 
-    private final Consumer<Throwable> buyPendingIntentError = new Consumer<Throwable>() {
+    final Consumer<Throwable> buyPendingIntentError = new Consumer<Throwable>() {
         @Override
         public void accept(Throwable throwable) {
             unbindConnection(buyServiceConnection);
@@ -144,7 +144,7 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
             initGoogleServiceProvider();
             checkPurchasesAndSkuDetails();
 
-            if (isChecked){
+            if (isChecked) {
                 appBarColorAnimator.start();
             } else {
                 appBarColorAnimator.reverse();
@@ -152,19 +152,19 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         }
     }
 
-    private void initFields() {
+    void initFields() {
         prefsManager = new PrefsManager(PreferenceManager.getDefaultSharedPreferences(this));
         compositeDisposable = new CompositeDisposable();
         boundSet = new LinkedHashSet<>();
     }
 
-    private void initToolbar() {
+    void initToolbar() {
         boolean isUsingTestProvider = prefsManager.isUsingTestGoogleServiceProvider();
 
         int appBarEnabled = ContextCompat.getColor(this, R.color.colorPrimary);
         int appBarDisabled = ContextCompat.getColor(this, R.color.colorPrimaryAlt);
 
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        AppBarLayout appBarLayout = findViewById(R.id.app_bar_layout);
         appBarLayout.setOnClickListener(v -> billingApiSwitch.toggle());
         appBarLayout.setBackgroundColor(isUsingTestProvider ? appBarEnabled : appBarDisabled);
         appBarLayout.setPadding(appBarLayout.getPaddingLeft(),
@@ -178,15 +178,15 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         appBarColorAnimator.addUpdateListener(animator ->
                 appBarLayout.setBackgroundColor((int) animator.getAnimatedValue()));
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        billingApiSwitch = (Switch) findViewById(R.id.app_bar_switch);
+        billingApiSwitch = findViewById(R.id.app_bar_switch);
         billingApiSwitch.setChecked(isUsingTestProvider);
         billingApiSwitch.setOnCheckedChangeListener(this);
     }
 
-    private void initRecycler() {
+    void initRecycler() {
         adapter = new SampleAdapter(this);
         compositeDisposable.add(adapter.getClickSubject().subscribe(item -> {
             Intent intent = ServiceIntentHelper.createExplicitFromImplicitIntent(
@@ -207,23 +207,23 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
             }
         }));
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
+        RecyclerView recyclerView = findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         int dividerSize = getResources().getDimensionPixelSize(R.dimen.recycler_divider_size);
         recyclerView.addItemDecoration(new EmptyItemDecoration(dividerSize));
     }
 
-    private void initEmptyView(){
+    void initEmptyView() {
         emptyView = findViewById(R.id.empty_view);
         emptyView.setVisibility(View.GONE);
 
-        emptyTitle = (TextView) findViewById(R.id.empty_message);
+        emptyTitle = findViewById(R.id.empty_message);
         emptyTitle.setText(prefsManager.isUsingTestGoogleServiceProvider() ?
                 R.string.empty_message_register : R.string.empty_message_google);
     }
 
-    private void initGoogleServiceProvider() {
+    void initGoogleServiceProvider() {
         if (prefsManager.isUsingTestGoogleServiceProvider()) {
             googleServiceProvider = new GoogleServiceProviderTesting();
         } else {
@@ -231,8 +231,8 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         }
     }
 
-    private void checkEmptyState() {
-        if (adapter.getItemCount() == 0){
+    void checkEmptyState() {
+        if (adapter.getItemCount() == 0) {
             emptyView.setVisibility(View.VISIBLE);
             emptyTitle.setText(prefsManager.isUsingTestGoogleServiceProvider() ?
                     R.string.empty_message_register : R.string.empty_message_google);
@@ -241,7 +241,7 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         }
     }
 
-    private void checkPurchasesAndSkuDetails() {
+    void checkPurchasesAndSkuDetails() {
         Intent intent = ServiceIntentHelper.createExplicitFromImplicitIntent(this, googleServiceProvider.getIntent());
         if (intent != null) {
             getPurchasesConn = new GetPurchasesAndSkuDetailsConnection(ImmutableList.of(SKU_IAP),
@@ -255,7 +255,7 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         }
     }
 
-    private void handlePurchasesBundles(Bundle iapBundle, Bundle subBundle) {
+    void handlePurchasesBundles(Bundle iapBundle, Bundle subBundle) {
         int iapResponse = iapBundle.getInt(GoogleUtil.RESPONSE_CODE);
         int subResponse = subBundle.getInt(GoogleUtil.RESPONSE_CODE);
         if (iapResponse == GoogleUtil.RESULT_OK && subResponse == GoogleUtil.RESULT_OK) {
@@ -271,7 +271,7 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
         }
     }
 
-    private void handleSkuDetailsBundles(Bundle iapBundle, Bundle subBundle) {
+    void handleSkuDetailsBundles(Bundle iapBundle, Bundle subBundle) {
         int iapResponse = iapBundle.getInt(GoogleUtil.RESPONSE_CODE);
         int subResponse = subBundle.getInt(GoogleUtil.RESPONSE_CODE);
         if (iapResponse == GoogleUtil.RESULT_OK && subResponse == GoogleUtil.RESULT_OK) {

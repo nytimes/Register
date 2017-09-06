@@ -203,7 +203,7 @@ public class SettingsActivity extends AppCompatActivity {
         loadGithubRepoData(savedInstanceState != null);
     }
 
-    private void loadGithubRepoData(boolean immediate) {
+    void loadGithubRepoData(boolean immediate) {
         subs.add(api.getPlayBillingRepository()
                 .delay(immediate ? 0 : 2000, TimeUnit.MILLISECONDS)
                 .observeOn(provider.getMainThread())

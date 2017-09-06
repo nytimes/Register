@@ -26,9 +26,11 @@ android {
 dependencies {
     compile project(':lib')
     compile libraries.dagger
-
     annotationProcessor libraries.daggerCompiler
-    testProvided(libraries.daggerCompiler)
+
+    testAnnotationProcessor libraries.daggerCompiler
+    androidTestAnnotationProcessor libraries.daggerCompiler
+
 
     androidTestCompile(libraries.espresso, {
         exclude group: 'com.android.support', module: 'support-annotations'

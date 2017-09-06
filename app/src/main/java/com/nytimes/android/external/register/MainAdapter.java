@@ -82,10 +82,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView productTitle;
-        private final TextView productTypeView;
-        private final TextView purchaseDateView;
-        private final View deletePurchase;
+        final TextView productTitle;
+        final TextView productTypeView;
+        final TextView purchaseDateView;
+        final View deletePurchase;
 
         MainViewHolder(View itemView) {
             super(itemView);

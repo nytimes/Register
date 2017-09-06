@@ -20,12 +20,11 @@ import io.reactivex.subjects.PublishSubject;
 
 
 public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.SampleViewHolder> {
-
+    PublishSubject<GoogleProductResponse> publishSubject = PublishSubject.create();
     private LayoutInflater inflater;
     private final Map<String, InAppPurchaseData> purchasesMap;
     private final List<GoogleProductResponse> items;
 
-    private PublishSubject<GoogleProductResponse> publishSubject = PublishSubject.create();
 
     SampleAdapter(Context context){
         super();
@@ -97,9 +96,9 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.SampleView
 
     static class SampleViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView title;
-        private final TextView description;
-        private final Button button;
+        final TextView title;
+        final TextView description;
+        final Button button;
 
         SampleViewHolder(View itemView) {
             super(itemView);
