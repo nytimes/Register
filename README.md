@@ -21,7 +21,8 @@ Register has been used to test purchasing flows of our [Flagship Reader App](htt
 ### Overview
 
 Register is a library and companion app that allows seamless mocking of responses from Google Play's In-app Billing. 
-Register works by implementing the same interface as Google's In-app Billing library [InApp Billing Service](https://github.com/googlesamples/android-play-billing/blob/master/TrivialDrive/app/src/main/aidl/com/android/vending/billing/IInAppBillingService.aidl)
+Register works by implementing the same interface as Google's In-app Billing library [InApp Billing Service](https://github.com/googlesamples/android-play-billing/blob/master/TrivialDrive/app/src/main/aidl/com/android/vending/billing/IInAppBillingService.aidl).
+
 From a client's perspective, there is no difference in how you work with Google's In-app Billing or Register's implementation.
 
 If you've used [Amazon's IAP Tester Utility](https://developer.amazon.com/public/apis/earn/in-app-purchasing/docs-v2/testing-iap), 
@@ -94,7 +95,7 @@ implementation 'com.nytimes.android.register:0.0.1'
 
 ### Fully Configurable (Configuration App)
 
-Register's companion app allows you to view both successful and unsuccessful purchase directly on your Android device. Additionally, you can control responses back to your client app for values such as `getSkuDetails`.
+Register's companion app allows you to view both successful and unsuccessful purchases directly on your Android device. Additionally, you can control responses back to your client app for values such as `getSkuDetails`.
 
 See the image below for all configurable options on a response.
 
