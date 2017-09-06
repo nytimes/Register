@@ -25,7 +25,7 @@ Register works by implementing the same interface as Google's In-app Billing lib
 
 From a client's perspective, there is no difference in how you work with Google's In-app Billing or Register's implementation.
 
-If you've used [Amazon's IAP Tester Utility](https://developer.amazon.com/public/apis/earn/in-app-purchasing/docs-v2/testing-iap), 
+If you've used [Amazon's IAP tester utility](https://developer.amazon.com/public/apis/earn/in-app-purchasing/docs-v2/testing-iap), 
 you'll find Register's workflow to be very familiar.
 
 ### Using Register
