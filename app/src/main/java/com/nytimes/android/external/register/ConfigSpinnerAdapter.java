@@ -19,16 +19,11 @@ import java.util.List;
 
 public class ConfigSpinnerAdapter extends BaseAdapter {
 
-    private static final int MODE_SPINNER = 0;
-    private static final int MODE_DROP_DOWN = 1;
+    static final int MODE_SPINNER = 0;
+    static final int MODE_DROP_DOWN = 1;
 
-    private final LayoutInflater inflater;
-    private final List<ConfigResponse> items;
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({MODE_SPINNER, MODE_DROP_DOWN})
-    private  @interface ViewMode {
-    }
+    final LayoutInflater inflater;
+    final List<ConfigResponse> items;
 
     ConfigSpinnerAdapter(@NonNull Context context, List<ConfigResponse> items) {
         this.inflater = LayoutInflater.from(context);
@@ -66,7 +61,7 @@ public class ConfigSpinnerAdapter extends BaseAdapter {
         return configViewHolder.itemView;
     }
 
-    private ConfigViewHolder getViewHolder(View view, ViewGroup viewGroup) {
+    ConfigViewHolder getViewHolder(View view, ViewGroup viewGroup) {
         if (view == null) {
             View itemView = inflater.inflate(R.layout.item_config, viewGroup, false);
             return new ConfigViewHolder(itemView);
@@ -75,20 +70,25 @@ public class ConfigSpinnerAdapter extends BaseAdapter {
         }
     }
 
-    private static class ConfigViewHolder {
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({MODE_SPINNER, MODE_DROP_DOWN})
+    @interface ViewMode {
+    }
 
-        private final View itemView;
-        private final TextView codeView;
-        private final TextView nameView;
-        private final ImageView iconView;
+    static class ConfigViewHolder {
+
+        final View itemView;
+        final TextView codeView;
+        final TextView nameView;
+        final ImageView iconView;
 
         ConfigViewHolder(View v) {
             itemView = v;
             itemView.setTag(this);
 
-            codeView = (TextView) itemView.findViewById(R.id.item_config_code);
-            nameView = (TextView) itemView.findViewById(R.id.item_config_name);
-            iconView = (ImageView) itemView.findViewById(R.id.item_config_down_icon);
+            codeView = itemView.findViewById(R.id.item_config_code);
+            nameView = itemView.findViewById(R.id.item_config_name);
+            iconView = itemView.findViewById(R.id.item_config_down_icon);
         }
 
         void bind(ConfigResponse item, @ViewMode int mode) {
@@ -102,9 +102,9 @@ public class ConfigSpinnerAdapter extends BaseAdapter {
         }
 
         @ColorInt
-        private int getCodeColor(Context context, ConfigResponse item) {
+        int getCodeColor(Context context, ConfigResponse item) {
             int colorResId;
-            switch (item.responseId()){
+            switch (item.responseId()) {
                 case "spn_ok":
                     colorResId = R.color.config_green;
                     break;
