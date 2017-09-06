@@ -46,7 +46,7 @@ ext.versions = [
         junit                : '4.12',
         assertJ              : '1.7.1',
         mockito              : '1.9.5',
-        robolectric          : '3.3.2',
+        robolectric          : '3.4.2',
         espresso             : '2.2.2'
 ]
 

@@ -42,7 +42,6 @@ import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@org.robolectric.annotation.Config(constants = BuildConfig.class, sdk = 21)
 public class BuyActivityTest {
 
     private static final String SKU = "sku1";

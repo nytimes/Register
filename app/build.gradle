@@ -33,6 +33,11 @@ android {
         abortOnError false
         disable 'InvalidPackage'
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 repositories {
@@ -50,9 +55,10 @@ dependencies {
     testCompile libraries.slf4jTesting
 
     compile libraries.dagger
-
     annotationProcessor libraries.daggerCompiler
-    testProvided(libraries.daggerCompiler)
+
+    testAnnotationProcessor libraries.daggerCompiler
+    androidTestAnnotationProcessor libraries.daggerCompiler
 
     compile libraries.rxJava
     compile libraries.rxAndroid
@@ -75,6 +81,8 @@ dependencies {
         exclude module: 'guava'
     }
     testCompile libraries.javaxInject
+    testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.2.3'
+
 }
 
 buildscript {

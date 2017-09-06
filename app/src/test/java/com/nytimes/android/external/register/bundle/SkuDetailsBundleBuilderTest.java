@@ -11,14 +11,19 @@ import com.nytimes.android.external.register.model.ConfigSku;
 import com.nytimes.android.external.register.model.ImmutableConfigSku;
 import com.nytimes.android.external.registerlib.GoogleUtil;
 
+import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import java.util.ArrayList;
+
+import io.reactivex.exceptions.Exceptions;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -77,14 +82,20 @@ public class SkuDetailsBundleBuilderTest {
         assertThat(bundle.getInt(GoogleUtil.RESPONSE_CODE))
                 .isEqualTo(GoogleUtil.RESULT_OK);
         ArrayList<String> detailsList =  bundle.getStringArrayList(GoogleUtil.DETAILS_LIST);
-        assertThat(detailsList.get(0))
-                .isEqualTo("{\"itemType\":\"subs\",\"productId\":\"sku1\",\"price\":\"$1.98\"," +
-                        "\"description\":\"some description\",\"title\":\"caps for sale\"," +
-                        "\"price_amount_micros\":1980000,\"price_currency_code\":\"USD\"}");
-        assertThat(detailsList.get(1))
-                .isEqualTo("{\"itemType\":\"subs\",\"productId\":\"sku2\",\"price\":\"$1.98\"," +
-                        "\"description\":\"some description\",\"title\":\"caps for sale\"," +
-                        "\"price_amount_micros\":1980000,\"price_currency_code\":\"USD\"}");
+        try {
+            JSONAssert.assertEquals(detailsList.get(0),
+                    "{\"itemType\":\"subs\",\"productId\":\"sku1\",\"price\":\"$1.98\"," +
+                            "\"description\":\"some description\",\"title\":\"caps for sale\"," +
+                            "\"price_amount_micros\":1980000,\"price_currency_code\":\"USD\"}",
+                    JSONCompareMode.LENIENT);
+            JSONAssert.assertEquals(detailsList.get(1),
+                    "{\"itemType\":\"subs\",\"productId\":\"sku2\",\"price\":\"$1.98\"," +
+                            "\"description\":\"some description\",\"title\":\"caps for sale\"," +
+                            "\"price_amount_micros\":1980000,\"price_currency_code\":\"USD\"}",
+                    JSONCompareMode.LENIENT);
+        } catch (JSONException e) {
+           throw  Exceptions.propagate(e);
+        }
     }
 
     @Test
