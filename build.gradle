@@ -11,6 +11,10 @@ buildscript {
         maven {
             url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
         }
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+
         google()
         jcenter()
     }
@@ -27,6 +31,10 @@ allprojects {
         maven {
             url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
         }
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+
         mavenCentral()
         google()
     }

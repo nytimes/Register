@@ -24,7 +24,7 @@ android {
 }
 
 dependencies {
-    compile project(':lib')
+    compile group: 'com.nytimes.android', name: 'register', version: '0.0.1-SNAPSHOT'
     compile libraries.dagger
     annotationProcessor libraries.daggerCompiler
 
