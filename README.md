@@ -10,9 +10,9 @@ Register is an Android library for easier testing of Google Play's In-app Billin
 + When payments are involved, developers sleep better having a way to test their functionality prior to release
 + Before an app is promoted to Alpha in the Play Store, we do not have an offical way to test payments
 
-The New York Times Android Team developed a fake implementation of Google Play Store's In-app Billing called Register,
-which can be used as a companion app for testing In-app Billing purchases and subscriptions. Similar to a mock web server, 
-you can point your app to use Register rather than the real Play Store In-app Billing implementation.  Using Register, you'll be able to validate whether your purchasing flows work correctly.
+The New York Times Android Team developed a fake implementation of Google Play Store's In-app Billing called Register, which can be used as a companion app for testing In-app Billing purchases and subscriptions. 
+
+Similar to a mock web server, you can point your app to use Register rather than the real Play Store In-app Billing implementation. Using Register, you'll be able to validate in-advance whether your purchasing flows work correctly.
 
 Register has been used to test purchasing flows of our [Flagship Reader App](https://play.google.com/store/apps/details?id=com.nytimes.android&hl=en) and [NYT Crosswords App](https://play.google.com/store/apps/details?id=com.nytimes.crossword&hl=en) for three years and counting.
 
