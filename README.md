@@ -58,6 +58,11 @@ Here's a sample that we use at NYTimes. The format needs to be the same as below
 }
 
 ```
+For Register to find the aforementioned configuration file (in case you change name or location), you need to change the data contained in the `configuration\configuration.properties` file:
+```
+ide.json.path=subfolder/from/root
+file.json.name=newFileName.json
+```
 
 **Step 1:** Install `RegisterCompanion` onto the device where you want to mock In-app Billing. You can find the latest version in the [Releases Tab](https://github.com/nytm/Register/releases).
 
