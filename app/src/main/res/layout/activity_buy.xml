@@ -62,7 +62,7 @@
         android:layout_below="@+id/buy_spinner_accounts"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="2dp"
-        android:text="@string/register"
+        android:text="@string/app_name"
         android:textColor="#757575"
         android:textSize="20sp" />
 

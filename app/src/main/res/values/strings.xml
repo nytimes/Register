@@ -2,8 +2,7 @@
 <resources>
 
     <!-- General-->
-    <string name="app_name">Register Sample</string>
-    <string name="register">Register</string>
+    <string name="app_name">Register</string>
 
     <!-- Debug-->
     <string name="lorem_ipsum">Lorem Ipsum</string>
