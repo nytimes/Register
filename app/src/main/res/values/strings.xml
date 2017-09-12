@@ -67,6 +67,8 @@
     <string name="url_priv" translatable="false">https://www.nytimes.com/content/help/rights/privacy/policy/privacy-policy.html</string>
     <string name="url_jobs">https://jobs.nytco.com</string>
     <string name="settings_github_error">An error occurred when trying to fetch the repo information. Tap to try again.</string>
+    <string name="products">Products</string>
+    <string name="edit_product">Edit Product</string>
 
 
 </resources>

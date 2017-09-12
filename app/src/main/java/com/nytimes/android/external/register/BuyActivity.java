@@ -35,9 +35,9 @@ import javax.inject.Inject;
 @SuppressWarnings("PMD.GodClass")
 public class BuyActivity extends AppCompatActivity {
 
+    public static final String PRICE_FMT =  "$%s";
     static final String RECEIPT_FMT = "%s.RegisterrToken%d";
     static final String ERROR_FMT =  "%s: %d";
-    static final String PRICE_FMT =  "$%s";
 
     private static final String RESPONSE_EXTRA_TITLE = "RESPONSE_EXTRA_TITLE";
     private static final String RESPONSE_EXTRA_SUMMARY = "RESPONSE_EXTRA_SUMMARY";

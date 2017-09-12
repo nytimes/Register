@@ -8,6 +8,11 @@
         android:icon="@drawable/ic_screwdriver"
         app:showAsAction="always" />
 
+    <item android:id="@+id/menu_action_products"
+        android:title="@string/action_configure"
+        android:icon="@drawable/ic_products"
+        app:showAsAction="always" />
+
     <item android:id="@+id/menu_action_delete_all"
         android:title="@string/action_delete_all"
         android:orderInCategory="98"

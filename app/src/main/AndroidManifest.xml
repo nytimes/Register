@@ -43,6 +43,12 @@
                 <action android:name="com.nytimes.android.external.register.test.buy"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".products.ProductsActivity" />
+
+        <activity android:name=".products.edit.EditProductActivity"
+            android:theme="@style/Theme.Register.Edit"/>
+
     </application>
 
 </manifest>

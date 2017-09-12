@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.google.common.base.Optional;
 import com.nytimes.android.external.register.di.Injector;
 import com.nytimes.android.external.register.model.Config;
+import com.nytimes.android.external.register.products.ProductsActivity;
 import com.nytimes.android.external.registerlib.GoogleUtil;
 import com.nytimes.android.external.registerlib.InAppPurchaseData;
 
@@ -281,6 +282,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 return true;
             case R.id.menu_action_configure:
                 appBarLayout.setExpanded(true, true);
+                return true;
+            case R.id.menu_action_products:
+                Intent productsIntent = new Intent(this, ProductsActivity.class);
+                startActivity(productsIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

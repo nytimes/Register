@@ -48,6 +48,7 @@ dependencies {
     compile libraries.supportAppCompat
     compile libraries.supportDesign
     compile libraries.swipeLayout
+    compile libraries.supportCardView
 
     compile project(':lib')
     compile libraries.gson
