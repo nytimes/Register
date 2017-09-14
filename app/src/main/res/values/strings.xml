@@ -69,6 +69,7 @@
     <string name="settings_github_error">An error occurred when trying to fetch the repo information. Tap to try again.</string>
     <string name="products">Products</string>
     <string name="edit_product">Edit Product</string>
+    <string name="new_product">New Product</string>
 
 
 </resources>

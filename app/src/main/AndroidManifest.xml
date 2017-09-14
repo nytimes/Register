@@ -44,9 +44,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".products.ProductsActivity" />
+        <activity android:name=".products.ProductsActivity"
+            android:parentActivityName=".MainActivity"/>
 
         <activity android:name=".products.edit.EditProductActivity"
+            android:parentActivityName=".products.ProductsActivity"
             android:theme="@style/Theme.Register.Edit"/>
 
     </application>

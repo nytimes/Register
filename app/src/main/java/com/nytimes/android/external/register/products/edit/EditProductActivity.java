@@ -3,7 +3,11 @@ package com.nytimes.android.external.register.products.edit;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import com.nytimes.android.external.register.R;
@@ -27,8 +31,12 @@ public class EditProductActivity extends AppCompatActivity {
     public static final String RESULT_CONFIG_SKU_DESC = "EditProductActivity.Result.EXTRA_CONFIG_SKU_DESC";
     public static final String RESULT_CONFIG_SKU_PACKAGE_NAME = "EditProductActivity.Result.EXTRA_CONFIG_SKU_PACKAGE_NAME";
 
-    public static Intent newIntent(Context context, ConfigSku configSku){
-        Intent intent = new Intent(context, EditProductActivity.class);
+    public static Intent newIntent(Context context) {
+        return new Intent(context, EditProductActivity.class);
+    }
+
+    public static Intent newIntent(Context context, ConfigSku configSku) {
+        Intent intent = newIntent(context);
         intent.putExtra(EXTRA_CONFIG_SKU_TYPE, configSku.itemType());
         intent.putExtra(EXTRA_CONFIG_SKU_TITLE, configSku.title());
         intent.putExtra(EXTRA_CONFIG_SKU_PRICE, configSku.price());
@@ -62,39 +70,87 @@ public class EditProductActivity extends AppCompatActivity {
     private void initToolbar() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(R.string.edit_product);
+            getSupportActionBar().setTitle(getIntent().hasExtra(EXTRA_CONFIG_SKU_PACKAGE_NAME) ?
+                    R.string.edit_product : R.string.new_product);
         }
     }
 
     private void initBody() {
+        View.OnFocusChangeListener onFocusChangeListener = (view, hasFocus) -> {
+            if (hasFocus && view instanceof EditText) {
+                ((EditText) view).setError(null);
+            }
+        };
+
         type = findViewById(R.id.edit_type);
-        type.setText(getIntent().getStringExtra(EXTRA_CONFIG_SKU_TYPE));
+        type.setOnFocusChangeListener(onFocusChangeListener);
+        if (getIntent().hasExtra(EXTRA_CONFIG_SKU_TYPE)) {
+            type.setText(getIntent().getStringExtra(EXTRA_CONFIG_SKU_TYPE));
+        }
 
         title = findViewById(R.id.edit_title);
-        title.setText(getIntent().getStringExtra(EXTRA_CONFIG_SKU_TITLE));
+        title.setOnFocusChangeListener(onFocusChangeListener);
+        if (getIntent().hasExtra(EXTRA_CONFIG_SKU_TITLE)) {
+            title.setText(getIntent().getStringExtra(EXTRA_CONFIG_SKU_TITLE));
+        }
 
         price = findViewById(R.id.edit_price);
-        price.setText(getIntent().getStringExtra(EXTRA_CONFIG_SKU_PRICE));
+        price.setOnFocusChangeListener(onFocusChangeListener);
+        if (getIntent().hasExtra(EXTRA_CONFIG_SKU_PRICE)) {
+            price.setText(getIntent().getStringExtra(EXTRA_CONFIG_SKU_PRICE));
+        }
 
         desc = findViewById(R.id.edit_desc);
-        desc.setText(getIntent().getStringExtra(EXTRA_CONFIG_SKU_DESC));
+        desc.setOnFocusChangeListener(onFocusChangeListener);
+        if (getIntent().hasExtra(EXTRA_CONFIG_SKU_DESC)) {
+            desc.setText(getIntent().getStringExtra(EXTRA_CONFIG_SKU_DESC));
+        }
 
         packageName = findViewById(R.id.edit_package);
-        packageName.setText(getIntent().getStringExtra(EXTRA_CONFIG_SKU_PACKAGE_NAME));
+        packageName.setOnFocusChangeListener(onFocusChangeListener);
+        if (getIntent().hasExtra(EXTRA_CONFIG_SKU_PACKAGE_NAME)) {
+            packageName.setText(getIntent().getStringExtra(EXTRA_CONFIG_SKU_PACKAGE_NAME));
+        }
     }
 
     //TODO Validation code
     private void initFab() {
         findViewById(R.id.edit_save).setOnClickListener(view -> {
-            Intent result = new Intent();
-            result.putExtra(RESULT_CONFIG_SKU_TYPE, type.getText().toString());
-            result.putExtra(RESULT_CONFIG_SKU_TITLE, title.getText().toString());
-            result.putExtra(RESULT_CONFIG_SKU_PRICE, price.getText().toString());
-            result.putExtra(RESULT_CONFIG_SKU_DESC, desc.getText().toString());
-            result.putExtra(RESULT_CONFIG_SKU_PACKAGE_NAME, packageName.getText().toString());
-            setResult(RESULT_OK, result);
-            finish();
+            if (validateField(title) &&
+                    validateField(price) &&
+                    validateField(desc) &&
+                    validateField(type) &&
+                    validateField(packageName)) {
+                Intent result = new Intent();
+                result.putExtra(RESULT_CONFIG_SKU_TYPE, type.getText().toString());
+                result.putExtra(RESULT_CONFIG_SKU_TITLE, title.getText().toString());
+                result.putExtra(RESULT_CONFIG_SKU_PRICE, price.getText().toString());
+                result.putExtra(RESULT_CONFIG_SKU_DESC, desc.getText().toString());
+                result.putExtra(RESULT_CONFIG_SKU_PACKAGE_NAME, packageName.getText().toString());
+                setResult(RESULT_OK, result);
+                finish();
+            }
         });
+    }
+
+    private boolean validateField(EditText type) {
+        if (TextUtils.isEmpty(type.getText())) {
+            type.requestFocus();
+            type.setError("Invalid " + type.getHint());
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
 }

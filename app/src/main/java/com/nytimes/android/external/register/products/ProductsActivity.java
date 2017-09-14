@@ -2,10 +2,13 @@ package com.nytimes.android.external.register.products;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +52,11 @@ public class ProductsActivity extends AppCompatActivity {
         initToolbar();
         initRecycler();
 
+        findViewById(R.id.products_add).setOnClickListener(v -> {
+            Intent intent = EditProductActivity.newIntent(ProductsActivity.this);
+            startActivityForResult(intent, EditProductActivity.REQUEST_CODE);
+        });
+
         emptyView = findViewById(R.id.empty_view);
         emptyViewText = (TextView) findViewById(R.id.empty_view_text);
         emptyViewTitle = (TextView) findViewById(R.id.empty_view_title);
@@ -62,6 +70,7 @@ public class ProductsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.products);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initRecycler() {
@@ -81,6 +90,23 @@ public class ProductsActivity extends AppCompatActivity {
         recyclerView.setPadding(padding, padding, padding, padding);
         recyclerView.setClipToPadding(false);
         recyclerView.addItemDecoration(new EmptyItemDecoration(padding));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            Intent upIntent = NavUtils.getParentActivityIntent(this);
+            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                TaskStackBuilder.create(this)
+                        .addNextIntentWithParentStack(upIntent)
+                        .startActivities();
+            } else {
+                NavUtils.navigateUpTo(this, upIntent);
+            }
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
