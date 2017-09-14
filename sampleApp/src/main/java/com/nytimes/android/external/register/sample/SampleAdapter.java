@@ -1,6 +1,10 @@
 package com.nytimes.android.external.register.sample;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,17 +24,24 @@ import io.reactivex.subjects.PublishSubject;
 
 
 public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.SampleViewHolder> {
-    PublishSubject<GoogleProductResponse> publishSubject = PublishSubject.create();
-    private LayoutInflater inflater;
+    private final PrefsManager prefsManager;
     private final Map<String, InAppPurchaseData> purchasesMap;
     private final List<GoogleProductResponse> items;
+    private final ColorStateList colorTesterEnbeled;
+    private final ColorStateList colorTesterDisabled;
+
+    private LayoutInflater inflater;
+    private PublishSubject<GoogleProductResponse> publishSubject = PublishSubject.create();
 
 
     SampleAdapter(Context context){
         super();
         inflater = LayoutInflater.from(context);
+        prefsManager = new PrefsManager(PreferenceManager.getDefaultSharedPreferences(context));
         purchasesMap = new HashMap<>();
         items = new ArrayList<>();
+        colorTesterEnbeled = ContextCompat.getColorStateList(context, R.color.button_background_enabled);
+        colorTesterDisabled = ContextCompat.getColorStateList(context, R.color.button_background_disabled);
     }
 
     @Override
@@ -50,6 +61,8 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.SampleView
         holder.description.setText(item.description());
         holder.button.setText(isPurchased ? context.getString(R.string.purchased) : item.price());
         holder.button.setEnabled(!isPurchased);
+        ViewCompat.setBackgroundTintList(holder.button, prefsManager.isUsingTestGoogleServiceProvider() ?
+                colorTesterEnbeled : colorTesterDisabled);
         holder.button.setOnClickListener(v -> publishSubject.onNext(item));
     }
 
