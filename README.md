@@ -4,6 +4,9 @@
 
 Register is an Android library for easier testing of Google Play's In-app Billing.
 
+
+[Blog Post](https://open.nytimes.com/register-better-in-app-billing-testing-on-android-73af5fcc36dc)
+
 ### The Problems:
 
 + In-app Billing implementations on Android are hard to get right
