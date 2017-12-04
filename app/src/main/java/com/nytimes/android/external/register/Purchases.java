@@ -3,14 +3,13 @@ package com.nytimes.android.external.register;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.nytimes.android.external.registerlib.InAppPurchaseData;
 
 import org.immutables.value.Value;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.security.InvalidKeyException;
 import java.security.SignatureException;
@@ -31,7 +30,6 @@ import static com.nytimes.android.external.registerlib.GoogleUtil.BILLING_TYPE_S
 public class Purchases {
 
     static final int PAGE_LIMIT = 100; // not sure what this limit actually is
-    private static final Logger LOGGER = LoggerFactory.getLogger(Purchases.class);
 
     @NonNull
     private final SharedPreferences sharedPreferences;
@@ -60,7 +58,7 @@ public class Purchases {
             try {
                 signedData = signer.signData(jsonData);
             } catch (InvalidKeyException | SignatureException exception) {
-                LOGGER.error("Exception signing purchase data", exception);
+                Log.e("Purchases", "Exception signing purchase data", exception);
             }
             builder.addDataSignatureList(signedData);
         }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.common.base.Optional;
 import com.google.common.io.Files;
@@ -13,9 +14,6 @@ import com.nytimes.android.external.register.GithubApi;
 import com.nytimes.android.external.register.PermissionHandler;
 import com.nytimes.android.external.register.R;
 import com.nytimes.android.external.register.model.Config;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,8 +33,6 @@ import static com.nytimes.android.external.register.APIOverrides.CONFIG_FILE;
 
 @Module
 public class ActivityModule {
-
-    static final Logger LOGGER = LoggerFactory.getLogger(ActivityModule.class);
 
     private final Activity activity;
 
@@ -59,7 +55,7 @@ public class ActivityModule {
                 return Optional.of(gson.fromJson(Files.newReader(new File(
                         Environment.getExternalStorageDirectory().getPath(), CONFIG_FILE), UTF_8), Config.class));
             } catch (FileNotFoundException exc) {
-                LOGGER.error(activity.getString(R.string.config_not_found), exc);
+                Log.e("ActivityModule", activity.getString(R.string.config_not_found), exc);
             }
         } else {
             PermissionHandler.requestPermission(activity);
