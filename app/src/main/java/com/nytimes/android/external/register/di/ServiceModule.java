@@ -4,6 +4,7 @@ import android.app.Application;
 import android.app.Service;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.common.base.Optional;
 import com.google.common.io.Files;
@@ -21,9 +22,6 @@ import com.nytimes.android.external.register.bundle.PurchasesBundleBuilder;
 import com.nytimes.android.external.register.bundle.SkuDetailsBundleBuilder;
 import com.nytimes.android.external.register.model.Config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -36,7 +34,6 @@ import static com.nytimes.android.external.register.APIOverrides.CONFIG_FILE;
 @Module
 public class ServiceModule {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(ServiceModule.class);
     private final Service service;
 
     public ServiceModule(@NonNull Service service) {
@@ -57,7 +54,7 @@ public class ServiceModule {
                 return Optional.of(gson.fromJson(Files.newReader(new File(
                         Environment.getExternalStorageDirectory().getPath(), CONFIG_FILE), UTF_8), Config.class));
             } catch (FileNotFoundException exc) {
-                LOGGER.error(service.getString(R.string.config_not_found), exc);
+                Log.e("ServiceModule", service.getString(R.string.config_not_found), exc);
             }
         }
         return Optional.absent();

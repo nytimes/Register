@@ -21,7 +21,7 @@ ext.versions = [
         minSdk               : 16,
         targetSdk            : 25,
         compileSdk           : 26,
-        buildTools           : '26.0.1',
+        buildTools           : '26.0.2',
 
         // UI libs.
         supportLibs          : '26.0.1',
@@ -38,9 +38,6 @@ ext.versions = [
         rxJava               : '2.1.0',
         rxAndroid            : '2.0.1',
         retrofit             : '2.3.0',
-
-        // Debugging & Inspecting.
-        slf4j                : '1.7.19',
 
         // Testing.
         junit                : '4.12',
@@ -74,10 +71,6 @@ ext.libraries = [
         retrofit                : "com.squareup.retrofit2:retrofit:$versions.retrofit",
         retrofitConverter       : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
         retrofitAdapter         : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
-
-        // Debugging & Inspecting.
-        slf4jTesting            : "org.slf4j:slf4j-simple:$versions.slf4j",
-        slf4jAndroid            : "org.slf4j:slf4j-android:$versions.slf4j",
 
         // Testing.
         junit                   : "junit:junit:$versions.junit",

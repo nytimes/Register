@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.common.base.Optional;
 import com.google.gson.FieldNamingPolicy;
@@ -17,9 +18,6 @@ import com.nytimes.android.external.register.Signer;
 import com.nytimes.android.external.register.model.GsonAdaptersConfig;
 import com.nytimes.android.external.register.model.GsonAdaptersConfigSku;
 import com.nytimes.android.external.register.model.GsonAdaptersRepository;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +42,6 @@ import static com.nytimes.android.external.register.APIOverrides.PREF_NAME;
 @Module
 public class ApplicationModule {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationModule.class);
     private final Application application;
 
     public ApplicationModule(@NonNull Application application) {
@@ -118,7 +115,7 @@ public class ApplicationModule {
             return Optional.of((PrivateKey) trusted.getKey("register", "register".toCharArray()));
         } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException |
                 UnrecoverableKeyException exception) {
-            LOGGER.error("Failed to provide private key", exception);
+            Log.e("ApplicationModule", "Failed to provide private key", exception);
             return Optional.absent();
         }
     }
@@ -129,7 +126,7 @@ public class ApplicationModule {
         try {
             return Optional.of(Signature.getInstance("SHA1withRSA", "BC"));
         } catch (NoSuchAlgorithmException | NoSuchProviderException exception) {
-            LOGGER.error("Failed to provide signature", exception);
+            Log.e("ApplicationModule", "Failed to provide signature", exception);
             return Optional.absent();
         }
     }

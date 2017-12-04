@@ -51,8 +51,6 @@ dependencies {
 
     compile project(':lib')
     compile libraries.gson
-    compile libraries.slf4jAndroid
-    testCompile libraries.slf4jTesting
 
     compile libraries.dagger
     annotationProcessor libraries.daggerCompiler
