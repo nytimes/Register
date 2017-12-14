@@ -118,11 +118,11 @@ See the image below for all configurable options on a response.
 **For Android Gradle Plugin 3.0**
 
 ```groovy 
-implementation 'com.nytimes.android.register:0.0.2'
+implementation 'com.nytimes.android:register:0.0.2'
 ```
 
 **For projects using older versions of the plugin**
 
 ```groovy
-compile 'com.nytimes.android.register:0.0.2'
+compile 'com.nytimes.android:register:0.0.2'
 ```
