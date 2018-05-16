@@ -8,7 +8,7 @@ import org.immutables.value.Value;
 @Value.Immutable
 @Gson.TypeAdapters
 public interface ConfigSku {
-    String itemType();
+    String type();
     String price();
     String title();
     String description();

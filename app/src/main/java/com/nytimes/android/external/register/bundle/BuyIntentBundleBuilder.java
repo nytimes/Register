@@ -15,7 +15,7 @@ public class BuyIntentBundleBuilder extends BaseBundleBuilder {
 
     public static final String EX_PACKAGE_NAME = "packageName";
     public static final String EX_SKU = "sku";
-    public static final String EX_ITEM_TYPE = "itemType";
+    public static final String EX_ITEM_TYPE = "type";
     public static final String EX_DEVELOPER_PAYLOAD = "developerPayload";
 
     protected final Application application;

@@ -17,7 +17,7 @@ import javax.inject.Inject;
 public class BuyIntentToReplaceSkusBundleBuilder extends BaseBundleBuilder {
 
     public static final String EX_PACKAGE_NAME = "packageName";
-    public static final String EX_ITEM_TYPE = "itemType";
+    public static final String EX_ITEM_TYPE = "type";
     public static final String EX_OLD_SKUS = "oldSkus";
     public static final String EX_NEW_SKU = "newSku";
     public static final String EX_DEVELOPER_PAYLOAD = "developerPayload";

@@ -1,14 +1,14 @@
 {
 	"skus": {
 	    "register.sample.iap": {
-			"itemType": "IN APP PURCHASE",
+			"type": "inapp",
 			"price" : "1.00",
 			"title" : "Sample In App Purchase Item",
 			"description" : "This is an in app purchase item for use with Register sample app",
 			"package" : "com.nytimes.android.external.register"
 	    },
 		"register.sample.sub": {
-			"itemType": "SUBSCRIPTION",
+			"type": "subs",
 			"price" : "10.00",
 			"title" : "Sample Subscription Item1",
 			"description" : "This is a subscription item for use with Register sample app",
