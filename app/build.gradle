@@ -45,42 +45,41 @@ repositories {
 }
 
 dependencies {
-    compile libraries.supportAppCompat
-    compile libraries.supportDesign
-    compile libraries.swipeLayout
+    implementation libraries.supportAppCompat
+    implementation libraries.supportDesign
+    implementation libraries.swipeLayout
 
-    compile project(':lib')
-    compile libraries.gson
+    implementation project(':lib')
+    implementation libraries.gson
 
-    compile libraries.dagger
+    implementation libraries.dagger
     annotationProcessor libraries.daggerCompiler
 
     testAnnotationProcessor libraries.daggerCompiler
     androidTestAnnotationProcessor libraries.daggerCompiler
 
-    compile libraries.rxJava
-    compile libraries.rxAndroid
-    compile libraries.retrofit
-    compile libraries.retrofitConverter
-    compile libraries.retrofitAdapter
+    implementation libraries.rxJava
+    implementation libraries.rxAndroid
+    implementation libraries.retrofit
+    implementation libraries.retrofitConverter
+    implementation libraries.retrofitAdapter
 
     annotationProcessor libraries.immutablesValue
-    provided libraries.immutablesValue
-    provided libraries.immutablesGson
+    compileOnly libraries.immutablesValue
+    compileOnly libraries.immutablesGson
 
-    compile libraries.guava
-    compile libraries.butterKnife
+    implementation libraries.guava
+    implementation libraries.butterKnife
     annotationProcessor libraries.butterKnifeCompiler
 
-    testCompile libraries.mockito
-    testCompile libraries.assertJ
-    testCompile libraries.junit
-    testCompile(libraries.robolectric) {
+    testImplementation libraries.mockito
+    testImplementation libraries.assertJ
+    testImplementation libraries.junit
+    testImplementation(libraries.robolectric) {
         exclude module: 'guava'
     }
-    testCompile libraries.javaxInject
-    testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.2.3'
-
+    testImplementation libraries.javaxInject
+    testImplementation group: 'org.skyscreamer', name: 'jsonassert', version: '1.2.3'
 }
 
 buildscript {
