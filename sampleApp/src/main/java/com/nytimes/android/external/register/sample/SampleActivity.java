@@ -210,14 +210,15 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
             final Observable<List<SkuDetails>> iapSkuDetailsStream =
                     Observable
                             .create(emitter ->
-                                    googleServiceProvider.querySkuDetailsAsync(iapParams, (responseCode, skuDetailsList) -> {
-                                        if (skuDetailsList != null) {
-                                            emitter.onNext(skuDetailsList);
-                                        } else {
-                                            emitter.onNext(new ArrayList<>());
-                                        }
-                                        emitter.onComplete();
-                                    }));
+                                    googleServiceProvider
+                                            .querySkuDetailsAsync(iapParams, (responseCode, skuDetailsList) -> {
+                                                if (skuDetailsList == null) {
+                                                    emitter.onNext(new ArrayList<>());
+                                                } else {
+                                                    emitter.onNext(skuDetailsList);
+                                                }
+                                                emitter.onComplete();
+                                            }));
 
             final SkuDetailsParams subParams =
                     SkuDetailsParams
@@ -229,13 +230,14 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
             final Observable<List<SkuDetails>> subSkuDetailsStream =
                     Observable
                             .create(emitter ->
-                                    googleServiceProvider.querySkuDetailsAsync(subParams, (responseCode, skuDetailsList) -> {
-                                        if (skuDetailsList != null) {
-                                            emitter.onNext(skuDetailsList);
-                                        } else {
-                                            emitter.onNext(new ArrayList<>());
-                                        }
-                                        emitter.onComplete();
+                                    googleServiceProvider
+                                            .querySkuDetailsAsync(subParams, (responseCode, skuDetailsList) -> {
+                                                if (skuDetailsList == null) {
+                                                    emitter.onNext(new ArrayList<>());
+                                                } else {
+                                                    emitter.onNext(skuDetailsList);
+                                                }
+                                                emitter.onComplete();
                                     }));
 
             final Observable<List<Purchase>> purchasesResultStream =

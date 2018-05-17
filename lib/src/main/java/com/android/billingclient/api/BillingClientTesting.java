@@ -24,15 +24,12 @@ import java.util.Objects;
  * An implementation of {@link BillingClient} that acts as a man-in-the-middle for the actual
  * {@link BillingClientImpl} provided in the Play Billing Library
  * (see {@link BillingClientTesting#BillingClientTesting(Context, PurchasesUpdatedListener)}).
- *
+ * <p>
  * Please note that this class <b>must</b> be placed in the
  * <code>com.android.billingclient.api</code> package, so to have visibility over the
  * {@link BillingClientImpl} class (which is package-private).
  */
 public class BillingClientTesting extends BillingClient {
-
-    private static final String INTENT_STRING = "com.nytimes.android.external.register.InAppBillingService.BIND";
-    private static final String INTENT_PKG = "com.nytimes.android.external.register";
 
     private final BillingClientImpl billingClientImpl;
 
@@ -94,8 +91,11 @@ public class BillingClientTesting extends BillingClient {
      * so thanks to {@link WrappedServiceConnection}.
      */
     private static class BillingContextWrapper extends ContextWrapper {
-        private final String wrappedPackageName = "com.android.vending";
-        private final String wrappedAction = "com.android.vending.billing.InAppBillingService.BIND";
+        private static final String WRAPPED_PACKAGE_NAME = "com.android.vending";
+        private static final String WRAPPED_ACTION = "com.android.vending.billing.InAppBillingService.BIND";
+
+        private static final String INTENT_STRING = "com.nytimes.android.external.register.InAppBillingService.BIND";
+        private static final String INTENT_PKG = "com.nytimes.android.external.register";
 
         public BillingContextWrapper(Context context) {
             super(context.getApplicationContext());
@@ -108,8 +108,8 @@ public class BillingClientTesting extends BillingClient {
 
         @Override
         public boolean bindService(Intent service, ServiceConnection conn, int flags) {
-            if (Objects.equals(service.getAction(), wrappedAction)
-                    && Objects.equals(service.getPackage(), wrappedPackageName)) {
+            if (Objects.equals(service.getAction(), WRAPPED_ACTION)
+                    && Objects.equals(service.getPackage(), WRAPPED_PACKAGE_NAME)) {
                 final ComponentName originalComponent = service.getComponent();
                 Intent intent = new Intent(service);
                 intent.setAction(INTENT_STRING);
@@ -178,10 +178,10 @@ public class BillingClientTesting extends BillingClient {
     private static class WrappedBinder implements IBinder {
 
         @NonNull
-        private final String registerDescriptor = "com.nytimes.android.external.register.IInAppBillingService";
+        private static final String REGISTER_DESCRIPTOR = "com.nytimes.android.external.register.IInAppBillingService";
 
         @NonNull
-        private final String playDescriptor = "com.android.vending.billing.IInAppBillingService";
+        private static final String PLAY_DESCRIPTOR = "com.android.vending.billing.IInAppBillingService";
 
         @NonNull
         private final IBinder binder;
@@ -191,15 +191,19 @@ public class BillingClientTesting extends BillingClient {
         }
 
         private String getRegisterDescriptor(String interfaceDescriptor) {
-            if (Objects.equals(interfaceDescriptor, playDescriptor)) {
-                return registerDescriptor;
-            } else return interfaceDescriptor;
+            if (Objects.equals(interfaceDescriptor, PLAY_DESCRIPTOR)) {
+                return REGISTER_DESCRIPTOR;
+            } else {
+                return interfaceDescriptor;
+            }
         }
 
         private String getPlayDescriptor(String interfaceDescriptor) {
-            if (Objects.equals(interfaceDescriptor, registerDescriptor)) {
-                return playDescriptor;
-            } else return interfaceDescriptor;
+            if (Objects.equals(interfaceDescriptor, REGISTER_DESCRIPTOR)) {
+                return PLAY_DESCRIPTOR;
+            } else {
+                return interfaceDescriptor;
+            }
         }
 
         @Nullable
@@ -235,16 +239,17 @@ public class BillingClientTesting extends BillingClient {
         }
 
         @Override
-        public boolean transact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags) throws RemoteException {
+        public boolean transact(int code, @NonNull Parcel data, @Nullable Parcel reply, int flags)
+                throws RemoteException {
             final Parcel newParcel = Parcel.obtain();
             try {
                 final int currentPosition = data.dataPosition();
                 data.setDataPosition(0);
-                data.enforceInterface(playDescriptor);
+                data.enforceInterface(PLAY_DESCRIPTOR);
                 final int dataOffset = data.dataPosition();
                 final int dataLength = data.dataAvail();
                 data.setDataPosition(currentPosition);
-                newParcel.writeInterfaceToken(registerDescriptor);
+                newParcel.writeInterfaceToken(REGISTER_DESCRIPTOR);
                 newParcel.appendFrom(data, dataOffset, dataLength);
                 return binder.transact(code, newParcel, reply, flags);
             } finally {
