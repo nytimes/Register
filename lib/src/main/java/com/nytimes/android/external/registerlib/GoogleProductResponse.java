@@ -14,7 +14,7 @@ import static com.nytimes.android.external.registerlib.JsonHelper.getFieldAsStri
 public class GoogleProductResponse {
     private static final String TAG = GoogleProductResponse.class.getSimpleName();
     private static final String FLD_PRODUCT_ID = "productId";
-    private static final String FLD_ITEM_TYPE = "itemType";
+    private static final String FLD_ITEM_TYPE = "type";
     private static final String FLD_PRICE = "price";
     private static final String FLD_TITLE = "title";
     private static final String FLD_DESCRIPTION = "description";
