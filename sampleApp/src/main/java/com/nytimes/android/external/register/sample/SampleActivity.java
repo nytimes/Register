@@ -26,6 +26,7 @@ import com.android.billingclient.api.SkuDetailsParams;
 import com.google.common.collect.ImmutableList;
 import com.nytimes.android.external.registerlib.GoogleServiceProvider;
 import com.nytimes.android.external.registerlib.GoogleServiceProviderTesting;
+import com.nytimes.android.external.registerlib.GoogleUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -243,10 +244,11 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
             final Observable<List<Purchase>> purchasesResultStream =
                     Observable.
                             fromCallable(() -> {
-                                final List<String> skus = ImmutableList.of(SKU_IAP, SKU_SUB);
+                                final List<String> types = ImmutableList.of(
+                                        GoogleUtil.BILLING_TYPE_IAP, GoogleUtil.BILLING_TYPE_SUBSCRIPTION);
                                 final List<Purchase> purchases = new ArrayList<>();
-                                for (String sku : skus) {
-                                    Purchase.PurchasesResult result = googleServiceProvider.queryPurchases(sku);
+                                for (String type : types) {
+                                    Purchase.PurchasesResult result = googleServiceProvider.queryPurchases(type);
                                     if (result.getResponseCode() == BillingClient.BillingResponse.OK) {
                                         purchases.addAll(result.getPurchasesList());
                                     }
