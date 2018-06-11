@@ -20,18 +20,18 @@ allprojects {
 ext.versions = [
         minSdk               : 16,
         targetSdk            : 25,
-        compileSdk           : 26,
-        buildTools           : '26.0.2',
+        compileSdk           : 27,
+        buildTools           : '27.0.3',
 
         // UI libs.
-        supportLibs          : '26.0.1',
-        constraint           : '1.1.0-beta1',
-        butterKnife          : '8.5.1',
+        supportLibs          : '27.1.1',
+        constraint           : '1.1.1',
+        butterKnife          : '8.8.1',
         swipeLayout          : '1.2.0@aar',
 
         // Others.
-        dagger               : '2.9',
-        gson                 : '2.6.2',
+        dagger               : '2.16',
+        gson                 : '2.8.5',
         guava                : '19.0',
         immutables           : '2.4.1',
         javaxInject          : '1',
