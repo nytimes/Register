@@ -239,7 +239,7 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
                                                     emitter.onNext(skuDetailsList);
                                                 }
                                                 emitter.onComplete();
-                                    }));
+                                            }));
 
             final Observable<List<Purchase>> purchasesResultStream =
                     Observable.
@@ -260,14 +260,14 @@ public class SampleActivity extends AppCompatActivity implements CompoundButton.
                     Observable
                             .combineLatest(
                                     iapSkuDetailsStream
-                                            .zipWith(
-                                                    subSkuDetailsStream,
-                                                    (iapSkuDetails, subsSkuDetails) -> {
+                                            .flatMap(iapSkuDetails ->
+                                                    subSkuDetailsStream.map(subsSkuDetails -> {
                                                         final List<SkuDetails> combined = new ArrayList<>();
                                                         combined.addAll(iapSkuDetails);
                                                         combined.addAll(subsSkuDetails);
                                                         return combined;
-                                                    }),
+                                                    })
+                                            ),
                                     purchasesResultStream,
                                     Pair::new
                             )
