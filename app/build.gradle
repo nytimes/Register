@@ -65,8 +65,8 @@ dependencies {
     implementation libraries.retrofitAdapter
 
     annotationProcessor libraries.immutablesValue
-    provided libraries.immutablesValue
-    provided libraries.immutablesGson
+    compileOnly libraries.immutablesValue
+    compileOnly libraries.immutablesGson
 
     implementation libraries.guava
     implementation libraries.butterKnife

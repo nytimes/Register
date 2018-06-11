@@ -32,11 +32,11 @@ dependencies {
     androidTestAnnotationProcessor libraries.daggerCompiler
 
 
-    androidTestCompile(libraries.espresso, {
+    androidTestImplementation(libraries.espresso, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation libraries.supportAppCompat
-    testImplementation  libraries.junit
+    testImplementation libraries.junit
     implementation libraries.constraint
     implementation libraries.supportDesign
     implementation libraries.supportCardView
@@ -46,12 +46,12 @@ dependencies {
     implementation libraries.rxJava
     implementation libraries.guava
     annotationProcessor libraries.immutablesValue
-    provided libraries.immutablesValue
+    compileOnly libraries.immutablesValue
 
-    testImplementation  libraries.mockito
-    testImplementation  libraries.assertJ
-    testImplementation  libraries.junit
-    testImplementation (libraries.robolectric) {
+    testImplementation libraries.mockito
+    testImplementation libraries.assertJ
+    testImplementation libraries.junit
+    testImplementation(libraries.robolectric) {
         exclude module: 'guava'
     }
 }

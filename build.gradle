@@ -3,6 +3,7 @@ apply from: 'buildsystem/dependencies.gradle'
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
+        google()
         mavenLocal()
         maven {
             url 'https://plugins.gradle.org/m2/'
@@ -14,8 +15,6 @@ buildscript {
         maven {
             url 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
-
-        google()
         jcenter()
     }
 
@@ -28,15 +27,15 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
         maven {
             url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
         }
         maven {
             url 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
-
         mavenCentral()
-        google()
+        jcenter()
     }
 
     // Workaround to prevent Gradle from stealing focus from other apps during tests run/etc.

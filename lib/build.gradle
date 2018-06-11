@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    androidTestCompile(libraries.espresso, {
+    androidTestImplementation(libraries.espresso, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation libraries.junit
