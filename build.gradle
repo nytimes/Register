@@ -3,9 +3,9 @@ apply from: 'buildsystem/dependencies.gradle'
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
+        mavenCentral()
         google()
         mavenLocal()
-        mavenCentral()
         maven {
             url 'https://plugins.gradle.org/m2/'
         }
@@ -27,6 +27,7 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenCentral()
         google()
         maven {
             url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
@@ -34,7 +35,6 @@ allprojects {
         maven {
             url 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
-        mavenCentral()
         jcenter()
     }
 
