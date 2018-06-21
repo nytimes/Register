@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.nytimes.android.external.registerlib.GoogleProductResponse;
-import com.nytimes.android.external.registerlib.InAppPurchaseData;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.SkuDetails;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,13 +25,13 @@ import io.reactivex.subjects.PublishSubject;
 
 public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.SampleViewHolder> {
     private final PrefsManager prefsManager;
-    private final Map<String, InAppPurchaseData> purchasesMap;
-    private final List<GoogleProductResponse> items;
+    private final Map<SkuDetails, Purchase> purchasesMap;
+    private final List<SkuDetails> items;
     private final ColorStateList colorTesterEnbeled;
     private final ColorStateList colorTesterDisabled;
 
     private LayoutInflater inflater;
-    private PublishSubject<GoogleProductResponse> publishSubject = PublishSubject.create();
+    private PublishSubject<SkuDetails> publishSubject = PublishSubject.create();
 
 
     SampleAdapter(Context context){
@@ -54,12 +54,12 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.SampleView
     public void onBindViewHolder(SampleAdapter.SampleViewHolder holder, int position) {
         Context context = holder.itemView.getContext();
 
-        GoogleProductResponse item = items.get(position);
-        boolean isPurchased = purchasesMap.containsKey(item.productId());
+        SkuDetails item = items.get(position);
+        boolean isPurchased = purchasesMap.containsKey(item);
 
-        holder.title.setText(item.title());
-        holder.description.setText(item.description());
-        holder.button.setText(isPurchased ? context.getString(R.string.purchased) : item.price());
+        holder.title.setText(item.getTitle());
+        holder.description.setText(item.getDescription());
+        holder.button.setText(isPurchased ? context.getString(R.string.purchased) : item.getPrice());
         holder.button.setEnabled(!isPurchased);
         ViewCompat.setBackgroundTintList(holder.button, prefsManager.isUsingTestGoogleServiceProvider() ?
                 colorTesterEnbeled : colorTesterDisabled);
@@ -71,22 +71,22 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.SampleView
         return items.size();
     }
 
-    void addItem(GoogleProductResponse item){
+    void addItem(SkuDetails item){
         this.items.add(item);
         notifyItemInserted(items.size() - 1);
     }
 
-    void addPurchase(InAppPurchaseData purchase){
-        purchasesMap.put(purchase.productId(), purchase);
-        for (GoogleProductResponse item : items) {
-            if (item.productId().equals(purchase.productId())){
+    void addPurchase(Purchase purchase){
+        for (SkuDetails item : items) {
+            if (item.getSku().equals(purchase.getSku())){
+                purchasesMap.put(item, purchase);
                 notifyItemChanged(items.indexOf(item));
                 break;
             }
         }
     }
 
-    PublishSubject<GoogleProductResponse> getClickSubject() {
+    PublishSubject<SkuDetails> getClickSubject() {
         return publishSubject;
     }
 
