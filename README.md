@@ -40,14 +40,14 @@ Here's a sample that we use at NYTimes. The format needs to be the same as below
 {
 	"skus": {
 	    "register.sample.iap": {
-			"itemType": "IN APP PURCHASE",
+			"type": "inapp",
 			"price" : "1.00",
 			"title" : "Sample In App Purchase Item",
 			"description" : "This is an in app purchase item for use with Register sample app",
 			"package" : "com.nytimes.android.external.register"
 	    },
 		"register.sample.sub": {
-			"itemType": "SUBSCRIPTION",
+			"type": "subs",
 			"price" : "10.00",
 			"title" : "Sample Subscription Item1",
 			"description" : "This is a subscription item for use with Register sample app",
@@ -71,13 +71,13 @@ file.json.name=newFileName.json
 
 **Step 2:** Add Register as a dependency to your client app:
 ```groovy 
-compile 'com.nytimes.android:register:0.0.2'
+compile 'com.nytimes.android:register:0.0.3'
 ```
 
 or, on Android Gradle Plugin 3.0 or later:
 
 ```groovy 
-implementation 'com.nytimes.android:register:0.0.2'
+implementation 'com.nytimes.android:register:0.0.3'
 ```
 
 **Step 3:** Create a test Google Services provider (or a real provider):
@@ -118,11 +118,11 @@ See the image below for all configurable options on a response.
 **For Android Gradle Plugin 3.0**
 
 ```groovy 
-implementation 'com.nytimes.android:register:0.0.2'
+implementation 'com.nytimes.android:register:0.0.3'
 ```
 
 **For projects using older versions of the plugin**
 
 ```groovy
-compile 'com.nytimes.android:register:0.0.2'
+compile 'com.nytimes.android:register:0.0.3'
 ```

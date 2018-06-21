@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.0.3 *(2018-05-24)*
+----------------------------
+
+**Rename itemType in GoogleProductResponse to type**
+
 Version 0.0.2 *(2017-12-07)*
 ----------------------------
 

@@ -63,7 +63,7 @@ public class BuyActivityTest {
     private ShadowActivity shadowActivity;
     private final ConfigSku configSku = ImmutableConfigSku.builder()
             .description(DESCRIPTION)
-            .itemType(TYPE)
+            .type(TYPE)
             .packageName(PACKAGE_NAME)
             .price(PRICE)
             .title(TITLE)

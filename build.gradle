@@ -8,13 +8,15 @@ buildscript {
         maven {
             url 'https://plugins.gradle.org/m2/'
         }
+
         maven {
             url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
         }
         maven {
             url 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
-        mavenCentral()
+
+        google()
         jcenter()
     }
 
@@ -50,7 +52,7 @@ ext {
 
     // POM file
     GROUP = "com.nytimes.android"
-    VERSION_NAME = "0.0.3-SNAPSHOT"
+    VERSION_NAME = "0.0.4-SNAPSHOT"
     POM_PACKAGING = "pom"
     POM_DESCRIPTION = "register"
 

@@ -80,7 +80,6 @@ dependencies {
     }
     testImplementation libraries.javaxInject
     testImplementation group: 'org.skyscreamer', name: 'jsonassert', version: '1.2.3'
-
 }
 
 buildscript {

@@ -1,75 +1,69 @@
 package com.nytimes.android.external.registerlib;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.os.RemoteException;
+import android.app.Activity;
+import android.content.Context;
+import android.support.annotation.NonNull;
 
-import com.android.vending.billing.IInAppBillingService;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.ConsumeResponseListener;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchaseHistoryResponseListener;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.SkuDetailsParams;
+import com.android.billingclient.api.SkuDetailsResponseListener;
 
-import java.util.List;
+public class GoogleServiceProviderImpl extends GoogleServiceProvider {
 
-/**
- * methods calls against the real google in app billing service
- */
-public class GoogleServiceProviderImpl implements GoogleServiceProvider  {
+    private final BillingClient billingClient;
 
-    private static final String INTENT_STRING =
-        "com.android.vending.billing.InAppBillingService.BIND";
-    private static final String INTENT_PKG = "com.android.vending";
-    private IInAppBillingService billingService;
-
-    @Override
-    public Intent getIntent() {
-        Intent intent = new Intent(INTENT_STRING);
-        intent.setPackage(INTENT_PKG);
-        return intent;
+    public GoogleServiceProviderImpl(Context context, PurchasesUpdatedListener listener) {
+        billingClient = BillingClient.newBuilder(context).setListener(listener).build();
     }
 
     @Override
-    public void initService(IBinder service) {
-        billingService = IInAppBillingService.Stub.asInterface(service);
+    public int isFeatureSupported(String feature) {
+        return billingClient.isFeatureSupported(feature);
     }
 
     @Override
-    public int isBillingSupported(int apiVersion, String packageName, String type)
-        throws RemoteException {
-        return billingService.isBillingSupported(apiVersion, packageName, type);
+    public boolean isReady() {
+        return billingClient.isReady();
     }
 
     @Override
-    public Bundle getBuyIntent(int apiVersion, String packageName, String sku, String type,
-                               String developerPayload) throws RemoteException{
-        return billingService.getBuyIntent(apiVersion, packageName, sku, type, developerPayload);
+    public void startConnection(@NonNull BillingClientStateListener listener) {
+        billingClient.startConnection(listener);
     }
 
     @Override
-    public Bundle getPurchases(int apiVersion, String packageName, String type,
-                               String continuationToken) throws RemoteException {
-        return billingService.getPurchases(apiVersion, packageName, type, continuationToken);
+    public void endConnection() {
+        billingClient.endConnection();
     }
 
     @Override
-    public Bundle getSkuDetails(int apiVersion, String packageName, String type,
-                                Bundle skusBundle) throws RemoteException {
-        return billingService.getSkuDetails(apiVersion, packageName, type, skusBundle);
+    public int launchBillingFlow(Activity activity, BillingFlowParams params) {
+        return billingClient.launchBillingFlow(activity, params);
     }
 
     @Override
-    public int consumePurchase(int apiVersion, String packageName,
-                               String purchaseToken) throws RemoteException {
-        return billingService.consumePurchase(apiVersion, packageName, purchaseToken);
+    public Purchase.PurchasesResult queryPurchases(String skuType) {
+        return billingClient.queryPurchases(skuType);
     }
 
     @Override
-    public Bundle getBuyIntentToReplaceSkus(int apiVersion, String packageName, List<String> oldSkus, String newSku,
-                                            String type, String developerPayload) throws RemoteException {
-        return billingService
-                .getBuyIntentToReplaceSkus(apiVersion, packageName, oldSkus, newSku, type, developerPayload);
+    public void querySkuDetailsAsync(SkuDetailsParams params, SkuDetailsResponseListener listener) {
+        billingClient.querySkuDetailsAsync(params, listener);
     }
 
     @Override
-    public void releaseService() {
-        billingService = null;
+    public void consumeAsync(String purchaseToken, ConsumeResponseListener listener) {
+        billingClient.consumeAsync(purchaseToken, listener);
+    }
+
+    @Override
+    public void queryPurchaseHistoryAsync(String skuType, PurchaseHistoryResponseListener listener) {
+        billingClient.queryPurchaseHistoryAsync(skuType, listener);
     }
 }
