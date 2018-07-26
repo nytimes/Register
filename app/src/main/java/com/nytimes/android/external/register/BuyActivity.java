@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,6 +23,8 @@ import com.nytimes.android.external.register.model.ConfigSku;
 import com.nytimes.android.external.registerlib.GoogleUtil;
 import com.nytimes.android.external.registerlib.InAppPurchaseData;
 
+import java.security.InvalidKeyException;
+import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -43,6 +46,7 @@ public class BuyActivity extends AppCompatActivity {
     private static final String RESPONSE_EXTRA_SUMMARY = "RESPONSE_EXTRA_SUMMARY";
     private static final String RESPONSE_EXTRA_PRICE = "RESPONSE_EXTRA_PRICE";
     private static final String RESPONSE_EXTRA_REPLACE_OLD_SKU = "RESPONSE_EXTRA_REPLACE_OLD_SKU";
+    private static final String TAG = "BuyActivity";
 
     @Inject
     protected APIOverrides apiOverrides;
@@ -50,6 +54,8 @@ public class BuyActivity extends AppCompatActivity {
     protected Purchases purchases;
     @Inject
     protected Optional<Config> config;
+    @Inject
+    Signer signer;
 
     long currentTimeMillis;
     private String sku, newSku;
@@ -194,6 +200,7 @@ public class BuyActivity extends AppCompatActivity {
                     .purchaseTime(Long.toString(currentTimeMillis))
                     .developerPayload(developerPayload)
                     .purchaseToken(newReceipt)
+                    .purchaseState("0")
                     .build();
             String inAppPurchaseDataStr = InAppPurchaseData.toJson(inAppPurchaseData);
             boolean result;
@@ -203,6 +210,13 @@ public class BuyActivity extends AppCompatActivity {
                 result = purchases.addPurchase(inAppPurchaseDataStr, itemtype);
             }
             resultIntent.putExtra(GoogleUtil.INAPP_PURCHASE_DATA, inAppPurchaseDataStr);
+            try {
+                resultIntent.putExtra(GoogleUtil.INAPP_DATA_SIGNATURE, signer.signData(inAppPurchaseDataStr));
+            } catch (SignatureException se) {
+                Log.e(TAG, "Error on signature", se);
+            } catch (InvalidKeyException ik) {
+                Log.e(TAG, "Invalid key", ik);
+            }
             setResult(result ? RESULT_OK : RESULT_CANCELED, resultIntent);
             finish();
         }

@@ -54,6 +54,7 @@ public class BuyActivityTest {
     private static final String PRICE = "1.98";
     private static final String TITLE = "caps for sale";
     private static final String USER = "myfun@user.com";
+    private static final String PURCHASE_STATE = "0";
 
     private static final String NEW_SKU = "sku2";
 
@@ -76,6 +77,7 @@ public class BuyActivityTest {
             .purchaseTime(Long.toString(CURRENT_TIME_MS))
             .developerPayload(DEVELOPER_PAYLOAD)
             .purchaseToken(String.format(Locale.getDefault(), RECEIPT_FMT, USER, CURRENT_TIME_MS))
+            .purchaseState(PURCHASE_STATE)
             .build();
 
     private ActivityController controller;
@@ -88,6 +90,8 @@ public class BuyActivityTest {
     private Purchases.PurchasesLists purchasesLists;
     @Mock
     private Config config;
+    @Mock
+    private Signer signer;
 
     @Before
     public void setUp() {
@@ -112,6 +116,7 @@ public class BuyActivityTest {
         testObject.apiOverrides = apiOverrides;
         testObject.purchases = purchases;
         testObject.config = Optional.of(config);
+        testObject.signer = signer;
         shadowActivity = shadowOf(testObject);
 
         when(purchases.getPurchasesLists(TYPE, CONTINUATION_TOKEN)).thenReturn(purchasesLists);
@@ -191,7 +196,8 @@ public class BuyActivityTest {
     }
 
     @Test
-    public void testHandleBuy() {
+    public void testHandleBuy() throws Exception {
+        String signedData = "signedData";
         initTestObject(false);
 
         when(apiOverrides.getUsersResponse()).thenReturn(USER);
@@ -199,6 +205,7 @@ public class BuyActivityTest {
         when(config.skus()).thenReturn(configSkuMapBuilder.build());
         String inAppPurchaseDataStr = InAppPurchaseData.toJson(inAppPurchaseData);
         when(purchases.addPurchase(inAppPurchaseDataStr, TYPE)).thenReturn(true);
+        when(signer.signData(inAppPurchaseDataStr)).thenReturn(signedData);
 
         controller.start();
         testObject.currentTimeMillis = CURRENT_TIME_MS;
@@ -211,6 +218,7 @@ public class BuyActivityTest {
                 .isEqualTo(GoogleUtil.RESULT_OK);
         assertThat(resultIntent.getStringExtra(GoogleUtil.INAPP_PURCHASE_DATA))
                 .isEqualTo(inAppPurchaseDataStr);
+        assertThat(resultIntent.getStringExtra(GoogleUtil.INAPP_DATA_SIGNATURE)).isEqualTo(signedData);
         verify(purchases).addPurchase(inAppPurchaseDataStr, TYPE);
     }
 

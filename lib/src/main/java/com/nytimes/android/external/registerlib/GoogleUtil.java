@@ -29,6 +29,7 @@ public final class GoogleUtil {
      */
     public static final String RESPONSE_CODE = "RESPONSE_CODE";
     public static final String INAPP_PURCHASE_DATA = "INAPP_PURCHASE_DATA";
+    public static final String INAPP_DATA_SIGNATURE = "INAPP_DATA_SIGNATURE";
     public static final String BUY_INTENT = "BUY_INTENT";
     public static final String INAPP_PURCHASE_ITEM_LIST = "INAPP_PURCHASE_ITEM_LIST";
     public static final String INAPP_PURCHASE_DATA_LIST = "INAPP_PURCHASE_DATA_LIST";
