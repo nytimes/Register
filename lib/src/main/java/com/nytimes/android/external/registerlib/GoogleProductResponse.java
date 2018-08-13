@@ -20,6 +20,12 @@ public class GoogleProductResponse {
     private static final String FLD_DESCRIPTION = "description";
     private static final String FLD_PRICE_AMT_MICROS = "price_amount_micros";
     private static final String FLD_PRICE_CURR_CODE = "price_currency_code";
+    private static final String FLD_SUBSCRIPTION_PERIOD = "subscriptionPeriod";
+    private static final String FLD_FREE_TRIAL_PERIOD = "freeTrialPeriod";
+    private static final String FLD_INTRODUCTORY_PRICE = "introductoryPrice";
+    private static final String FLD_INTRODUCTORY_PRICE_MICROS = "introductoryPriceMicros";
+    private static final String FLD_INTRODUCTORY_PRICE_PERIOD = "introductoryPricePeriod";
+    private static final String FLD_INTRODUCTORY_PRICE_CYCLES = "introductoryPriceCycles";
 
     String productId;
     String itemType;
@@ -28,6 +34,12 @@ public class GoogleProductResponse {
     String description;
     int priceAmountMicros;
     String priceCurrencyCode;
+    String subscriptionPeriod;
+    String freeTrialPeriod;
+    String introductoryPrice;
+    int introductoryPriceMicros;
+    String introductoryPricePeriod;
+    int introductoryPriceCycles;
 
     public static GoogleProductResponse fromJson(String json) {
         JSONObject obj = null;
@@ -44,6 +56,12 @@ public class GoogleProductResponse {
                 .description(getFieldAsStringOrNull(obj, FLD_DESCRIPTION))
                 .priceAmountMicros(getFieldAsIntOrNull(obj, FLD_PRICE_AMT_MICROS))
                 .priceCurrencyCode(getFieldAsStringOrNull(obj, FLD_PRICE_CURR_CODE))
+                .subscriptionPeriod(getFieldAsStringOrNull(obj, FLD_SUBSCRIPTION_PERIOD))
+                .freeTrialPeriod(getFieldAsStringOrNull(obj, FLD_FREE_TRIAL_PERIOD))
+                .introductoryPrice(getFieldAsStringOrNull(obj, FLD_INTRODUCTORY_PRICE))
+                .introductoryPriceMicros(getFieldAsIntOrNull(obj, FLD_INTRODUCTORY_PRICE_MICROS))
+                .introductoryPricePeriod(getFieldAsStringOrNull(obj, FLD_INTRODUCTORY_PRICE_PERIOD))
+                .introductoryPriceCycles(getFieldAsIntOrNull(obj, FLD_INTRODUCTORY_PRICE_CYCLES))
                 .build();
     }
 
@@ -56,6 +74,12 @@ public class GoogleProductResponse {
         addToObjIfNotNull(FLD_DESCRIPTION, googleProductResponse.description(), obj);
         addToObj(FLD_PRICE_AMT_MICROS, googleProductResponse.priceAmountMicros(), obj);
         addToObjIfNotNull(FLD_PRICE_CURR_CODE, googleProductResponse.priceCurrencyCode(), obj);
+        addToObjIfNotNull(FLD_SUBSCRIPTION_PERIOD, googleProductResponse.subscriptionPeriod(), obj);
+        addToObjIfNotNull(FLD_FREE_TRIAL_PERIOD, googleProductResponse.freeTrialPeriod(), obj);
+        addToObjIfNotNull(FLD_INTRODUCTORY_PRICE, googleProductResponse.introductoryPrice(), obj);
+        addToObj(FLD_INTRODUCTORY_PRICE_MICROS, googleProductResponse.introductoryPriceMicros(), obj);
+        addToObjIfNotNull(FLD_INTRODUCTORY_PRICE_PERIOD, googleProductResponse.introductoryPricePeriod(), obj);
+        addToObj(FLD_INTRODUCTORY_PRICE_CYCLES, googleProductResponse.introductoryPriceCycles(), obj);
         return obj.toString();
     }
 
@@ -100,6 +124,36 @@ public class GoogleProductResponse {
             return this;
         }
 
+        public Builder subscriptionPeriod(String subscriptionPeriod) {
+            builderObject.subscriptionPeriod = subscriptionPeriod;
+            return this;
+        }
+
+        public Builder freeTrialPeriod(String freeTrialPeriod) {
+            builderObject.freeTrialPeriod = freeTrialPeriod;
+            return this;
+        }
+
+        public Builder introductoryPrice(String introductoryPrice) {
+            builderObject.introductoryPrice = introductoryPrice;
+            return this;
+        }
+
+        public Builder introductoryPriceMicros(int introductoryPriceMicros) {
+            builderObject.introductoryPriceMicros = introductoryPriceMicros;
+            return this;
+        }
+
+        public Builder introductoryPricePeriod(String introductoryPricePeriod) {
+            builderObject.introductoryPricePeriod = introductoryPricePeriod;
+            return this;
+        }
+
+        public Builder introductoryPriceCycles(int introductoryPriceCycles) {
+            builderObject.introductoryPriceCycles = introductoryPriceCycles;
+            return this;
+        }
+
         public GoogleProductResponse build() {
             return builderObject;
         }
@@ -133,5 +187,29 @@ public class GoogleProductResponse {
 
     public String priceCurrencyCode() {
         return priceCurrencyCode;
+    }
+
+    public String subscriptionPeriod() {
+        return subscriptionPeriod;
+    }
+
+    public String freeTrialPeriod() {
+        return freeTrialPeriod;
+    }
+
+    public String introductoryPrice() {
+        return introductoryPrice;
+    }
+
+    public int introductoryPriceMicros() {
+        return introductoryPriceMicros;
+    }
+
+    public String introductoryPricePeriod() {
+        return introductoryPricePeriod;
+    }
+
+    public int introductoryPriceCycles() {
+        return introductoryPriceCycles;
     }
 }
