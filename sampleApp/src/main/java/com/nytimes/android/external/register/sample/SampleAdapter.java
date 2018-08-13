@@ -59,7 +59,8 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.SampleView
 
         holder.title.setText(item.title());
         holder.description.setText(item.description());
-        holder.button.setText(isPurchased ? context.getString(R.string.purchased) : item.price());
+        holder.button.setText(isPurchased ? context.getString(R.string.purchased) :  item.introductoryPrice() == null ?
+                item.price() : item.introductoryPrice() + "(" + item.price() + ")");
         holder.button.setEnabled(!isPurchased);
         ViewCompat.setBackgroundTintList(holder.button, prefsManager.isUsingTestGoogleServiceProvider() ?
                 colorTesterEnbeled : colorTesterDisabled);
