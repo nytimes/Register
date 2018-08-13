@@ -1,5 +1,7 @@
 package com.nytimes.android.external.register.model;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.immutables.gson.Gson;
@@ -14,4 +16,6 @@ public interface ConfigSku {
     String description();
     @SerializedName("package")
     String packageName();
+    @Nullable
+    String introductoryPrice();
 }

@@ -51,6 +51,7 @@ public class SkuDetailsBundleBuilder extends BaseBundleBuilder {
                     .price("$" + configSku.price())
                     .priceAmountMicros((int) (Double.parseDouble(configSku.price()) * 1000000))
                     .priceCurrencyCode("USD")
+                    .introductoryPrice(configSku.introductoryPrice())
                     .build();
             detailsList.add(GoogleProductResponse.toJson(googleProductResponse));
         }
