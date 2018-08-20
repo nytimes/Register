@@ -9,13 +9,25 @@ import org.immutables.value.Value;
 
 @Value.Immutable
 @Gson.TypeAdapters
-public interface ConfigSku {
-    String itemType();
-    String price();
-    String title();
-    String description();
-    @SerializedName("package")
-    String packageName();
+public abstract class ConfigSku {
+
+    public abstract String itemType();
+    public abstract String price();
+    public abstract String title();
+    public abstract String description();
+
+    @Value.Default public int introductoryPriceCycles() {
+        return 0;
+    }
+
     @Nullable
-    String introductoryPrice();
+    public abstract String freeTrialPeriod();
+    @SerializedName("package")
+    public abstract String packageName();
+    @Nullable
+    public abstract String introductoryPrice();
+    @Nullable
+    public abstract String introductoryPricePeriod();
+    @Nullable
+    public abstract String subscriptionPeriod();
 }
