@@ -46,7 +46,7 @@ public final class JsonHelper {
         }
     }
 
-    public static void addToObj(String field, int val, JSONObject obj) {
+    public static void addToObj(String field, Integer val, JSONObject obj) {
         try {
             obj.put(field, val);
         } catch (JSONException exc) {
