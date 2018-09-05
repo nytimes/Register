@@ -32,14 +32,14 @@ public class GoogleProductResponse {
     String price;
     String title;
     String description;
-    int priceAmountMicros;
+    Integer priceAmountMicros;
     String priceCurrencyCode;
     String subscriptionPeriod;
     String freeTrialPeriod;
     String introductoryPrice;
-    int introductoryPriceMicros;
+    Integer introductoryPriceMicros;
     String introductoryPricePeriod;
-    int introductoryPriceCycles;
+    Integer introductoryPriceCycles;
 
     public static GoogleProductResponse fromJson(String json) {
         JSONObject obj = null;
@@ -114,7 +114,7 @@ public class GoogleProductResponse {
             return this;
         }
 
-        public Builder priceAmountMicros(int priceAmountMicros) {
+        public Builder priceAmountMicros(Integer priceAmountMicros) {
             builderObject.priceAmountMicros = priceAmountMicros;
             return this;
         }
@@ -139,7 +139,7 @@ public class GoogleProductResponse {
             return this;
         }
 
-        public Builder introductoryPriceMicros(int introductoryPriceMicros) {
+        public Builder introductoryPriceMicros(Integer introductoryPriceMicros) {
             builderObject.introductoryPriceMicros = introductoryPriceMicros;
             return this;
         }
@@ -149,7 +149,7 @@ public class GoogleProductResponse {
             return this;
         }
 
-        public Builder introductoryPriceCycles(int introductoryPriceCycles) {
+        public Builder introductoryPriceCycles(Integer introductoryPriceCycles) {
             builderObject.introductoryPriceCycles = introductoryPriceCycles;
             return this;
         }
@@ -181,7 +181,7 @@ public class GoogleProductResponse {
         return description;
     }
 
-    public int priceAmountMicros() {
+    public Integer priceAmountMicros() {
         return priceAmountMicros;
     }
 
@@ -201,7 +201,7 @@ public class GoogleProductResponse {
         return introductoryPrice;
     }
 
-    public int introductoryPriceMicros() {
+    public Integer introductoryPriceMicros() {
         return introductoryPriceMicros;
     }
 
@@ -209,7 +209,7 @@ public class GoogleProductResponse {
         return introductoryPricePeriod;
     }
 
-    public int introductoryPriceCycles() {
+    public Integer introductoryPriceCycles() {
         return introductoryPriceCycles;
     }
 }

@@ -71,13 +71,13 @@ file.json.name=newFileName.json
 
 **Step 2:** Add Register as a dependency to your client app:
 ```groovy 
-compile 'com.nytimes.android:register:0.0.3'
+compile 'com.nytimes.android:register:0.0.5'
 ```
 
 or, on Android Gradle Plugin 3.0 or later:
 
 ```groovy 
-implementation 'com.nytimes.android:register:0.0.3'
+implementation 'com.nytimes.android:register:0.0.5'
 ```
 
 **Step 3:** Create a test Google Services provider (or a real provider):
@@ -118,11 +118,11 @@ See the image below for all configurable options on a response.
 **For Android Gradle Plugin 3.0**
 
 ```groovy 
-implementation 'com.nytimes.android:register:0.0.3'
+implementation 'com.nytimes.android:register:0.0.5'
 ```
 
 **For projects using older versions of the plugin**
 
 ```groovy
-compile 'com.nytimes.android:register:0.0.3'
+compile 'com.nytimes.android:register:0.0.5'
 ```
