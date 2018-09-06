@@ -16,8 +16,9 @@ public abstract class ConfigSku {
     public abstract String title();
     public abstract String description();
 
+    @Value.Default
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
-    @Value.Default public int introductoryPriceCycles() {
+    public int introductoryPriceCycles() {
         return 0;
     }
 
