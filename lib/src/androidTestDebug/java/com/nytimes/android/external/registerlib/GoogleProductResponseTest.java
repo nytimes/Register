@@ -4,36 +4,36 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class GoogleProductResponseTest {
 
-
     @Test
     public void testGoodString(){
-
-        String json2 = "{ \"description\": " +
-                "\"Unlimited article access, anytime, anywhere. Save with an annual subscription.\", " +
-                "\"introductoryPrice\": \"$89.99\", \"introductoryPriceCycles\": 1, " +
-                "\"introductoryPriceMicros\": 89990000, " +
+        String goodJSONSample = "{ \"description\": " +
+                "\"Buy now!!\", " +
+                "\"introductoryPrice\": \"$79.99\", \"introductoryPriceCycles\": 1, " +
+                "\"introductoryPriceMicros\": 79990000, " +
                 "\"introductoryPricePeriod\": \"P1Y\", \"price\": \"$129.99\", \"price_amount_micros\": 129990000, " +
-                "\"price_currency_code\": \"USD\", \"productId\": \"com.nytimes.googleplay.bundle.xpass.v1.yearly\", " +
-                "\"subscriptionPeriod\": \"P1Y\", \"title\": \"NYT Basic Access: Annual\", \"type\": \"subs\" }";
-        GoogleProductResponse response = GoogleProductResponse.fromJson(json2);
-        assertNotNull(response);
+                "\"price_currency_code\": \"USD\", \"productId\": \"com.somecompany.googleplay.bundle.yearly\", " +
+                "\"subscriptionPeriod\": \"P1Y\", \"title\": \"Yearly Option\", \"type\": \"subs\" }";
+        GoogleProductResponse response = GoogleProductResponse.fromJson(goodJSONSample);
+        assertThat(response).isNotNull();
     }
-    @Test
-    public void testBadString(){
-        String bad = "{ \"description\": " +
-                "\"Basic access features, plus NYT Crossword, Cooking, and one bonus \\nsubscription.\", " +
-                "\"freeTrialPeriod\": \"P1W\", \"price\": \"$24.99\", \"price_amount_micros\": 24990000, " +
-                "\"price_currency_code\": \"USD\", " +
-                "\"productId\": \"com.nytimes.googleplay.bundle.maxadacr.v1.monthly\", " +
-                "\"subscriptionPeriod\": \"P1M\", " +
-                "\"title\": \"NYT All Access (NYTimes - Latest News)\", \"type\": \"subs\" }";
 
-        GoogleProductResponse response = GoogleProductResponse.fromJson(bad);
-        assertNotNull(response);
+    @Test
+    public void testMissingIntField(){
+        String jsonMissingFields = "{ \"description\": " +
+                "\"Basic access , " +
+                "\"freeTrialPeriod\": \"P1W\", \"price\": \"$34.99\", \"price_amount_micros\": 34990000, " +
+                "\"price_currency_code\": \"USD\", " +
+                "\"productId\": \"com.somecompany.googleplay.bundle.monthly\", " +
+                "\"subscriptionPeriod\": \"P1M\", " +
+                "\"title\": \"Premium Access\", \"type\": \"subs\" }";
+
+        GoogleProductResponse response = GoogleProductResponse.fromJson(jsonMissingFields);
+        assertThat(response).isNotNull();
     }
 
     @Test
@@ -42,9 +42,9 @@ public class GoogleProductResponseTest {
         Integer field = JsonHelper.getFieldAsIntOrNull(obj, "missingField");
         Integer foundField = JsonHelper.getFieldAsIntOrNull(obj, "myint");
 
-        assertNull(field);
-        assertNotNull(foundField);
-        assertEquals(2, foundField.intValue());
+        assertThat(field).isNull();
+        assertThat(foundField).isNotNull();
+        assertThat(foundField.intValue()).isEqualTo(2);
     }
 
 }
