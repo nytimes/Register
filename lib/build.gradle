@@ -24,6 +24,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation libraries.junit
+    testImplementation libraries.assertJ
+    androidTestImplementation libraries.assertJ
 }
 
 buildscript {
