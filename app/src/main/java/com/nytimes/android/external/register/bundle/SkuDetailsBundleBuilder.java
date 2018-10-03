@@ -56,7 +56,8 @@ public class SkuDetailsBundleBuilder extends BaseBundleBuilder {
 
             if (configSku.introductoryPrice() != null) {
                 builder.introductoryPrice("$" + configSku.introductoryPrice())
-                        .introductoryPriceMicros((int) (Double.parseDouble(configSku.introductoryPrice()) * 1000000))
+                        .introductoryPriceAmountMicros((int) (Double.parseDouble(configSku
+                                .introductoryPrice()) * 1000000))
                         .introductoryPriceCycles(configSku.introductoryPriceCycles())
                         .introductoryPricePeriod(configSku.introductoryPricePeriod());
             }

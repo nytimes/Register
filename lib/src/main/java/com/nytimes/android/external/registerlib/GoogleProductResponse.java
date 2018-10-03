@@ -7,7 +7,8 @@ import org.json.JSONObject;
 
 import static com.nytimes.android.external.registerlib.JsonHelper.addToObj;
 import static com.nytimes.android.external.registerlib.JsonHelper.addToObjIfNotNull;
-import static com.nytimes.android.external.registerlib.JsonHelper.getFieldAsIntOrNull;
+import static com.nytimes.android.external.registerlib.JsonHelper.getFieldAsIntOrZero;
+import static com.nytimes.android.external.registerlib.JsonHelper.getFieldAsLongOrZero;
 import static com.nytimes.android.external.registerlib.JsonHelper.getFieldAsStringOrNull;
 
 @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
@@ -23,7 +24,7 @@ public class GoogleProductResponse {
     private static final String FLD_SUBSCRIPTION_PERIOD = "subscriptionPeriod";
     private static final String FLD_FREE_TRIAL_PERIOD = "freeTrialPeriod";
     private static final String FLD_INTRODUCTORY_PRICE = "introductoryPrice";
-    private static final String FLD_INTRODUCTORY_PRICE_MICROS = "introductoryPriceMicros";
+    private static final String FLD_INTRODUCTORY_PRICE_AMT_MICROS = "introductoryPriceAmountMicros";
     private static final String FLD_INTRODUCTORY_PRICE_PERIOD = "introductoryPricePeriod";
     private static final String FLD_INTRODUCTORY_PRICE_CYCLES = "introductoryPriceCycles";
 
@@ -32,12 +33,12 @@ public class GoogleProductResponse {
     String price;
     String title;
     String description;
-    int priceAmountMicros;
+    long priceAmountMicros;
     String priceCurrencyCode;
     String subscriptionPeriod;
     String freeTrialPeriod;
     String introductoryPrice;
-    int introductoryPriceMicros;
+    long introductoryPriceAmountMicros;
     String introductoryPricePeriod;
     int introductoryPriceCycles;
 
@@ -54,14 +55,14 @@ public class GoogleProductResponse {
                 .price(getFieldAsStringOrNull(obj, FLD_PRICE))
                 .title(getFieldAsStringOrNull(obj, FLD_TITLE))
                 .description(getFieldAsStringOrNull(obj, FLD_DESCRIPTION))
-                .priceAmountMicros(getFieldAsIntOrNull(obj, FLD_PRICE_AMT_MICROS))
+                .priceAmountMicros(getFieldAsLongOrZero(obj, FLD_PRICE_AMT_MICROS))
                 .priceCurrencyCode(getFieldAsStringOrNull(obj, FLD_PRICE_CURR_CODE))
                 .subscriptionPeriod(getFieldAsStringOrNull(obj, FLD_SUBSCRIPTION_PERIOD))
                 .freeTrialPeriod(getFieldAsStringOrNull(obj, FLD_FREE_TRIAL_PERIOD))
                 .introductoryPrice(getFieldAsStringOrNull(obj, FLD_INTRODUCTORY_PRICE))
-                .introductoryPriceMicros(getFieldAsIntOrNull(obj, FLD_INTRODUCTORY_PRICE_MICROS))
+                .introductoryPriceAmountMicros(getFieldAsLongOrZero(obj, FLD_INTRODUCTORY_PRICE_AMT_MICROS))
                 .introductoryPricePeriod(getFieldAsStringOrNull(obj, FLD_INTRODUCTORY_PRICE_PERIOD))
-                .introductoryPriceCycles(getFieldAsIntOrNull(obj, FLD_INTRODUCTORY_PRICE_CYCLES))
+                .introductoryPriceCycles(getFieldAsIntOrZero(obj, FLD_INTRODUCTORY_PRICE_CYCLES))
                 .build();
     }
 
@@ -77,7 +78,7 @@ public class GoogleProductResponse {
         addToObjIfNotNull(FLD_SUBSCRIPTION_PERIOD, googleProductResponse.subscriptionPeriod(), obj);
         addToObjIfNotNull(FLD_FREE_TRIAL_PERIOD, googleProductResponse.freeTrialPeriod(), obj);
         addToObjIfNotNull(FLD_INTRODUCTORY_PRICE, googleProductResponse.introductoryPrice(), obj);
-        addToObj(FLD_INTRODUCTORY_PRICE_MICROS, googleProductResponse.introductoryPriceMicros(), obj);
+        addToObj(FLD_INTRODUCTORY_PRICE_AMT_MICROS, googleProductResponse.introductoryPriceAmountMicros(), obj);
         addToObjIfNotNull(FLD_INTRODUCTORY_PRICE_PERIOD, googleProductResponse.introductoryPricePeriod(), obj);
         addToObj(FLD_INTRODUCTORY_PRICE_CYCLES, googleProductResponse.introductoryPriceCycles(), obj);
         return obj.toString();
@@ -114,7 +115,7 @@ public class GoogleProductResponse {
             return this;
         }
 
-        public Builder priceAmountMicros(int priceAmountMicros) {
+        public Builder priceAmountMicros(long priceAmountMicros) {
             builderObject.priceAmountMicros = priceAmountMicros;
             return this;
         }
@@ -139,8 +140,8 @@ public class GoogleProductResponse {
             return this;
         }
 
-        public Builder introductoryPriceMicros(int introductoryPriceMicros) {
-            builderObject.introductoryPriceMicros = introductoryPriceMicros;
+        public Builder introductoryPriceAmountMicros(long introductoryPriceAmountMicros) {
+            builderObject.introductoryPriceAmountMicros = introductoryPriceAmountMicros;
             return this;
         }
 
@@ -181,7 +182,7 @@ public class GoogleProductResponse {
         return description;
     }
 
-    public int priceAmountMicros() {
+    public long priceAmountMicros() {
         return priceAmountMicros;
     }
 
@@ -201,8 +202,8 @@ public class GoogleProductResponse {
         return introductoryPrice;
     }
 
-    public int introductoryPriceMicros() {
-        return introductoryPriceMicros;
+    public long introductoryPriceAmountMicros() {
+        return introductoryPriceAmountMicros;
     }
 
     public String introductoryPricePeriod() {
