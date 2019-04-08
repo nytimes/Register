@@ -39,6 +39,9 @@ ext.versions = [
         rxAndroid            : '2.0.1',
         retrofit             : '2.3.0',
 
+        // Kotlin
+        kotlin               : '1.3.21',
+
         // Testing.
         junit                : '4.12',
         assertJ              : '1.7.1',
@@ -71,6 +74,9 @@ ext.libraries = [
         retrofit                : "com.squareup.retrofit2:retrofit:$versions.retrofit",
         retrofitConverter       : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
         retrofitAdapter         : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
+
+        // Kotlin
+        kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",
 
         // Testing.
         junit                   : "junit:junit:$versions.junit",
