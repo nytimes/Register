@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 apply from: rootProject.file("configuration/register.gradle")
+
 
 android {
     compileSdkVersion versions.compileSdk
@@ -45,6 +48,8 @@ repositories {
 }
 
 dependencies {
+    implementation libraries.kotlin
+
     implementation libraries.supportAppCompat
     implementation libraries.supportDesign
     implementation libraries.swipeLayout
