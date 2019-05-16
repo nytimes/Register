@@ -83,15 +83,17 @@ public class SkuDetailsBundleBuilderTest {
                 .isEqualTo(GoogleUtil.RESULT_OK);
         ArrayList<String> detailsList =  bundle.getStringArrayList(GoogleUtil.DETAILS_LIST);
         try {
-            JSONAssert.assertEquals(detailsList.get(0),
+            JSONAssert.assertEquals(
                     "{\"type\":\"subs\",\"productId\":\"sku1\",\"price\":\"$1.98\"," +
                             "\"description\":\"some description\",\"title\":\"caps for sale\"," +
                             "\"price_amount_micros\":1980000,\"price_currency_code\":\"USD\"}",
+                    detailsList.get(0),
                     JSONCompareMode.LENIENT);
-            JSONAssert.assertEquals(detailsList.get(1),
+            JSONAssert.assertEquals(
                     "{\"type\":\"subs\",\"productId\":\"sku2\",\"price\":\"$1.98\"," +
                             "\"description\":\"some description\",\"title\":\"caps for sale\"," +
                             "\"price_amount_micros\":1980000,\"price_currency_code\":\"USD\"}",
+                    detailsList.get(1),
                     JSONCompareMode.LENIENT);
         } catch (JSONException e) {
            throw  Exceptions.propagate(e);

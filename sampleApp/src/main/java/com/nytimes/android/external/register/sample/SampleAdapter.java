@@ -59,7 +59,7 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.SampleView
 
         holder.title.setText(item.getTitle());
         holder.description.setText(item.getDescription());
-        holder.button.setText(isPurchased ? context.getString(R.string.purchased) : item.getPrice());
+        holder.button.setText(getButtonText(isPurchased, context.getString(R.string.purchased), item));
         holder.button.setEnabled(!isPurchased);
         ViewCompat.setBackgroundTintList(holder.button, prefsManager.isUsingTestGoogleServiceProvider() ?
                 colorTesterEnbeled : colorTesterDisabled);
@@ -105,6 +105,11 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.SampleView
         inflater = null;
         purchasesMap.clear();
         items.clear();
+    }
+
+    private String getButtonText(boolean isPurchased, String purchasedText, SkuDetails item) {
+        return isPurchased ? purchasedText : item.getIntroductoryPrice() == null ?
+                item.getPrice() : item.getIntroductoryPrice() + "(" + item.getPrice() + ")";
     }
 
     static class SampleViewHolder extends RecyclerView.ViewHolder {

@@ -12,7 +12,8 @@
 			"price" : "10.00",
 			"title" : "Sample Subscription Item1",
 			"description" : "This is a subscription item for use with Register sample app",
-			"package" : "com.nytimes.android.external.register"
+			"package" : "com.nytimes.android.external.register",
+			"introductoryPrice" : "9.00"
 		}
 	},
 	"users": [
