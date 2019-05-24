@@ -3,7 +3,7 @@ package com.nytimes.android.external.register
 import android.os.Bundle
 import android.os.RemoteException
 import com.google.common.collect.ImmutableList
-import com.nytimes.android.external.register.APIOverrides.RESULT_DEFAULT
+import com.nytimes.android.external.register.APIOverrides.Companion.RESULT_DEFAULT
 import com.nytimes.android.external.register.bundle.*
 import com.nytimes.android.external.registerlib.GoogleUtil
 import org.assertj.core.api.Assertions.assertThat

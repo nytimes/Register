@@ -1,7 +1,7 @@
 package com.nytimes.android.external.register
 
 import android.content.Context
-import com.nytimes.android.external.register.APIOverrides.PREF_NAME
+import com.nytimes.android.external.register.APIOverrides.Companion.PREF_NAME
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test

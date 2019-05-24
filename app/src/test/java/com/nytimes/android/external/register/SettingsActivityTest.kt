@@ -35,7 +35,9 @@ import org.robolectric.shadows.ShadowResolveInfo
 import java.text.NumberFormat
 
 @RunWith(RobolectricTestRunner::class)
-@org.robolectric.annotation.Config(constants = BuildConfig::class, sdk = [21])
+@org.robolectric.annotation.Config(
+        constants = BuildConfig::class,
+        sdk = [21])
 class SettingsActivityTest {
 
     @Mock
@@ -224,7 +226,7 @@ class SettingsActivityTest {
     }
 
     private fun getStringResource(id: Int): String {
-        return RuntimeEnvironment.application.resources.getString(id)
+        return RuntimeEnvironment.application.getString(id)
     }
 
 }

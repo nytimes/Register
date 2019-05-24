@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply from: rootProject.file("configuration/register.gradle")
 
 
@@ -59,6 +60,7 @@ dependencies {
 
     implementation libraries.dagger
     annotationProcessor libraries.daggerCompiler
+    kapt 'com.google.dagger:dagger-compiler:2.11'
 
     testAnnotationProcessor libraries.daggerCompiler
     androidTestAnnotationProcessor libraries.daggerCompiler

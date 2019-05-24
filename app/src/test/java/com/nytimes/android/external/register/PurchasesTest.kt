@@ -2,7 +2,7 @@ package com.nytimes.android.external.register
 
 import android.content.Context
 import com.google.common.collect.ImmutableSet
-import com.nytimes.android.external.register.APIOverrides.PREF_NAME
+import com.nytimes.android.external.register.APIOverrides.Companion.PREF_NAME
 import com.nytimes.android.external.registerlib.GoogleUtil
 import com.nytimes.android.external.registerlib.InAppPurchaseData
 import org.assertj.core.api.Assertions.assertThat
