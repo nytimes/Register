@@ -74,6 +74,8 @@ dependencies {
     annotationProcessor libraries.butterKnifeCompiler
 
     testImplementation libraries.mockito
+    testImplementation libraries.mockitoInline
+    testImplementation libraries.mockitoKotlin
     testImplementation libraries.assertJ
     testImplementation libraries.junit
     testImplementation(libraries.robolectric) {
