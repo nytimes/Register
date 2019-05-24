@@ -7,7 +7,7 @@ import android.widget.Adapter
 import android.widget.AdapterView
 import com.google.common.base.Optional
 import com.google.common.collect.ImmutableSet
-import com.nytimes.android.external.register.APIOverrides.RESULT_DEFAULT
+import com.nytimes.android.external.register.APIOverrides.Companion.RESULT_DEFAULT
 import com.nytimes.android.external.register.BuyActivity.RECEIPT_FMT
 import com.nytimes.android.external.register.model.Config
 import com.nytimes.android.external.registerlib.GoogleUtil

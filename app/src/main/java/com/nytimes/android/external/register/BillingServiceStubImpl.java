@@ -41,7 +41,7 @@ public class BillingServiceStubImpl extends IInAppBillingService.Stub {
 
     @Override
     public int isBillingSupported(int apiVersion, String packageName, String type) {
-        int response = apiOverrides.getIsBillingSupportedResponse();
+        int response = apiOverrides.isBillingSupportedResponse();
         if (response == APIOverrides.RESULT_DEFAULT) {
             response = apiVersion <= GoogleUtil.BILLING_API_VERSION ?
                     GoogleUtil.RESULT_OK : GoogleUtil.RESULT_BILLING_UNAVAILABLE;
