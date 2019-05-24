@@ -119,13 +119,13 @@ class InAppPurchaseData {
 
     companion object {
         private val TAG = InAppPurchaseData::class.java.simpleName
-        private val FLD_ORDER_ID = "orderId"
-        private val FLD_PACKAGE = "package"
-        private val FLD_PRODUCT_ID = "productId"
-        private val FLD_PURCHASE_TIME = "purchaseTime"
-        private val FLD_PURCHASE_STATE = "purchaseState"
-        private val FLD_DEV_PAYLOAD = "developerPayload"
-        private val FLD_PURCHASE_TOKEN = "purchaseToken"
+        private const val FLD_ORDER_ID = "orderId"
+        private const val FLD_PACKAGE = "package"
+        private const val FLD_PRODUCT_ID = "productId"
+        private const val FLD_PURCHASE_TIME = "purchaseTime"
+        private const val FLD_PURCHASE_STATE = "purchaseState"
+        private const val FLD_DEV_PAYLOAD = "developerPayload"
+        private const val FLD_PURCHASE_TOKEN = "purchaseToken"
 
         @JvmStatic
         fun fromJson(json: String): InAppPurchaseData {
