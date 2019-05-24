@@ -63,10 +63,10 @@ class LegalActivityTest {
             val item = adapter.getItem(i)
 
             val title = names[i]
-            assertThat(item.key).isEqualTo(title)
+            assertThat(item.first).isEqualTo(title)
 
             val license = values[i]
-            assertThat(item.value).isEqualTo(license)
+            assertThat(item.second).isEqualTo(license)
             i++
         }
     }

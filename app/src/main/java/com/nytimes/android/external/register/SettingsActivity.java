@@ -13,7 +13,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -147,11 +146,11 @@ public class SettingsActivity extends AppCompatActivity {
         title.setText(titleRes);
 
         TextView desc = (TextView) v.findViewById(R.id.settings_item_summary);
-        String string = getString(summaryRes);
-        if (TextUtils.isEmpty(string)) {
+
+        if (summaryRes != -1) {
             desc.setVisibility(View.GONE);
         } else {
-            desc.setText(summaryRes);
+            desc.setText(getString(summaryRes));
             desc.setVisibility(View.VISIBLE);
         }
 
