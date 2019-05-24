@@ -25,13 +25,13 @@ import org.skyscreamer.jsonassert.JSONCompareMode
 @RunWith(RobolectricTestRunner::class)
 class SkuDetailsBundleBuilderTest {
 
-    private lateinit var testObject: SkuDetailsBundleBuilder
-
     @Mock
     private lateinit var apiOverrides: APIOverrides
 
     @Mock
     private lateinit var config: Config
+
+    private lateinit var testObject: SkuDetailsBundleBuilder
 
     @Before
     fun setUp() {
@@ -42,6 +42,7 @@ class SkuDetailsBundleBuilderTest {
         val price = "1.98"
 
         testObject = SkuDetailsBundleBuilder(apiOverrides, Optional.of(config))
+
         `when`(config.skus()).thenReturn(ImmutableMap.Builder<String, ConfigSku>()
                 .put(SKU1, ImmutableConfigSku.builder()
                         .type(TYPE)
@@ -72,15 +73,17 @@ class SkuDetailsBundleBuilderTest {
                 .isEqualTo(GoogleUtil.RESULT_OK)
         val detailsList = bundle.getStringArrayList(GoogleUtil.DETAILS_LIST)
         try {
-            JSONAssert.assertEquals(detailsList[0],
+            JSONAssert.assertEquals(
                     "{\"type\":\"subs\",\"productId\":\"sku1\",\"price\":\"$1.98\"," +
                             "\"description\":\"some description\",\"title\":\"caps for sale\"," +
                             "\"price_amount_micros\":1980000,\"price_currency_code\":\"USD\"}",
+                    detailsList[0],
                     JSONCompareMode.LENIENT)
-            JSONAssert.assertEquals(detailsList[1],
+            JSONAssert.assertEquals(
                     "{\"type\":\"subs\",\"productId\":\"sku2\",\"price\":\"$1.98\"," +
                             "\"description\":\"some description\",\"title\":\"caps for sale\"," +
                             "\"price_amount_micros\":1980000,\"price_currency_code\":\"USD\"}",
+                    detailsList[1],
                     JSONCompareMode.LENIENT)
         } catch (e: JSONException) {
             throw Exceptions.propagate(e)
@@ -98,6 +101,7 @@ class SkuDetailsBundleBuilderTest {
 
         assertThat(bundle.getInt(GoogleUtil.RESPONSE_CODE))
                 .isEqualTo(GoogleUtil.RESULT_ERROR)
+
         assertThat(bundle.getStringArrayList(GoogleUtil.DETAILS_LIST))
                 .isNull()
     }
