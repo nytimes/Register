@@ -1,6 +1,5 @@
 package com.nytimes.android.external.register.support;
 
-import com.nytimes.android.external.register.model.ImmutableRepository;
 import com.nytimes.android.external.register.model.Repository;
 
 import java.util.Date;
@@ -35,29 +34,15 @@ public final class RepositoryFactory {
     private RepositoryFactory () {}
 
     public static Repository create() {
-        return create(
+        return new Repository(
                 getRandomRepoName(),
                 getRandomFullName(),
-                getRandomPushedAt(),
                 getRandomDesc(),
+                getRandomPushedAt(),
                 getRandomStargazersCount(),
                 getRandomForksCount(),
                 getRandomLanguage(),
                 getRandomHtmlUrl());
-    }
-
-    public static Repository create(String name, String fullName, Date pushedAt,
-                                    String description, int stargazersCount, int forksCount,
-                                    String language, String htmlUrl) {
-        return ImmutableRepository.builder()
-                .name(name)
-                .pushedAt(pushedAt)
-                .description(description)
-                .stargazersCount(stargazersCount)
-                .forksCount(forksCount)
-                .fullName(fullName)
-                .language(language)
-                .htmlUrl(htmlUrl).build();
     }
 
     private static int getRandomStargazersCount() {

@@ -69,10 +69,6 @@ dependencies {
     implementation libraries.retrofitConverter
     implementation libraries.retrofitAdapter
 
-    annotationProcessor libraries.immutablesValue
-    compileOnly libraries.immutablesValue
-    compileOnly libraries.immutablesGson
-
     implementation libraries.guava
     implementation libraries.butterKnife
     annotationProcessor libraries.butterKnifeCompiler

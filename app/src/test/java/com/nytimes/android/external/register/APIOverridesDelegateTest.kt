@@ -25,7 +25,7 @@ class APIOverridesDelegateTest {
     @Test
     fun setApiOverridesValueWithValidIdCallsApiOverrides() {
         val mockConfig = mock(ConfigResponse::class.java)
-        `when`(mockConfig.responseCode()).thenReturn(-1)
+        `when`(mockConfig.responseCode).thenReturn(-1)
 
         // Valid entries
         testObject.setApiOverridesValue(R.id.isBillingSupported, mockConfig)
@@ -47,7 +47,7 @@ class APIOverridesDelegateTest {
     @Test
     fun setApiOverridesValueWithInvalidIdCallsNothing() {
         val mockConfig = mock(ConfigResponse::class.java)
-        `when`(mockConfig.responseCode()).thenReturn(-1)
+        `when`(mockConfig.responseCode).thenReturn(-1)
 
         // Valid entries
         testObject.setApiOverridesValue(android.R.id.hint, mockConfig)
@@ -69,7 +69,7 @@ class APIOverridesDelegateTest {
     @Test
     fun getApiOverridesValueWithValidIdCallsGetters() {
         val mockConfig = mock(ConfigResponse::class.java)
-        `when`(mockConfig.responseCode()).thenReturn(-1)
+        `when`(mockConfig.responseCode).thenReturn(-1)
 
         // Valid entries
         testObject.getApiOverridesValue(R.id.isBillingSupported)
@@ -91,7 +91,7 @@ class APIOverridesDelegateTest {
     @Test
     fun getApiOverridesValueWithInvalidIdReturnsNegativeOne() {
         val mockConfig = mock(ConfigResponse::class.java)
-        `when`(mockConfig.responseCode()).thenReturn(-1)
+        `when`(mockConfig.responseCode).thenReturn(-1)
 
         // Valid entries
         testObject.getApiOverridesValue(android.R.id.hint)

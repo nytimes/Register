@@ -189,11 +189,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         List<ConfigResponse> items = new ArrayList<>();
         String[] entries = getResources().getStringArray(entriesResId);
         for (String id : entries) {
-            items.add(ImmutableConfigResponse.builder()
-                    .responseId(id)
-                    .responseCode(getConfigResponseCode(id))
-                    .responseName(getConfigResponseName(id))
-                    .build());
+            items.add(new ConfigResponse(id, getConfigResponseName(id), getConfigResponseCode(id)));
         }
         return items;
     }
@@ -214,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         int index = 0;
         for (int i = 0, size = items.size(); i < size; i++) {
             ConfigResponse item = items.get(i);
-            if (item.responseCode() == responseCode) {
+            if (item.getResponseCode() == responseCode) {
                 index = i;
                 break;
             }

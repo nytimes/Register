@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -146,11 +147,12 @@ public class SettingsActivity extends AppCompatActivity {
         title.setText(titleRes);
 
         TextView desc = (TextView) v.findViewById(R.id.settings_item_summary);
-        if (summaryRes > -1) {
+        String string = getString(summaryRes);
+        if (TextUtils.isEmpty(string)) {
+            desc.setVisibility(View.GONE);
+        } else {
             desc.setText(summaryRes);
             desc.setVisibility(View.VISIBLE);
-        } else {
-            desc.setVisibility(View.GONE);
         }
 
         v.setOnClickListener(clickListener);
@@ -231,14 +233,14 @@ public class SettingsActivity extends AppCompatActivity {
         githubCardForks.setVisibility(View.VISIBLE);
         githubCardStars.setVisibility(View.VISIBLE);
 
-        githubCardName.setText(repository.fullName());
-        githubCardCommit.setText(DateUtils.getRelativeTimeSpanString(repository.pushedAt().getTime(),
+        githubCardName.setText(repository.getFullName());
+        githubCardCommit.setText(DateUtils.getRelativeTimeSpanString(repository.getPushedAt().getTime(),
                 System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS, DateUtils.FORMAT_ABBREV_ALL));
-        githubCardDesc.setText(repository.description());
-        githubCardForks.setText(numberFormat.format(repository.forksCount()));
-        githubCardStars.setText(numberFormat.format(repository.stargazersCount()));
+        githubCardDesc.setText(repository.getDescription());
+        githubCardForks.setText(numberFormat.format(repository.getForksCount()));
+        githubCardStars.setText(numberFormat.format(repository.getStargazersCount()));
         githubCardRoot.setOnClickListener(view ->
-                startWebIntent(repository.htmlUrl()));
+                startWebIntent(repository.getHtmlUrl()));
     }
 
     private void showError(Throwable throwable) {

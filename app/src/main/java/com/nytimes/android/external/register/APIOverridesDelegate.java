@@ -18,25 +18,25 @@ class APIOverridesDelegate {
     void setApiOverridesValue(@IdRes int containerLayoutId, ConfigResponse item) {
         switch (containerLayoutId) {
             case R.id.isBillingSupported:
-                apiOverrides.setIsBillingSupportedResponse(item.responseCode());
+                apiOverrides.setIsBillingSupportedResponse(item.getResponseCode());
                 break;
             case R.id.getBuyIntent:
-                apiOverrides.setGetBuyIntentResponse(item.responseCode());
+                apiOverrides.setGetBuyIntentResponse(item.getResponseCode());
                 break;
             case R.id.buy:
-                apiOverrides.setBuyResponse(item.responseCode());
+                apiOverrides.setBuyResponse(item.getResponseCode());
                 break;
             case R.id.getPurchases:
-                apiOverrides.setGetPurchasesResponse(item.responseCode());
+                apiOverrides.setGetPurchasesResponse(item.getResponseCode());
                 break;
             case R.id.getSkuDetails:
-                apiOverrides.setGetSkuDetailsResponse(item.responseCode());
+                apiOverrides.setGetSkuDetailsResponse(item.getResponseCode());
                 break;
             case R.id.consumePurchase:
-                apiOverrides.setConsumePurchaseResponse(item.responseCode());
+                apiOverrides.setConsumePurchaseResponse(item.getResponseCode());
                 break;
             case R.id.getBuyIntentToReplaceSkus:
-                apiOverrides.setGetBuyIntentToReplaceSkusResponse(item.responseCode());
+                apiOverrides.setGetBuyIntentToReplaceSkusResponse(item.getResponseCode());
                 break;
             default:
                 // unknown id

@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList
 import com.nytimes.android.external.register.APIOverrides
 import com.nytimes.android.external.register.BillingServiceStubImpl
 import com.nytimes.android.external.register.Purchases
+import com.nytimes.android.external.register.PurchasesLists
 import com.nytimes.android.external.registerlib.GoogleUtil
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -28,10 +29,10 @@ class ConsumePurchaseResponseTest {
     private lateinit var purchases: Purchases
 
     @Mock
-    private lateinit var inAppPurchasesLists: Purchases.PurchasesLists
+    private lateinit var inAppPurchasesLists: PurchasesLists
 
     @Mock
-    private lateinit var subscriptionsPurchasesLists: Purchases.PurchasesLists
+    private lateinit var subscriptionsPurchasesLists: PurchasesLists
 
     @Mock
     private lateinit var buyIntentBundleBuilder: BuyIntentBundleBuilder
@@ -80,12 +81,12 @@ class ConsumePurchaseResponseTest {
         val getPurchasesBundle = Bundle()
         getPurchasesBundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST, ArrayList(testPurchases))
         `when`(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null)).thenReturn(inAppPurchasesLists)
-        `when`(inAppPurchasesLists.purchaseDataList()).thenReturn(testPurchases)
+        `when`(inAppPurchasesLists.purchaseDataList).thenReturn(testPurchases)
         `when`(purchases.removePurchase("purchase1", GoogleUtil.BILLING_TYPE_IAP)).thenReturn(true)
 
         `when`(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null))
                 .thenReturn(subscriptionsPurchasesLists)
-        `when`(subscriptionsPurchasesLists.purchaseDataList()).thenReturn(subscriptions)
+        `when`(subscriptionsPurchasesLists.purchaseDataList).thenReturn(subscriptions)
 
         `when`(purchasesBundleBuilder.build()).thenReturn(getPurchasesBundle)
 
@@ -109,10 +110,10 @@ class ConsumePurchaseResponseTest {
         getPurchasesBundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST, ArrayList(testPurchases))
         `when`(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null))
                 .thenReturn(inAppPurchasesLists)
-        `when`(inAppPurchasesLists.purchaseDataList()).thenReturn(testPurchases)
+        `when`(inAppPurchasesLists.purchaseDataList).thenReturn(testPurchases)
         `when`(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null))
                 .thenReturn(subscriptionsPurchasesLists)
-        `when`(subscriptionsPurchasesLists.purchaseDataList())
+        `when`(subscriptionsPurchasesLists.purchaseDataList)
                 .thenReturn(subscriptions)
         `when`(purchasesBundleBuilder.build())
                 .thenReturn(getPurchasesBundle)
@@ -138,10 +139,10 @@ class ConsumePurchaseResponseTest {
         getPurchasesBundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST, ArrayList(testPurchases))
         `when`(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null))
                 .thenReturn(inAppPurchasesLists)
-        `when`(inAppPurchasesLists.purchaseDataList()).thenReturn(testPurchases)
+        `when`(inAppPurchasesLists.purchaseDataList).thenReturn(testPurchases)
         `when`(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null))
                 .thenReturn(subscriptionsPurchasesLists)
-        `when`(subscriptionsPurchasesLists.purchaseDataList())
+        `when`(subscriptionsPurchasesLists.purchaseDataList)
                 .thenReturn(subscriptions)
         `when`(purchasesBundleBuilder.build())
                 .thenReturn(getPurchasesBundle)

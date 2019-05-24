@@ -148,7 +148,7 @@ public class BuyActivity extends AppCompatActivity {
         usersSpinner.setVisibility(View.VISIBLE);
 
         String currentUser = apiOverrides.getUsersResponse();
-        List<String> users = config.isPresent() ? config.get().users() : ImmutableList.of();
+        List<String> users = config.isPresent() ? config.get().getUsers() : ImmutableList.of();
         int index = users.indexOf(currentUser);
         int selectedItem = index == -1 ? 0 : index;
 
@@ -195,7 +195,7 @@ public class BuyActivity extends AppCompatActivity {
             String skuToPurchase = isReplace ? newSku : sku;
             InAppPurchaseData inAppPurchaseData = new InAppPurchaseData.Builder()
                     .orderId(Long.toString(currentTimeMillis))
-                    .packageName(config.get().skus().get(skuToPurchase).packageName())
+                    .packageName(config.get().getSkus().get(skuToPurchase).getPackageName())
                     .productId(skuToPurchase)
                     .purchaseTime(Long.toString(currentTimeMillis))
                     .developerPayload(developerPayload)
@@ -240,16 +240,16 @@ public class BuyActivity extends AppCompatActivity {
         switch (buyResponse) {
             case GoogleUtil.RESULT_OK:
                 if (config.isPresent()) {
-                    ConfigSku configSku = config.get().skus().get(isReplace ? newSku : sku);
+                    ConfigSku configSku = config.get().getSkus().get(isReplace ? newSku : sku);
 
-                    bundle.putString(RESPONSE_EXTRA_TITLE, configSku.title());
-                    bundle.putString(RESPONSE_EXTRA_SUMMARY, configSku.description());
-                    bundle.putString(RESPONSE_EXTRA_PRICE, String.format(PRICE_FMT, configSku.price()));
+                    bundle.putString(RESPONSE_EXTRA_TITLE, configSku.getTitle());
+                    bundle.putString(RESPONSE_EXTRA_SUMMARY, configSku.getDescription());
+                    bundle.putString(RESPONSE_EXTRA_PRICE, String.format(PRICE_FMT, configSku.getPrice()));
 
                     if (isReplace) {
                         ArrayList<String> oldSkuTitles = new ArrayList<>();
                         for (String oldSku : oldSkus) {
-                            oldSkuTitles.add(config.get().skus().get(oldSku).title() + "\n");
+                            oldSkuTitles.add(config.get().getSkus().get(oldSku).getTitle() + "\n");
                         }
                         bundle.putStringArrayList(RESPONSE_EXTRA_REPLACE_OLD_SKU, oldSkuTitles);
                     }
@@ -285,7 +285,7 @@ public class BuyActivity extends AppCompatActivity {
         if (response == APIOverrides.RESULT_DEFAULT) {
             if (!config.isPresent()) {
                 response = GoogleUtil.RESULT_ERROR;
-            } else if (config.get().skus().get(sku) == null) {
+            } else if (config.get().getSkus().get(sku) == null) {
                 response = GoogleUtil.RESULT_ITEM_UNAVAILABLE;
             } else if (purchases.getReceiptsForSkus(ImmutableSet.of(sku), itemtype).size() > 0) {
                 response = GoogleUtil.RESULT_ITEM_ALREADY_OWNED;
@@ -302,7 +302,7 @@ public class BuyActivity extends AppCompatActivity {
         if (response == APIOverrides.RESULT_DEFAULT) {
             if (!config.isPresent()) {
                 response = GoogleUtil.RESULT_ERROR;
-            } else if (config.get().skus().get(newSku) == null) {
+            } else if (config.get().getSkus().get(newSku) == null) {
                 response = GoogleUtil.RESULT_ITEM_UNAVAILABLE;
             } else if (GoogleUtil.BILLING_TYPE_IAP.equals(itemtype)) {
                 response = GoogleUtil.RESULT_ERROR;

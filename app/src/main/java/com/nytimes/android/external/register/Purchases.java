@@ -9,8 +9,6 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.nytimes.android.external.registerlib.InAppPurchaseData;
 
-import org.immutables.value.Value;
-
 import java.security.InvalidKeyException;
 import java.security.SignatureException;
 import java.util.ArrayList;
@@ -46,26 +44,26 @@ public class Purchases {
 
     @NonNull
     public PurchasesLists getPurchasesLists(@NonNull String type, @Nullable String continuationToken) {
-        ImmutablePurchasesLists.Builder builder = ImmutablePurchasesLists.builder();
+        PurchasesLists item = new PurchasesLists();
         ArrayList<InAppPurchaseData> data = new ArrayList(getInAppPurchaseData(type));
         int first = getFirst(continuationToken);
         int limit = Math.min(first + PAGE_LIMIT, data.size());
         for (int i = first; i < limit; i++) {
             String jsonData = InAppPurchaseData.toJson(data.get(i));
-            builder.addPurchaseItemList(data.get(i).productId());
-            builder.addPurchaseDataList(jsonData);
+            item.getPurchaseItemList().add(data.get(i).productId());
+            item.getPurchaseDataList().add(jsonData);
             String signedData = "";
             try {
                 signedData = signer.signData(jsonData);
             } catch (InvalidKeyException | SignatureException exception) {
                 Log.e("Purchases", "Exception signing purchase data", exception);
             }
-            builder.addDataSignatureList(signedData);
+            item.getDataSignatureList().add(signedData);
         }
         if (limit < data.size()) {
-            builder.continuationToken(String.format("%d", limit));
+            item.setContinuationToken(String.format("%d", limit));
         }
-        return builder.build();
+        return item;
     }
 
     boolean addPurchase(@NonNull String inAppPurchaseDataStr, @NonNull String itemType) {
@@ -154,12 +152,4 @@ public class Purchases {
         }
     }
 
-    @Value.Immutable
-    public interface PurchasesLists {
-        List<String> purchaseItemList();
-        List<String> purchaseDataList();
-        List<String> dataSignatureList();
-        @Nullable
-        String continuationToken();
-    }
 }

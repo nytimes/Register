@@ -6,7 +6,6 @@ import com.google.common.collect.ImmutableMap
 import com.nytimes.android.external.register.APIOverrides
 import com.nytimes.android.external.register.model.Config
 import com.nytimes.android.external.register.model.ConfigSku
-import com.nytimes.android.external.register.model.ImmutableConfigSku
 import com.nytimes.android.external.registerlib.GoogleUtil
 import io.reactivex.exceptions.Exceptions
 import org.assertj.core.api.Assertions.assertThat
@@ -43,21 +42,9 @@ class SkuDetailsBundleBuilderTest {
 
         testObject = SkuDetailsBundleBuilder(apiOverrides, Optional.of(config))
 
-        `when`(config.skus()).thenReturn(ImmutableMap.Builder<String, ConfigSku>()
-                .put(SKU1, ImmutableConfigSku.builder()
-                        .type(TYPE)
-                        .price(price)
-                        .title(title)
-                        .description(description)
-                        .packageName(packageName)
-                        .build())
-                .put(SKU2, ImmutableConfigSku.builder()
-                        .type(TYPE)
-                        .price(price)
-                        .title(title)
-                        .description(description)
-                        .packageName(packageName)
-                        .build())
+        `when`(config.skus).thenReturn(ImmutableMap.Builder<String, ConfigSku>()
+                .put(SKU1, ConfigSku(TYPE, price, title, description, packageName))
+                .put(SKU2, ConfigSku(TYPE, price, title, description, packageName))
                 .build())
     }
 

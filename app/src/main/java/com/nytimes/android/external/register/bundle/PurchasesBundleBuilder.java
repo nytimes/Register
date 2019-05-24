@@ -6,6 +6,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.nytimes.android.external.register.APIOverrides;
 import com.nytimes.android.external.register.Purchases;
+import com.nytimes.android.external.register.PurchasesLists;
 import com.nytimes.android.external.registerlib.GoogleUtil;
 
 import javax.inject.Inject;
@@ -43,15 +44,15 @@ public class PurchasesBundleBuilder extends BaseBundleBuilder {
         bundle.putInt(GoogleUtil.RESPONSE_CODE, responseCode);
 
         if (responseCode == GoogleUtil.RESULT_OK) {
-            Purchases.PurchasesLists purchasesLists = purchases.getPurchasesLists(type, continuationToken);
+            PurchasesLists purchasesLists = purchases.getPurchasesLists(type, continuationToken);
             bundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_ITEM_LIST,
-                    Lists.newArrayList(purchasesLists.purchaseItemList()));
+                    Lists.newArrayList(purchasesLists.getPurchaseItemList()));
             bundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST,
-                    Lists.newArrayList(purchasesLists.purchaseDataList()));
+                    Lists.newArrayList(purchasesLists.getPurchaseDataList()));
             bundle.putStringArrayList(GoogleUtil.INAPP_DATA_SIGNATURE_LIST,
-                    Lists.newArrayList(purchasesLists.dataSignatureList()));
-            if (!Strings.isNullOrEmpty(purchasesLists.continuationToken())) {
-                bundle.putString(GoogleUtil.INAPP_CONTINUATION_TOKEN, purchasesLists.continuationToken());
+                    Lists.newArrayList(purchasesLists.getDataSignatureList()));
+            if (!Strings.isNullOrEmpty(purchasesLists.getContinuationToken())) {
+                bundle.putString(GoogleUtil.INAPP_CONTINUATION_TOKEN, purchasesLists.getContinuationToken());
             }
         }
         return bundle;

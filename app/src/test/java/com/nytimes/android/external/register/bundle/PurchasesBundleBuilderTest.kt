@@ -3,6 +3,7 @@ package com.nytimes.android.external.register.bundle
 import com.google.common.collect.ImmutableList
 import com.nytimes.android.external.register.APIOverrides
 import com.nytimes.android.external.register.Purchases
+import com.nytimes.android.external.register.PurchasesLists
 import com.nytimes.android.external.registerlib.GoogleUtil
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -26,7 +27,7 @@ class PurchasesBundleBuilderTest {
     private lateinit var purchases: Purchases
 
     @Mock
-    private lateinit var purchasesLists: Purchases.PurchasesLists
+    private lateinit var purchasesLists: PurchasesLists
 
     private val type = GoogleUtil.BILLING_TYPE_SUBSCRIPTION
     private val purchasesDataList = ImmutableList.of("purchase1Data", "purchase2Data")
@@ -43,9 +44,9 @@ class PurchasesBundleBuilderTest {
     fun testBundleOKNoContinuationToken() {
         `when`(apiOverrides.getPurchasesResponse).thenReturn(GoogleUtil.RESULT_OK)
         `when`(purchases.getPurchasesLists(type, null)).thenReturn(purchasesLists)
-        `when`(purchasesLists.purchaseDataList()).thenReturn(purchasesDataList)
-        `when`(purchasesLists.purchaseItemList()).thenReturn(purchaseItemList)
-        `when`(purchasesLists.dataSignatureList()).thenReturn(signedPurchaseList)
+        `when`(purchasesLists.purchaseDataList).thenReturn(purchasesDataList)
+        `when`(purchasesLists.purchaseItemList).thenReturn(purchaseItemList)
+        `when`(purchasesLists.dataSignatureList).thenReturn(signedPurchaseList)
         val bundle = testObject.newBuilder()
                 .type(type)
                 .build()
@@ -62,8 +63,8 @@ class PurchasesBundleBuilderTest {
         val continuationToken = "100"
         `when`(apiOverrides.getPurchasesResponse).thenReturn(GoogleUtil.RESULT_OK)
         `when`(purchases.getPurchasesLists(type, continuationToken)).thenReturn(purchasesLists)
-        `when`(purchasesLists.purchaseDataList()).thenReturn(purchasesDataList)
-        `when`<String>(purchasesLists.continuationToken()).thenReturn(continuationToken)
+        `when`(purchasesLists.purchaseDataList).thenReturn(purchasesDataList)
+        `when`<String>(purchasesLists.continuationToken).thenReturn(continuationToken)
         val bundle = testObject.newBuilder()
                 .type(type)
                 .continuationToken(continuationToken)
