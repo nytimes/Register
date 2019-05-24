@@ -39,8 +39,8 @@ public class GoogleProductResponseTest {
     @Test
     public void testNullInt() throws JSONException {
         JSONObject obj = new JSONObject("{\"hello\": \"world\", \"myint\": 2}");
-        Integer field = JsonHelper.getFieldAsIntOrNull(obj, "missingField");
-        Integer foundField = JsonHelper.getFieldAsIntOrNull(obj, "myint");
+        Integer field = JsonHelper.getFieldAsIntOrZero(obj, "missingField");
+        Integer foundField = JsonHelper.getFieldAsIntOrZero(obj, "myint");
 
         assertThat(field).isNull();
         assertThat(foundField).isNotNull();

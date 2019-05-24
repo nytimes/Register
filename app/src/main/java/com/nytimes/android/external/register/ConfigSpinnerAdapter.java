@@ -42,7 +42,7 @@ public class ConfigSpinnerAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return items.get(position).responseCode();
+        return items.get(position).getResponseCode();
     }
 
     @Override
@@ -94,9 +94,9 @@ public class ConfigSpinnerAdapter extends BaseAdapter {
         void bind(ConfigResponse item, @ViewMode int mode) {
             Context context = itemView.getContext();
             int textColor = getCodeColor(context, item);
-            codeView.setText(String.valueOf(item.responseCode()));
+            codeView.setText(String.valueOf(item.getResponseCode()));
             codeView.setTextColor(textColor);
-            nameView.setText(item.responseName());
+            nameView.setText(item.getResponseName());
             nameView.setTextColor(textColor);
             iconView.setVisibility(mode == MODE_DROP_DOWN ? View.GONE : View.VISIBLE);
         }
@@ -104,7 +104,7 @@ public class ConfigSpinnerAdapter extends BaseAdapter {
         @ColorInt
         int getCodeColor(Context context, ConfigResponse item) {
             int colorResId;
-            switch (item.responseId()) {
+            switch (item.getResponseId()) {
                 case "spn_ok":
                     colorResId = R.color.config_green;
                     break;
@@ -124,7 +124,7 @@ public class ConfigSpinnerAdapter extends BaseAdapter {
                     colorResId = R.color.config_gray;
                     break;
                 default:
-                    throw new IllegalArgumentException("No color for ConfigResponse with id=" + item.responseId());
+                    throw new IllegalArgumentException("No color for ConfigResponse with id=" + item.getResponseId());
             }
             return ContextCompat.getColor(context, colorResId);
         }

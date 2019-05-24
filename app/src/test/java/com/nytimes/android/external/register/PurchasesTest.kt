@@ -87,15 +87,15 @@ class PurchasesTest {
                 GoogleUtil.BILLING_TYPE_SUBSCRIPTION, continuationToken)
         val purchasesIAP = testObject.getPurchasesLists(
                 GoogleUtil.BILLING_TYPE_IAP, continuationToken)
-        val subList = purchasesSub.purchaseDataList()
-        val iapList = purchasesIAP.purchaseDataList()
+        val subList = purchasesSub.purchaseDataList
+        val iapList = purchasesIAP.purchaseDataList
 
         assertThat(subList[0])
                 .isEqualTo(inAppPurchaseData1Str)
         assertThat(iapList[0])
                 .isEqualTo(inAppPurchaseData2Str)
-        assertThat(purchasesSub.continuationToken()).isNull()
-        assertThat(purchasesIAP.continuationToken()).isNull()
+        assertThat(purchasesSub.continuationToken).isNull()
+        assertThat(purchasesIAP.continuationToken).isNull()
     }
 
     @Test
@@ -117,22 +117,22 @@ class PurchasesTest {
         }
 
         // get first page
-        var purchasesSub: Purchases.PurchasesLists = testObject.getPurchasesLists(
+        var purchasesSub: PurchasesLists = testObject.getPurchasesLists(
                 GoogleUtil.BILLING_TYPE_SUBSCRIPTION, continuationToken)
 
         // check
-        var subList = purchasesSub.purchaseDataList()
+        var subList = purchasesSub.purchaseDataList
         assertThat(subList.size).isEqualTo(Purchases.PAGE_LIMIT)
-        assertThat(purchasesSub.continuationToken()).isEqualTo(Integer.toString(Purchases.PAGE_LIMIT))
+        assertThat(purchasesSub.continuationToken).isEqualTo(Integer.toString(Purchases.PAGE_LIMIT))
 
         // get second page
         purchasesSub = testObject.getPurchasesLists(
-                GoogleUtil.BILLING_TYPE_SUBSCRIPTION, purchasesSub.continuationToken())
+                GoogleUtil.BILLING_TYPE_SUBSCRIPTION, purchasesSub.continuationToken)
 
         // check
-        subList = purchasesSub.purchaseDataList()
+        subList = purchasesSub.purchaseDataList
         assertThat(subList.size).isEqualTo(overLimit)
-        assertThat(purchasesSub.continuationToken()).isNull()
+        assertThat(purchasesSub.continuationToken).isNull()
     }
 
     @Test

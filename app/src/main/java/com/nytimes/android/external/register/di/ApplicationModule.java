@@ -15,9 +15,6 @@ import com.nytimes.android.external.register.APIOverrides;
 import com.nytimes.android.external.register.Purchases;
 import com.nytimes.android.external.register.R;
 import com.nytimes.android.external.register.Signer;
-import com.nytimes.android.external.register.model.GsonAdaptersConfig;
-import com.nytimes.android.external.register.model.GsonAdaptersConfigSku;
-import com.nytimes.android.external.register.model.GsonAdaptersRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,10 +55,7 @@ public class ApplicationModule {
     @Singleton
     @Provides
     Gson provideGson() {
-        return new GsonBuilder()
-                .registerTypeAdapterFactory(new GsonAdaptersConfig())
-                .registerTypeAdapterFactory(new GsonAdaptersConfigSku())
-                .create();
+        return new GsonBuilder().create();
     }
 
     @Singleton
@@ -70,7 +64,6 @@ public class ApplicationModule {
     Gson provideRetrofitGson() {
         return new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                .registerTypeAdapterFactory(new GsonAdaptersRepository())
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
     }

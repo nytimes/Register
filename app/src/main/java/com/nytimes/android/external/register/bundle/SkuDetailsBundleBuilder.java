@@ -41,25 +41,25 @@ public class SkuDetailsBundleBuilder extends BaseBundleBuilder {
     }
 
     private void sku(String sku, String type) {
-        ConfigSku configSku = config.get().skus().get(sku);
+        ConfigSku configSku = config.get().getSkus().get(sku);
         if (configSku != null) {
             GoogleProductResponse.Builder builder = new GoogleProductResponse.Builder()
                     .productId(sku)
                     .itemType(type)
-                    .description(configSku.description())
-                    .title(configSku.title())
-                    .price("$" + configSku.price())
-                    .priceAmountMicros((int) (Double.parseDouble(configSku.price()) * 1000000))
-                    .subscriptionPeriod(configSku.subscriptionPeriod())
-                    .freeTrialPeriod(configSku.freeTrialPeriod())
+                    .description(configSku.getDescription())
+                    .title(configSku.getTitle())
+                    .price("$" + configSku.getPrice())
+                    .priceAmountMicros((int) (Double.parseDouble(configSku.getPrice()) * 1000000))
+                    .subscriptionPeriod(configSku.getSubscriptionPeriod())
+                    .freeTrialPeriod(configSku.getFreeTrialPeriod())
                     .priceCurrencyCode("USD");
 
-            if (configSku.introductoryPrice() != null) {
-                builder.introductoryPrice("$" + configSku.introductoryPrice())
+            if (configSku.getIntroductoryPrice() != null) {
+                builder.introductoryPrice("$" + configSku.getIntroductoryPrice())
                         .introductoryPriceAmountMicros((int) (Double.parseDouble(configSku
-                                .introductoryPrice()) * 1000000))
-                        .introductoryPriceCycles(configSku.introductoryPriceCycles())
-                        .introductoryPricePeriod(configSku.introductoryPricePeriod());
+                                .getIntroductoryPrice()) * 1000000))
+                        .introductoryPriceCycles(configSku.getIntroductoryPriceCycles())
+                        .introductoryPricePeriod(configSku.getIntroductoryPricePeriod());
             }
 
             GoogleProductResponse googleProductResponse = builder.build();

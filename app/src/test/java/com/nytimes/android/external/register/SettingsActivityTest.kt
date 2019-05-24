@@ -203,19 +203,19 @@ class SettingsActivityTest {
     private fun assertDataSet(repository: Repository) {
         assertThat(githubError.visibility).isEqualTo(View.GONE)
         assertThat(githubCardName.visibility).isEqualTo(View.VISIBLE)
-        assertThat(githubCardName.text).isEqualTo(repository.fullName())
+        assertThat(githubCardName.text).isEqualTo(repository.fullName)
         assertThat(githubCardCommit.visibility).isEqualTo(View.VISIBLE)
         assertThat(githubCardCommit.text).isEqualTo(DateUtils.getRelativeTimeSpanString(
-                repository.pushedAt().time,
+                repository.pushedAt.time,
                 System.currentTimeMillis(),
                 DateUtils.MINUTE_IN_MILLIS,
                 DateUtils.FORMAT_ABBREV_ALL))
         assertThat(githubCardDesc.visibility).isEqualTo(View.VISIBLE)
-        assertThat(githubCardDesc.text).isEqualTo(repository.description())
+        assertThat(githubCardDesc.text).isEqualTo(repository.description)
         assertThat(githubCardForks.visibility).isEqualTo(View.VISIBLE)
-        assertThat(githubCardForks.text).isEqualTo(numberFormat.format(repository.forksCount().toLong()))
+        assertThat(githubCardForks.text).isEqualTo(numberFormat.format(repository.forksCount.toLong()))
         assertThat(githubCardStars.visibility).isEqualTo(View.VISIBLE)
-        assertThat(githubCardStars.text).isEqualTo(numberFormat.format(repository.stargazersCount().toLong()))
+        assertThat(githubCardStars.text).isEqualTo(numberFormat.format(repository.stargazersCount.toLong()))
     }
 
     private fun assertTextViewText(@IdRes viewId: Int, @StringRes stringResId: Int) {

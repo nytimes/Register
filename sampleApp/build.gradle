@@ -47,8 +47,6 @@ dependencies {
     compile libraries.rxAndroid
     compile libraries.rxJava
     compile libraries.guava
-    annotationProcessor libraries.immutablesValue
-    provided libraries.immutablesValue
 
     testCompile libraries.mockito
     testCompile libraries.assertJ

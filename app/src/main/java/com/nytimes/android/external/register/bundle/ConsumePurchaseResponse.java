@@ -30,11 +30,11 @@ public class ConsumePurchaseResponse extends BaseResponse {
         List<String> inAppPurchaseItems, subscriptionsItems;
         if (responseCode == RESULT_OK) {
             subscriptionsItems = purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null)
-                    .purchaseDataList();
+                    .getPurchaseDataList();
             if (subscriptionsItems.contains(purchaseToken)) {
                 return GoogleUtil.RESULT_ERROR;
             }
-            inAppPurchaseItems = purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null).purchaseDataList();
+            inAppPurchaseItems = purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null).getPurchaseDataList();
             if (inAppPurchaseItems.contains(purchaseToken)) {
                 if (!purchases.removePurchase(purchaseToken, GoogleUtil.BILLING_TYPE_IAP)) {
                     return GoogleUtil.RESULT_ERROR;
