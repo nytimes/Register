@@ -147,10 +147,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         TextView desc = (TextView) v.findViewById(R.id.settings_item_summary);
 
-        if (summaryRes != -1) {
+        if (summaryRes == -1) {
             desc.setVisibility(View.GONE);
         } else {
-            desc.setText(getString(summaryRes));
+            desc.setText(summaryRes);
             desc.setVisibility(View.VISIBLE);
         }
 
