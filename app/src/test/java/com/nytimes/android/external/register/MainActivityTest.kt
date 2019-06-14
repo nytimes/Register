@@ -7,6 +7,7 @@ import android.widget.Adapter
 import android.widget.AdapterView
 import com.google.common.base.Optional
 import com.google.common.collect.ImmutableSet
+import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nytimes.android.external.register.APIOverrides.Companion.RESULT_DEFAULT
 import com.nytimes.android.external.register.BuyActivity.RECEIPT_FMT
 import com.nytimes.android.external.register.model.Config
@@ -16,7 +17,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
 import org.mockito.Matchers.eq
 import org.mockito.Mock
 import org.mockito.Mockito.*
@@ -231,31 +231,32 @@ class MainActivityTest {
         val parentView = mock(AdapterView::class.java)
         val view = mock(View::class.java)
 
-        val argumentCaptor = ArgumentCaptor.forClass(ConfigResponse::class.java)
+        argumentCaptor<ConfigResponse>().apply {
+            isBillingSupportedSpinner.onItemSelectedListener.onItemSelected(parentView, view, 0, 0L)
+            verify<APIOverridesDelegate>(mockApiDelegate).setApiOverridesValue(eq(R.id.isBillingSupported), capture())
+            assertThat(allValues[0].responseCode).isEqualTo(RESULT_DEFAULT)
 
-        isBillingSupportedSpinner.onItemSelectedListener.onItemSelected(parentView, view, 0, 0L)
-        verify<APIOverridesDelegate>(mockApiDelegate).setApiOverridesValue(eq(R.id.isBillingSupported), argumentCaptor.capture())
-        assertThat(argumentCaptor.value.responseCode).isEqualTo(RESULT_DEFAULT)
+            getBuyIntentSpinner.onItemSelectedListener.onItemSelected(parentView, view, 1, 0L)
+            verify<APIOverridesDelegate>(mockApiDelegate).setApiOverridesValue(eq(R.id.getBuyIntent), capture())
+            assertThat(allValues[1].responseCode).isEqualTo(GoogleUtil.RESULT_OK)
 
-        getBuyIntentSpinner.onItemSelectedListener.onItemSelected(parentView, view, 1, 0L)
-        verify<APIOverridesDelegate>(mockApiDelegate).setApiOverridesValue(eq(R.id.getBuyIntent), argumentCaptor.capture())
-        assertThat(argumentCaptor.value.responseCode).isEqualTo(GoogleUtil.RESULT_OK)
+            buySpinner.onItemSelectedListener.onItemSelected(parentView, view, 2, 0L)
+            verify<APIOverridesDelegate>(mockApiDelegate).setApiOverridesValue(eq(R.id.buy), capture())
+            assertThat(allValues[2].responseCode).isEqualTo(GoogleUtil.RESULT_ITEM_UNAVAILABLE)
 
-        buySpinner.onItemSelectedListener.onItemSelected(parentView, view, 2, 0L)
-        verify<APIOverridesDelegate>(mockApiDelegate).setApiOverridesValue(eq(R.id.buy), argumentCaptor.capture())
-        assertThat(argumentCaptor.value.responseCode).isEqualTo(GoogleUtil.RESULT_ITEM_UNAVAILABLE)
+            getPurchasesSpinner.onItemSelectedListener.onItemSelected(parentView, view, 3, 0L)
+            verify<APIOverridesDelegate>(mockApiDelegate).setApiOverridesValue(eq(R.id.getPurchases), capture())
+            assertThat(allValues[3].responseCode).isEqualTo(GoogleUtil.RESULT_ERROR)
 
-        getPurchasesSpinner.onItemSelectedListener.onItemSelected(parentView, view, 3, 0L)
-        verify<APIOverridesDelegate>(mockApiDelegate).setApiOverridesValue(eq(R.id.getPurchases), argumentCaptor.capture())
-        assertThat(argumentCaptor.value.responseCode).isEqualTo(GoogleUtil.RESULT_ERROR)
+            getSkuDetailsSpinner.onItemSelectedListener.onItemSelected(parentView, view, 4, 0L)
+            verify<APIOverridesDelegate>(mockApiDelegate).setApiOverridesValue(eq(R.id.getSkuDetails), capture())
+            assertThat(allValues[4].responseCode).isEqualTo(GoogleUtil.RESULT_ERROR)
 
-        getSkuDetailsSpinner.onItemSelectedListener.onItemSelected(parentView, view, 4, 0L)
-        verify<APIOverridesDelegate>(mockApiDelegate).setApiOverridesValue(eq(R.id.getSkuDetails), argumentCaptor.capture())
-        assertThat(argumentCaptor.value.responseCode).isEqualTo(GoogleUtil.RESULT_ERROR)
+            getBuyIntentReplaceSkusSpinner.onItemSelectedListener.onItemSelected(parentView, view, 5, 0L)
+            verify<APIOverridesDelegate>(mockApiDelegate).setApiOverridesValue(eq(R.id.getBuyIntentToReplaceSkus), capture())
+            assertThat(allValues[5].responseCode).isEqualTo(GoogleUtil.RESULT_ITEM_ALREADY_OWNED)
+        }
 
-        getBuyIntentReplaceSkusSpinner.onItemSelectedListener.onItemSelected(parentView, view, 5, 0L)
-        verify<APIOverridesDelegate>(mockApiDelegate).setApiOverridesValue(eq(R.id.getBuyIntentToReplaceSkus), argumentCaptor.capture())
-        assertThat(argumentCaptor.value.responseCode).isEqualTo(GoogleUtil.RESULT_ITEM_ALREADY_OWNED)
     }
 
     private fun getSpinnerValue(parentId: Int): Long {
