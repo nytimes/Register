@@ -13,27 +13,15 @@ public final class JsonHelper {
     }
 
     public static String getFieldAsStringOrNull(JSONObject obj, String field) {
-        String ret = null;
-        if (obj != null) {
-            try {
-                ret = obj.getString(field);
-            } catch (JSONException exc) {
-                Log.e(TAG, "Error getting String " + field, exc);
-            }
-        }
-        return ret;
+        return (obj == null) ? null : obj.optString(field, null);
     }
 
-    public static Integer getFieldAsIntOrNull(JSONObject obj, String field) {
-        Integer ret = null;
-        if (obj != null) {
-            try {
-                ret = obj.getInt(field);
-            } catch (JSONException exc) {
-                Log.e(TAG, "Error getting Int " + field, exc);
-            }
-        }
-        return ret;
+    public static int getFieldAsIntOrZero(JSONObject obj, String field) {
+        return (obj == null) ? 0 : obj.optInt(field);
+    }
+
+    public static long getFieldAsLongOrZero(JSONObject obj, String field) {
+        return (obj == null) ? 0L : obj.optLong(field);
     }
 
     public static void addToObjIfNotNull(String field, String val, JSONObject obj) {
@@ -46,7 +34,15 @@ public final class JsonHelper {
         }
     }
 
-    public static void addToObj(String field, int val, JSONObject obj) {
+    public static void addToObj(String field, Integer val, JSONObject obj) {
+        try {
+            obj.put(field, val);
+        } catch (JSONException exc) {
+            Log.e(TAG, "Error putting " + field + "," + val, exc);
+        }
+    }
+
+    public static void addToObj(String field, long val, JSONObject obj) {
         try {
             obj.put(field, val);
         } catch (JSONException exc) {

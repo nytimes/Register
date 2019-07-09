@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/NYTimes/Register.svg?branch=master)](https://travis-ci.org/NYTimes/Register)
+[![Build Status](https://travis-ci.org/nytimes/Register.svg?branch=master)](https://travis-ci.org/nytimes/Register)
 
 ![Register Logo](https://github.com/nytm/register/blob/master/images/register-logo.png?raw=true)
 

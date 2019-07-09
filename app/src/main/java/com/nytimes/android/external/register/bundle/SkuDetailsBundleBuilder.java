@@ -43,15 +43,26 @@ public class SkuDetailsBundleBuilder extends BaseBundleBuilder {
     private void sku(String sku, String type) {
         ConfigSku configSku = config.get().skus().get(sku);
         if (configSku != null) {
-            GoogleProductResponse googleProductResponse = new GoogleProductResponse.Builder()
+            GoogleProductResponse.Builder builder = new GoogleProductResponse.Builder()
                     .productId(sku)
                     .itemType(type)
                     .description(configSku.description())
                     .title(configSku.title())
                     .price("$" + configSku.price())
                     .priceAmountMicros((int) (Double.parseDouble(configSku.price()) * 1000000))
-                    .priceCurrencyCode("USD")
-                    .build();
+                    .subscriptionPeriod(configSku.subscriptionPeriod())
+                    .freeTrialPeriod(configSku.freeTrialPeriod())
+                    .priceCurrencyCode("USD");
+
+            if (configSku.introductoryPrice() != null) {
+                builder.introductoryPrice("$" + configSku.introductoryPrice())
+                        .introductoryPriceAmountMicros((int) (Double.parseDouble(configSku
+                                .introductoryPrice()) * 1000000))
+                        .introductoryPriceCycles(configSku.introductoryPriceCycles())
+                        .introductoryPricePeriod(configSku.introductoryPricePeriod());
+            }
+
+            GoogleProductResponse googleProductResponse = builder.build();
             detailsList.add(GoogleProductResponse.toJson(googleProductResponse));
         }
     }
