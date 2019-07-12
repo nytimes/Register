@@ -56,7 +56,7 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
         }
 
         override fun onBillingServiceDisconnected() {
-            //TODO handle disconnection (perhaps reconnection)
+            //TODO handle disconnection case (perhaps reconnection)
         }
     }
 
