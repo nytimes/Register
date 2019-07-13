@@ -19,6 +19,10 @@ class MainAdapter(context: Context) : RecyclerView.Adapter<MainViewHolder>() {
         }
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
+    init {
+        setHasStableIds(true)
+    }
+
     override fun getItemId(position: Int): Long {
         return items[position].hashCode().toLong()
     }
