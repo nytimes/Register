@@ -7,7 +7,11 @@ import io.reactivex.Scheduler
  * allows us to inject [Scheduler]s for testing.
  */
 interface SchedulerProvider {
+
     fun getMainThread() : Scheduler
+
     fun getComputationThread() : Scheduler
+
     fun getIoThread() : Scheduler
+
 }
