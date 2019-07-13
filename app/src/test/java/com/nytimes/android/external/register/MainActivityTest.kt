@@ -9,7 +9,7 @@ import com.google.common.base.Optional
 import com.google.common.collect.ImmutableSet
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nytimes.android.external.register.APIOverrides.Companion.RESULT_DEFAULT
-import com.nytimes.android.external.register.BuyActivity.RECEIPT_FMT
+import com.nytimes.android.external.register.BuyActivity.Companion.RECEIPT_FMT
 import com.nytimes.android.external.register.model.Config
 import com.nytimes.android.external.registerlib.GoogleUtil
 import com.nytimes.android.external.registerlib.InAppPurchaseData

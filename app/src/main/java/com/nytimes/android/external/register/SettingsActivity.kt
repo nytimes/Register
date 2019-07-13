@@ -110,7 +110,7 @@ class SettingsActivity : AppCompatActivity() {
         setText(R.id.settings_header_general, R.string.settings_general)
         initItemNested(R.id.settings_item_import,
                 R.string.settings_general_import_title,
-                R.string.settings_general_import_summ) { v ->
+                R.string.settings_general_import_summ) {
             val root = findViewById<View>(android.R.id.content)
             Snackbar.make(root, "TODO: Change Import Location", Snackbar.LENGTH_SHORT).show()
         }
@@ -118,14 +118,14 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun initOther() {
         setText(R.id.settings_header_other, R.string.settings_other)
-        initItemNested(R.id.settings_item_legal, R.string.settings_other_legal, -1) { v ->
+        initItemNested(R.id.settings_item_legal, R.string.settings_other_legal, -1) {
             val intent = Intent(this, LegalActivity::class.java)
             startActivity(intent)
         }
-        initItemNested(R.id.settings_item_tos, R.string.settings_other_tos, -1) { v ->
+        initItemNested(R.id.settings_item_tos, R.string.settings_other_tos, -1) {
             startWebIntent(getString(R.string.url_tos))
         }
-        initItemNested(R.id.settings_item_priv, R.string.settings_other_priv, -1) { v ->
+        initItemNested(R.id.settings_item_priv, R.string.settings_other_priv, -1) {
             startWebIntent(getString(R.string.url_priv))
         }
     }
@@ -150,7 +150,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun initDevelopedBy() {
-        val onClick = { view : View -> startWebIntent(getString(R.string.url_jobs)) }
+        val onClick = { _ : View -> startWebIntent(getString(R.string.url_jobs)) }
 
         val title = setText(R.id.settings_header_dev, R.string.settings_dev_by)
         title.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_times_dev, 0)
@@ -224,7 +224,7 @@ class SettingsActivity : AppCompatActivity() {
         githubCardDesc.text = repository.description
         githubCardForks.text = numberFormat.format(repository.forksCount.toLong())
         githubCardStars.text = numberFormat.format(repository.stargazersCount.toLong())
-        githubCardRoot.setOnClickListener { view -> startWebIntent(repository.htmlUrl) }
+        githubCardRoot.setOnClickListener { startWebIntent(repository.htmlUrl) }
     }
 
     private fun showError(throwable: Throwable) {

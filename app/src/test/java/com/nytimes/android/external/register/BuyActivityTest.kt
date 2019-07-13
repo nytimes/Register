@@ -9,7 +9,9 @@ import android.widget.TextView
 import com.google.common.base.Optional
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
-import com.nytimes.android.external.register.BuyActivity.*
+import com.nytimes.android.external.register.BuyActivity.Companion.ERROR_FMT
+import com.nytimes.android.external.register.BuyActivity.Companion.PRICE_FMT
+import com.nytimes.android.external.register.BuyActivity.Companion.RECEIPT_FMT
 import com.nytimes.android.external.register.bundle.BuyIntentBundleBuilder
 import com.nytimes.android.external.register.bundle.BuyIntentToReplaceSkusBundleBuilder
 import com.nytimes.android.external.register.model.Config
