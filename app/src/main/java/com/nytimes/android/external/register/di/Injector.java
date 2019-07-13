@@ -1,5 +1,6 @@
 package com.nytimes.android.external.register.di;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
@@ -13,16 +14,19 @@ public final class Injector {
     private Injector() {
     }
 
+    @SuppressLint("WrongConstant")
     public static ApplicationComponent obtainAppComponent(Context context) {
         //noinspection ResourceType
         return (ApplicationComponent) context.getApplicationContext().getSystemService(INJECTOR_APP);
     }
 
+    @SuppressLint("WrongConstant")
     public static ActivityComponent obtainActivityComponent(Context context) {
         //noinspection ResourceType
         return (ActivityComponent) context.getSystemService(INJECTOR_ACTIVITY);
     }
 
+    @SuppressLint("WrongConstant")
     public static ServiceComponent obtainServiceComponent(Context context) {
         //noinspection ResourceType
         return (ServiceComponent) context.getSystemService(INJECTOR_SERVICE);

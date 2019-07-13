@@ -9,7 +9,7 @@ import io.reactivex.internal.schedulers.ExecutorScheduler
 class TestSchedulerProvider : SchedulerProvider {
 
     private val immediate = object : Scheduler() {
-        override fun createWorker(): Scheduler.Worker {
+        override fun createWorker(): Worker {
             return ExecutorScheduler.ExecutorWorker { it.run() }
         }
     }
