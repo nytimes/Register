@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply from: rootProject.file("configuration/register.gradle")
+
 
 android {
     compileSdkVersion versions.compileSdk
@@ -45,6 +49,8 @@ repositories {
 }
 
 dependencies {
+    implementation libraries.kotlin
+
     implementation libraries.supportAppCompat
     implementation libraries.supportDesign
     implementation libraries.swipeLayout
@@ -54,6 +60,7 @@ dependencies {
 
     implementation libraries.dagger
     annotationProcessor libraries.daggerCompiler
+    kapt 'com.google.dagger:dagger-compiler:2.11'
 
     testAnnotationProcessor libraries.daggerCompiler
     androidTestAnnotationProcessor libraries.daggerCompiler
@@ -64,15 +71,13 @@ dependencies {
     implementation libraries.retrofitConverter
     implementation libraries.retrofitAdapter
 
-    annotationProcessor libraries.immutablesValue
-    compileOnly libraries.immutablesValue
-    compileOnly libraries.immutablesGson
-
     implementation libraries.guava
     implementation libraries.butterKnife
     annotationProcessor libraries.butterKnifeCompiler
 
     testImplementation libraries.mockito
+    testImplementation libraries.mockitoInline
+    testImplementation libraries.mockitoKotlin
     testImplementation libraries.assertJ
     testImplementation libraries.junit
     testImplementation(libraries.robolectric) {

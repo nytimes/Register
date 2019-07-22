@@ -1,6 +1,7 @@
 allprojects {
     repositories {
         mavenLocal()
+        mavenCentral()
         maven {
             url 'https://plugins.gradle.org/m2/'
         }
@@ -33,7 +34,6 @@ ext.versions = [
         dagger               : '2.9',
         gson                 : '2.6.2',
         guava                : '19.0',
-        immutables           : '2.4.1',
         javaxInject          : '1',
         rxJava               : '2.1.0',
         rxAndroid            : '2.0.1',
@@ -45,7 +45,9 @@ ext.versions = [
         // Testing.
         junit                : '4.12',
         assertJ              : '1.7.1',
-        mockito              : '1.9.5',
+        mockito              : '2.27.0',
+        mockitoKotlin        : '2.1.0',
+        mockitoAndroid       : '2.27.0',
         robolectric          : '3.4.2',
         espresso             : '2.2.2'
 ]
@@ -65,8 +67,6 @@ ext.libraries = [
         daggerCompiler          : "com.google.dagger:dagger-compiler:$versions.dagger",
         gson                    : "com.google.code.gson:gson:$versions.gson",
         guava                   : "com.google.guava:guava:$versions.guava",
-        immutablesValue         : "org.immutables:value:$versions.immutables",
-        immutablesGson          : "org.immutables:gson:$versions.immutables",
         supportAnnotations      : "com.android.support:support-annotations:$versions.supportLibs",
         javaxInject             : "javax.inject:javax.inject:$versions.javaxInject",
         rxJava                  : "io.reactivex.rxjava2:rxjava:$versions.rxJava",
@@ -81,7 +81,10 @@ ext.libraries = [
         // Testing.
         junit                   : "junit:junit:$versions.junit",
         assertJ                 : "org.assertj:assertj-core:$versions.assertJ",
-        mockito                 : "org.mockito:mockito-all:$versions.mockito",
+        mockito                 : "org.mockito:mockito-core:$versions.mockito",
+        mockitoInline           : "org.mockito:mockito-inline:$versions.mockito",
+        mockitoKotlin           : "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.mockitoKotlin",
+        mockitoAndroid          : "org.mockito:mockito-android:$versions.mockitoAndroid",
         robolectric             : "org.robolectric:robolectric:$versions.robolectric",
         espresso                : "com.android.support.test.espresso:espresso-core:$versions.espresso",
 ]
