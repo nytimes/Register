@@ -1,8 +1,8 @@
 package com.nytimes.android.external.register
 
 class PurchasesLists {
-    var purchaseItemList: List<String> = ArrayList()
-    var purchaseDataList: List<String> = ArrayList()
-    var dataSignatureList: List<String> = ArrayList()
+    var purchaseItemList: MutableList<String> = ArrayList()
+    var purchaseDataList: MutableList<String> = ArrayList()
+    var dataSignatureList: MutableList<String> = ArrayList()
     var continuationToken: String? = null
 }

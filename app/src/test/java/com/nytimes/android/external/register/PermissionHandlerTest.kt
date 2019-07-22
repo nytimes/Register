@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.support.v4.content.PermissionChecker.PERMISSION_DENIED
 import android.support.v4.content.PermissionChecker.PERMISSION_GRANTED
-import com.nytimes.android.external.register.PermissionHandler.PERMISSION_REQ_CODE
+import com.nytimes.android.external.register.PermissionHandler.Companion.PERMISSION_REQ_CODE
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

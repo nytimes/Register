@@ -4,7 +4,10 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Parcelable
 import com.nytimes.android.external.register.APIOverrides
-import com.nytimes.android.external.register.bundle.BuyIntentBundleBuilder.*
+import com.nytimes.android.external.register.bundle.BuyIntentBundleBuilder.Companion.EX_DEVELOPER_PAYLOAD
+import com.nytimes.android.external.register.bundle.BuyIntentBundleBuilder.Companion.EX_ITEM_TYPE
+import com.nytimes.android.external.register.bundle.BuyIntentBundleBuilder.Companion.EX_PACKAGE_NAME
+import com.nytimes.android.external.register.bundle.BuyIntentBundleBuilder.Companion.EX_SKU
 import com.nytimes.android.external.registerlib.GoogleUtil
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before

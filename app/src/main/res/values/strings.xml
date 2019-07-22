@@ -24,9 +24,6 @@
     <string name="buy">Buy</string>
     <string name="replace">Replace</string>
     <string name="ok">OK</string>
-    <string name="started">STARTED</string>
-    <string name="created">CREATED</string>
-    <string name="destroyed">DESTROYED</string>
 
     <string name="is_billing_supported">isBillingSupported()</string>
     <string name="get_buy_intent">getBuyIntent()</string>
