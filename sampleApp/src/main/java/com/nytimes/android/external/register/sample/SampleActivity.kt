@@ -95,7 +95,7 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
     }
 
     fun checkPurchasesAndSkuDetails() {
-        if (googleServiceProvider.isReady) {
+        if (googleServiceProvider.isReady()) {
             val subSkuDetailsStream = getSubSkuDetailsStream()
 
             val purchasesResultStream = Observable.fromCallable<List<Purchase>> {
@@ -122,17 +122,16 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
                 .setType(BillingClient.SkuType.SUBS)
                 .build()
 
-        return Observable
-                .create<List<SkuDetails>> { emitter ->
-                    googleServiceProvider.querySkuDetailsAsync(subParams) { _, skuDetailsList ->
-                        if (skuDetailsList == null) {
-                            emitter.onNext(ArrayList())
-                        } else {
-                            emitter.onNext(skuDetailsList)
-                        }
-                        emitter.onComplete()
-                    }
+        return Observable.create { emitter ->
+            googleServiceProvider.querySkuDetailsAsync(subParams, SkuDetailsResponseListener { _, skuDetailsList ->
+                if (skuDetailsList == null) {
+                    emitter.onNext(ArrayList())
+                } else {
+                    emitter.onNext(skuDetailsList)
                 }
+                emitter.onComplete()
+            })
+        }
     }
 
     private fun getIapSkuDetailsStream(
@@ -145,14 +144,14 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
                 .build()
 
         val iapSkuDetailsStream = Observable.create<List<SkuDetails>> { emitter ->
-            googleServiceProvider.querySkuDetailsAsync(iapParams) { _, skuDetailsList ->
+            googleServiceProvider.querySkuDetailsAsync(iapParams, SkuDetailsResponseListener { _, skuDetailsList ->
                 if (skuDetailsList == null) {
                     emitter.onNext(ArrayList())
                 } else {
                     emitter.onNext(skuDetailsList)
                 }
                 emitter.onComplete()
-            }
+            })
         }
 
         return iapSkuDetailsStream.flatMap { iapSkuDetails ->

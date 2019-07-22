@@ -2,6 +2,7 @@ package com.nytimes.android.external.registerlib
 
 import android.app.Activity
 import android.content.Context
+import android.support.annotation.UiThread
 import com.android.billingclient.api.*
 
 class GoogleServiceProviderTesting(context: Context, listener: PurchasesUpdatedListener) : GoogleServiceProvider() {
@@ -42,5 +43,20 @@ class GoogleServiceProviderTesting(context: Context, listener: PurchasesUpdatedL
 
     override fun queryPurchaseHistoryAsync(skuType: String, listener: PurchaseHistoryResponseListener) {
         billingClient.queryPurchaseHistoryAsync(skuType, listener)
+    }
+
+    companion object {
+
+        /**
+         * Constructs a new [BillingClient.Builder] instance.
+         *
+         * @param context It will be used to get an application context to bind to the in-app billing
+         * service.
+         */
+        @UiThread
+        @JvmStatic
+        fun newBuilder(context: Context): GoogleServiceProvider.Builder {
+            return GoogleServiceProvider.Builder(context)
+        }
     }
 }
