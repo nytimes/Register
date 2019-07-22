@@ -1,4 +1,10 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+
+repositories {
+    mavenCentral()
+}
 
 android {
     compileSdkVersion versions.compileSdk
@@ -27,6 +33,8 @@ dependencies {
     implementation project(':lib')
 
     implementation 'com.android.billingclient:billing:1.1'
+
+    implementation libraries.kotlin
 
     compile libraries.dagger
     annotationProcessor libraries.daggerCompiler
@@ -58,4 +66,5 @@ dependencies {
 
 apply from: rootProject.file("gradle/checkstyle.gradle")
 apply from: rootProject.file("gradle/pmd.gradle")
+
 
