@@ -5,12 +5,6 @@ import android.os.Bundle
 import android.support.annotation.ArrayRes
 import android.support.annotation.IdRes
 import android.support.annotation.StringRes
-import android.support.design.widget.AppBarLayout
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.util.Pair
 import android.view.Menu
 import android.view.MenuItem
@@ -18,6 +12,12 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.appbar.AppBarLayout
 import com.google.common.base.Optional
 import com.nytimes.android.external.register.di.Injector
 import com.nytimes.android.external.register.model.Config
@@ -81,7 +81,7 @@ open class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
         val appBarContent = findViewById<View>(R.id.app_bar_content)
         appBarLayout = findViewById(R.id.app_bar_layout)
         appBarLayout.setExpanded(false, false)
-        appBarLayout.addOnOffsetChangedListener { layout, verticalOffset ->
+        appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             appBarContent.translationY = (-verticalOffset).toFloat()
 
             val verticalOffsetAbs = Math.abs(verticalOffset).toFloat()
@@ -98,7 +98,7 @@ open class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
             val endCenter = (emptyView.height - inverseVerticalOffset) / 2
             val emptyYOffset = startCenter - endCenter
             emptyView.translationY = -emptyYOffset
-        }
+        })
     }
 
     private fun initRecycler() {

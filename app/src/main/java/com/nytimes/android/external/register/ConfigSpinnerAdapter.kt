@@ -49,7 +49,7 @@ class ConfigSpinnerAdapter(context: Context, items: List<ConfigResponse>) : Base
     }
 
     @Retention(AnnotationRetention.SOURCE)
-    @IntDef(MODE_SPINNER, MODE_DROP_DOWN)
+    @IntDef(MODE_SPINNER.toLong(), MODE_DROP_DOWN.toLong())
     internal annotation class ViewMode
 
     companion object {

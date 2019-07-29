@@ -2,30 +2,29 @@ package com.nytimes.android.external.register
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v4.content.PermissionChecker.PERMISSION_DENIED
-import android.support.v4.content.PermissionChecker.PERMISSION_GRANTED
+import androidx.core.content.PermissionChecker.PERMISSION_DENIED
+import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.PermissionHandler.Companion.PERMISSION_REQ_CODE
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.MockitoAnnotations
-import org.robolectric.RobolectricTestRunner
+import org.mockito.Mockito.never
+import org.mockito.Mockito.verify
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class PermissionHandlerTest {
 
-    @Mock
-    private lateinit var activity: Activity
+    private val activity: Activity = mock()
 
     private lateinit var intent: Intent
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
         intent = Intent()
-        `when`(activity.intent).thenReturn(intent)
+        whenever(activity.intent).thenReturn(intent)
     }
 
     @Test

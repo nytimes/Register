@@ -1,8 +1,11 @@
 package com.nytimes.android.external.register.bundle
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.base.Optional
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.APIOverrides
 import com.nytimes.android.external.register.model.Config
 import com.nytimes.android.external.register.model.ConfigSku
@@ -13,28 +16,21 @@ import org.json.JSONException
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
-import org.mockito.MockitoAnnotations
-import org.robolectric.RobolectricTestRunner
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class SkuDetailsBundleBuilderTest {
 
-    @Mock
-    private lateinit var apiOverrides: APIOverrides
+    private val apiOverrides: APIOverrides = mock()
 
-    @Mock
-    private lateinit var config: Config
+    private val config: Config = mock()
 
     private lateinit var testObject: SkuDetailsBundleBuilder
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
         val packageName = "com.my.pkg"
         val description = "some description"
         val title = "caps for sale"
@@ -42,7 +38,7 @@ class SkuDetailsBundleBuilderTest {
 
         testObject = SkuDetailsBundleBuilder(apiOverrides, Optional.of(config))
 
-        `when`(config.skus).thenReturn(ImmutableMap.Builder<String, ConfigSku>()
+        whenever(config.skus).thenReturn(ImmutableMap.Builder<String, ConfigSku>()
                 .put(SKU1, ConfigSku(TYPE, price, title, description, packageName))
                 .put(SKU2, ConfigSku(TYPE, price, title, description, packageName))
                 .build())
@@ -50,7 +46,7 @@ class SkuDetailsBundleBuilderTest {
 
     @Test
     fun testBundleOK() {
-        `when`(apiOverrides.getSkuDetailsResponse).thenReturn(GoogleUtil.RESULT_OK)
+        whenever(apiOverrides.getSkuDetailsResponse).thenReturn(GoogleUtil.RESULT_OK)
 
         val bundle = testObject.newBuilder()
                 .skus(ImmutableList.of(SKU1, SKU2), TYPE)
@@ -80,7 +76,7 @@ class SkuDetailsBundleBuilderTest {
 
     @Test
     fun testBundleNotOK() {
-        `when`(apiOverrides.getSkuDetailsResponse).thenReturn(GoogleUtil.RESULT_ERROR)
+        whenever(apiOverrides.getSkuDetailsResponse).thenReturn(GoogleUtil.RESULT_ERROR)
 
         val bundle = testObject.newBuilder()
                 .skus(ImmutableList.of(SKU1, SKU2), TYPE)

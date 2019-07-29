@@ -2,6 +2,8 @@ package com.nytimes.android.external.register.bundle
 
 import android.os.Bundle
 import com.google.common.collect.ImmutableList
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.APIOverrides
 import com.nytimes.android.external.register.BillingServiceStubImpl
 import com.nytimes.android.external.register.Purchases
@@ -13,38 +15,27 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Matchers.anyListOf
 import org.mockito.Matchers.anyString
-import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
 class ConsumePurchaseResponseTest {
 
-    @Mock
-    private lateinit var apiOverrides: APIOverrides
+    private val apiOverrides: APIOverrides = mock()
 
-    @Mock
-    private lateinit var purchases: Purchases
+    private val purchases: Purchases = mock()
 
-    @Mock
-    private lateinit var inAppPurchasesLists: PurchasesLists
+    private val inAppPurchasesLists: PurchasesLists = mock()
 
-    @Mock
-    private lateinit var subscriptionsPurchasesLists: PurchasesLists
+    private val subscriptionsPurchasesLists: PurchasesLists = mock()
 
-    @Mock
-    private lateinit var buyIntentBundleBuilder: BuyIntentBundleBuilder
+    private val buyIntentBundleBuilder: BuyIntentBundleBuilder = mock()
 
-    @Mock
-    private lateinit var skuDetailsBundleBuilder: SkuDetailsBundleBuilder
+    private val skuDetailsBundleBuilder: SkuDetailsBundleBuilder = mock()
 
-    @Mock
-    private lateinit var purchasesBundleBuilder: PurchasesBundleBuilder
+    private val purchasesBundleBuilder: PurchasesBundleBuilder = mock()
 
-    @Mock
-    private lateinit var buyIntentToReplaceSkusBundleBuilder: BuyIntentToReplaceSkusBundleBuilder
+    private val buyIntentToReplaceSkusBundleBuilder: BuyIntentToReplaceSkusBundleBuilder = mock()
 
     private lateinit var testObject: BillingServiceStubImpl
 
@@ -54,21 +45,21 @@ class ConsumePurchaseResponseTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+//        MockitoAnnotations.initMocks(this)
 
-        `when`(skuDetailsBundleBuilder.newBuilder()).thenReturn(skuDetailsBundleBuilder)
-        `when`(skuDetailsBundleBuilder.skus(anyListOf(String::class.java), anyString())).thenReturn(skuDetailsBundleBuilder)
-        `when`(skuDetailsBundleBuilder.build()).thenReturn(expected)
-        `when`(buyIntentBundleBuilder.newBuilder()).thenReturn(buyIntentBundleBuilder)
-        `when`(buyIntentBundleBuilder.developerPayload(anyString())).thenReturn(buyIntentBundleBuilder)
-        `when`(buyIntentBundleBuilder.packageName(anyString())).thenReturn(buyIntentBundleBuilder)
-        `when`(buyIntentBundleBuilder.sku(anyString())).thenReturn(buyIntentBundleBuilder)
-        `when`(buyIntentBundleBuilder.type(anyString())).thenReturn(buyIntentBundleBuilder)
-        `when`(buyIntentBundleBuilder.build()).thenReturn(expected)
-        `when`(purchasesBundleBuilder.newBuilder()).thenReturn(purchasesBundleBuilder)
-        `when`(purchasesBundleBuilder.type(anyString())).thenReturn(purchasesBundleBuilder)
-        `when`(purchasesBundleBuilder.continuationToken(anyString())).thenReturn(purchasesBundleBuilder)
-        `when`(purchasesBundleBuilder.build()).thenReturn(expected)
+        whenever(skuDetailsBundleBuilder.newBuilder()).thenReturn(skuDetailsBundleBuilder)
+        whenever(skuDetailsBundleBuilder.skus(anyListOf(String::class.java), anyString())).thenReturn(skuDetailsBundleBuilder)
+        whenever(skuDetailsBundleBuilder.build()).thenReturn(expected)
+        whenever(buyIntentBundleBuilder.newBuilder()).thenReturn(buyIntentBundleBuilder)
+        whenever(buyIntentBundleBuilder.developerPayload(anyString())).thenReturn(buyIntentBundleBuilder)
+        whenever(buyIntentBundleBuilder.packageName(anyString())).thenReturn(buyIntentBundleBuilder)
+        whenever(buyIntentBundleBuilder.sku(anyString())).thenReturn(buyIntentBundleBuilder)
+        whenever(buyIntentBundleBuilder.type(anyString())).thenReturn(buyIntentBundleBuilder)
+        whenever(buyIntentBundleBuilder.build()).thenReturn(expected)
+        whenever(purchasesBundleBuilder.newBuilder()).thenReturn(purchasesBundleBuilder)
+        whenever(purchasesBundleBuilder.type(anyString())).thenReturn(purchasesBundleBuilder)
+        whenever(purchasesBundleBuilder.continuationToken(anyString())).thenReturn(purchasesBundleBuilder)
+        whenever(purchasesBundleBuilder.build()).thenReturn(expected)
         val consumePurchaseResponse = ConsumePurchaseResponse(apiOverrides, purchases)
         testObject = BillingServiceStubImpl(apiOverrides, buyIntentBundleBuilder, skuDetailsBundleBuilder,
                 purchasesBundleBuilder, consumePurchaseResponse, buyIntentToReplaceSkusBundleBuilder)
@@ -76,19 +67,19 @@ class ConsumePurchaseResponseTest {
 
     @Test
     fun testConsumePurchaseIAP() {
-        val testPurchases = ImmutableList.of("purchase1", "purchase2")
-        val subscriptions = ImmutableList.of("subscription1", "subscription2")
+        val testPurchases = mutableListOf("purchase1", "purchase2")
+        val subscriptions = mutableListOf("subscription1", "subscription2")
         val getPurchasesBundle = Bundle()
         getPurchasesBundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST, ArrayList(testPurchases))
-        `when`(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null)).thenReturn(inAppPurchasesLists)
-        `when`(inAppPurchasesLists.purchaseDataList).thenReturn(testPurchases)
-        `when`(purchases.removePurchase("purchase1", GoogleUtil.BILLING_TYPE_IAP)).thenReturn(true)
+        whenever(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null)).thenReturn(inAppPurchasesLists)
+        whenever(inAppPurchasesLists.purchaseDataList).thenReturn(testPurchases)
+        whenever(purchases.removePurchase("purchase1", GoogleUtil.BILLING_TYPE_IAP)).thenReturn(true)
 
-        `when`(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null))
+        whenever(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null))
                 .thenReturn(subscriptionsPurchasesLists)
-        `when`(subscriptionsPurchasesLists.purchaseDataList).thenReturn(subscriptions)
+        whenever(subscriptionsPurchasesLists.purchaseDataList).thenReturn(subscriptions)
 
-        `when`(purchasesBundleBuilder.build()).thenReturn(getPurchasesBundle)
+        whenever(purchasesBundleBuilder.build()).thenReturn(getPurchasesBundle)
 
         val stored = testObject.getPurchases(API_VERSION, PACKAGE_NAME, type, "token")
         assertThat(stored.getInt(GoogleUtil.RESPONSE_CODE))
@@ -108,14 +99,14 @@ class ConsumePurchaseResponseTest {
         val subscriptions = ImmutableList.of("subscription1", "subscription2")
         val getPurchasesBundle = Bundle()
         getPurchasesBundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST, ArrayList(testPurchases))
-        `when`(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null))
+        whenever(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null))
                 .thenReturn(inAppPurchasesLists)
-        `when`(inAppPurchasesLists.purchaseDataList).thenReturn(testPurchases)
-        `when`(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null))
+        whenever(inAppPurchasesLists.purchaseDataList).thenReturn(testPurchases)
+        whenever(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null))
                 .thenReturn(subscriptionsPurchasesLists)
-        `when`(subscriptionsPurchasesLists.purchaseDataList)
+        whenever(subscriptionsPurchasesLists.purchaseDataList)
                 .thenReturn(subscriptions)
-        `when`(purchasesBundleBuilder.build())
+        whenever(purchasesBundleBuilder.build())
                 .thenReturn(getPurchasesBundle)
 
         val stored = testObject.getPurchases(API_VERSION, PACKAGE_NAME, type, "token")
@@ -137,14 +128,14 @@ class ConsumePurchaseResponseTest {
         val subscriptions = ImmutableList.of("subscription1", "subscription2")
         val getPurchasesBundle = Bundle()
         getPurchasesBundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST, ArrayList(testPurchases))
-        `when`(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null))
+        whenever(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null))
                 .thenReturn(inAppPurchasesLists)
-        `when`(inAppPurchasesLists.purchaseDataList).thenReturn(testPurchases)
-        `when`(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null))
+        whenever(inAppPurchasesLists.purchaseDataList).thenReturn(testPurchases)
+        whenever(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, null))
                 .thenReturn(subscriptionsPurchasesLists)
-        `when`(subscriptionsPurchasesLists.purchaseDataList)
+        whenever(subscriptionsPurchasesLists.purchaseDataList)
                 .thenReturn(subscriptions)
-        `when`(purchasesBundleBuilder.build())
+        whenever(purchasesBundleBuilder.build())
                 .thenReturn(getPurchasesBundle)
 
         val stored = testObject.getPurchases(API_VERSION, PACKAGE_NAME, type, "token")

@@ -3,6 +3,9 @@ package com.nytimes.android.external.register.bundle
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Parcelable
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.APIOverrides
 import com.nytimes.android.external.register.bundle.BuyIntentBundleBuilder.Companion.EX_DEVELOPER_PAYLOAD
 import com.nytimes.android.external.register.bundle.BuyIntentBundleBuilder.Companion.EX_ITEM_TYPE
@@ -13,34 +16,26 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
-import org.mockito.MockitoAnnotations
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.shadow.api.Shadow
 import org.robolectric.shadows.ShadowPendingIntent
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class BuyIntentBundleBuilderTest {
 
-    @Mock
     private lateinit var testObject: BuyIntentBundleBuilder
 
-    @Mock
-    private lateinit var apiOverrides: APIOverrides
+    private val apiOverrides: APIOverrides = mock()
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
-
         testObject = BuyIntentBundleBuilder(RuntimeEnvironment.application, apiOverrides)
     }
 
     @Test
     fun testBundleOK() {
-        `when`(apiOverrides.getBuyIntentResponse).thenReturn(GoogleUtil.RESULT_OK)
+        whenever(apiOverrides.getBuyIntentResponse).thenReturn(GoogleUtil.RESULT_OK)
 
         val bundle = testObject.newBuilder()
                 .packageName(PACKAGE_NAME)
@@ -65,7 +60,7 @@ class BuyIntentBundleBuilderTest {
 
     @Test
     fun testBundleNotOK() {
-        `when`(apiOverrides.getBuyIntentResponse).thenReturn(GoogleUtil.RESULT_ERROR)
+        whenever(apiOverrides.getBuyIntentResponse).thenReturn(GoogleUtil.RESULT_ERROR)
 
         val bundle = testObject.newBuilder()
                 .packageName(PACKAGE_NAME)

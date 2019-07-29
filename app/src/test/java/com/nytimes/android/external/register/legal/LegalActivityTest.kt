@@ -1,9 +1,9 @@
 package com.nytimes.android.external.register.legal
 
-import android.support.v7.widget.RecyclerView
 import android.view.MenuItem
 import android.view.View
-import com.nytimes.android.external.register.BuildConfig
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nytimes.android.external.register.R
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -13,14 +13,12 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.Robolectric
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.shadow.api.Shadow
 import org.robolectric.shadows.ShadowActivity
 
-@RunWith(RobolectricTestRunner::class)
-@org.robolectric.annotation.Config(constants = BuildConfig::class, sdk = [21])
+@RunWith(AndroidJUnit4::class)
 class LegalActivityTest {
 
     private lateinit var testObject: LegalActivity

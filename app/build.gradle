@@ -15,7 +15,7 @@ android {
         targetSdkVersion versions.targetSdk
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField "String", "GITHUB_BASE_URL", '"https://api.github.com"'
@@ -83,6 +83,10 @@ dependencies {
     testImplementation(libraries.robolectric) {
         exclude module: 'guava'
     }
+    testCompile libraries.test
+    testCompile libraries.testRules
+    testImplementation libraries.testRunner
+    testImplementation libraries.testExt
     testImplementation libraries.javaxInject
     testImplementation group: 'org.skyscreamer', name: 'jsonassert', version: '1.2.3'
 }

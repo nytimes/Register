@@ -15,6 +15,7 @@ allprojects {
             url 'https://dl.google.com/dl/android/maven2/'
         }
         jcenter()
+        google()
     }
 }
 
@@ -48,16 +49,16 @@ ext.versions = [
         mockito              : '2.27.0',
         mockitoKotlin        : '2.1.0',
         mockitoAndroid       : '2.27.0',
-        robolectric          : '3.4.2',
+        robolectric          : '4.3',
         espresso             : '2.2.2'
 ]
 
 ext.libraries = [
         // UI libs.
-        supportAppCompat        : "com.android.support:appcompat-v7:$versions.supportLibs",
-        supportDesign           : "com.android.support:design:$versions.supportLibs",
-        supportCardView         : "com.android.support:cardview-v7:$versions.supportLibs",
-        constraint              : "com.android.support.constraint:constraint-layout:$versions.constraint",
+        supportAppCompat        : "androidx.appcompat:appcompat:1.0.0",
+        supportDesign           : "com.google.android.material:material:1.0.0-rc01",
+        supportCardView         : "androidx.cardview:cardview:1.0.0",
+        constraint              : "androidx.constraintlayout:constraintlayout:1.1.2",
         butterKnife             : "com.jakewharton:butterknife:$versions.butterKnife",
         butterKnifeCompiler     : "com.jakewharton:butterknife-compiler:$versions.butterKnife",
         swipeLayout             : "com.daimajia.swipelayout:library:$versions.swipeLayout",
@@ -67,7 +68,7 @@ ext.libraries = [
         daggerCompiler          : "com.google.dagger:dagger-compiler:$versions.dagger",
         gson                    : "com.google.code.gson:gson:$versions.gson",
         guava                   : "com.google.guava:guava:$versions.guava",
-        supportAnnotations      : "com.android.support:support-annotations:$versions.supportLibs",
+        supportAnnotations      : "androidx.annotation:annotation:1.0.0",
         javaxInject             : "javax.inject:javax.inject:$versions.javaxInject",
         rxJava                  : "io.reactivex.rxjava2:rxjava:$versions.rxJava",
         rxAndroid               : "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid",
@@ -86,5 +87,9 @@ ext.libraries = [
         mockitoKotlin           : "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.mockitoKotlin",
         mockitoAndroid          : "org.mockito:mockito-android:$versions.mockitoAndroid",
         robolectric             : "org.robolectric:robolectric:$versions.robolectric",
-        espresso                : "com.android.support.test.espresso:espresso-core:$versions.espresso",
+        espresso                : "androidx.test.espresso:espresso-core:3.1.0",
+        test                    : "androidx.test:core:1.0.0",
+        testRules               : "androidx.test:rules:1.1.0",
+        testRunner              : "androidx.test:runner:1.2.0",
+        testExt                 : "androidx.test.ext:junit:1.1.1"
 ]

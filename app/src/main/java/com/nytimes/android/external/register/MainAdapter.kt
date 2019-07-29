@@ -1,11 +1,11 @@
 package com.nytimes.android.external.register
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.text.format.DateUtils
 import android.util.Pair
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.nytimes.android.external.registerlib.InAppPurchaseData
 import io.reactivex.subjects.PublishSubject
 
@@ -28,13 +28,13 @@ class MainAdapter(context: Context) : RecyclerView.Adapter<MainViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
-        return with(inflater.inflate(R.layout.item_main, parent, false)){
+        return with(inflater.inflate(R.layout.item_main, parent, false)) {
             MainViewHolder(this)
         }
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        with(items[position]){
+        with(items[position]) {
             holder.productTitle.text = second.purchaseToken()
             holder.productTypeView.text = second.productId()
             holder.purchaseDateView.text = getTimeLapsed(second.purchaseTime())

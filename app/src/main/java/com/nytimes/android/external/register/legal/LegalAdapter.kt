@@ -1,8 +1,8 @@
 package com.nytimes.android.external.register.legal
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.nytimes.android.external.register.R
 import java.util.*
 

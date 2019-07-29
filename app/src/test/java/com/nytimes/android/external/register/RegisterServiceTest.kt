@@ -1,17 +1,16 @@
 package com.nytimes.android.external.register
 
 import android.content.Intent
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.robolectric.Robolectric
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ServiceController
 
-@RunWith(RobolectricTestRunner::class)
-@org.robolectric.annotation.Config(constants = BuildConfig::class, sdk = [21])
+@RunWith(AndroidJUnit4::class)
 class RegisterServiceTest {
 
     private lateinit var testObject: RegisterService
