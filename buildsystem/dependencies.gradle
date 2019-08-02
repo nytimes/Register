@@ -34,7 +34,7 @@ ext.versions = [
         // Others.
         dagger               : '2.9',
         gson                 : '2.6.2',
-        guava                : '19.0',
+        guava                : '28.0-android',
         javaxInject          : '1',
         rxJava               : '2.1.0',
         rxAndroid            : '2.0.1',

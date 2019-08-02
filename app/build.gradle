@@ -83,8 +83,8 @@ dependencies {
     testImplementation(libraries.robolectric) {
         exclude module: 'guava'
     }
-    testCompile libraries.test
-    testCompile libraries.testRules
+    testImplementation libraries.test
+    testImplementation libraries.testRules
     testImplementation libraries.testRunner
     testImplementation libraries.testExt
     testImplementation libraries.javaxInject

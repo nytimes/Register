@@ -13,12 +13,13 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
 import org.robolectric.Robolectric
+import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.shadow.api.Shadow
 import org.robolectric.shadows.ShadowActivity
 
-@RunWith(AndroidJUnit4::class)
+@RunWith(RobolectricTestRunner::class)
 class LegalActivityTest {
 
     private lateinit var testObject: LegalActivity

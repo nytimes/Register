@@ -1,6 +1,7 @@
 package com.nytimes.android.external.register.bundle
 
 import android.os.Bundle
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.collect.ImmutableList
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
@@ -15,10 +16,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Matchers.anyListOf
 import org.mockito.Matchers.anyString
-import org.robolectric.RobolectricTestRunner
 import java.util.*
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class ConsumePurchaseResponseTest {
 
     private val apiOverrides: APIOverrides = mock()
@@ -45,8 +45,6 @@ class ConsumePurchaseResponseTest {
 
     @Before
     fun setUp() {
-//        MockitoAnnotations.initMocks(this)
-
         whenever(skuDetailsBundleBuilder.newBuilder()).thenReturn(skuDetailsBundleBuilder)
         whenever(skuDetailsBundleBuilder.skus(anyListOf(String::class.java), anyString())).thenReturn(skuDetailsBundleBuilder)
         whenever(skuDetailsBundleBuilder.build()).thenReturn(expected)
