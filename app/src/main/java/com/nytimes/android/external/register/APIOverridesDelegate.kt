@@ -1,6 +1,6 @@
 package com.nytimes.android.external.register
 
-import android.support.annotation.IdRes
+import androidx.annotation.IdRes
 
 import javax.inject.Inject
 import javax.inject.Singleton

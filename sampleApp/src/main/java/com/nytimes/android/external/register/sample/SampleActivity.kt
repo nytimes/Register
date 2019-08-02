@@ -46,7 +46,7 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
     private lateinit var googleServiceProvider: GoogleServiceProvider
     private var compositeDisposable = CompositeDisposable()
 
-    private var purchasesUpdatedListener = PurchasesUpdatedListener { responseCode, purchases -> checkPurchasesAndSkuDetails() }
+    private var purchasesUpdatedListener = PurchasesUpdatedListener { _, _ -> checkPurchasesAndSkuDetails() }
 
     private var billingClientStateListener: BillingClientStateListener = object : BillingClientStateListener {
         override fun onBillingSetupFinished(responseCode: Int) {
@@ -103,8 +103,8 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
                         GoogleUtil.BILLING_TYPE_IAP, GoogleUtil.BILLING_TYPE_SUBSCRIPTION)
                 val purchases = ArrayList<Purchase>()
                 for (type in types) {
-                    val result = googleServiceProvider?.queryPurchases(type)
-                    if (result?.responseCode == BillingClient.BillingResponse.OK) {
+                    val result = googleServiceProvider.queryPurchases(type)
+                    if (result.responseCode == BillingClient.BillingResponse.OK) {
                         purchases.addAll(result.purchasesList)
                     }
                 }

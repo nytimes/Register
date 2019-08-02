@@ -72,8 +72,6 @@ dependencies {
     implementation libraries.retrofitAdapter
 
     implementation libraries.guava
-    implementation libraries.butterKnife
-    annotationProcessor libraries.butterKnifeCompiler
 
     testImplementation libraries.mockito
     testImplementation libraries.mockitoInline

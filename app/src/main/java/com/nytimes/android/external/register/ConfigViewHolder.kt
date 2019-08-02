@@ -1,11 +1,11 @@
 package com.nytimes.android.external.register
 
 import android.content.Context
-import android.support.annotation.ColorInt
-import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 
 internal class ConfigViewHolder(val itemView: View) {
 

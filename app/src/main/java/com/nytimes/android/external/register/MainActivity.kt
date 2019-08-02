@@ -2,9 +2,6 @@ package com.nytimes.android.external.register
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.ArrayRes
-import android.support.annotation.IdRes
-import android.support.annotation.StringRes
 import android.util.Pair
 import android.view.Menu
 import android.view.MenuItem
@@ -12,6 +9,9 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.annotation.ArrayRes
+import androidx.annotation.IdRes
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration

@@ -3,10 +3,10 @@ package com.nytimes.android.external.register
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.VisibleForTesting
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import com.google.common.base.Optional
 import com.google.common.collect.ImmutableList

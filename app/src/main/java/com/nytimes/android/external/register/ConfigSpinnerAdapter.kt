@@ -1,11 +1,11 @@
 package com.nytimes.android.external.register
 
 import android.content.Context
-import android.support.annotation.IntDef
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.annotation.IntDef
 import java.util.*
 
 class ConfigSpinnerAdapter(context: Context, items: List<ConfigResponse>) : BaseAdapter() {
@@ -49,7 +49,7 @@ class ConfigSpinnerAdapter(context: Context, items: List<ConfigResponse>) : Base
     }
 
     @Retention(AnnotationRetention.SOURCE)
-    @IntDef(MODE_SPINNER.toLong(), MODE_DROP_DOWN.toLong())
+    @IntDef(MODE_SPINNER, MODE_DROP_DOWN)
     internal annotation class ViewMode
 
     companion object {

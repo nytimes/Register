@@ -1,8 +1,8 @@
 package com.nytimes.android.external.register
 
 import android.content.SharedPreferences
-import android.support.annotation.VisibleForTesting
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import com.google.common.collect.Collections2
 import com.google.common.collect.ImmutableSet
 import com.nytimes.android.external.registerlib.GoogleUtil.BILLING_TYPE_IAP
