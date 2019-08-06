@@ -38,6 +38,7 @@ ext.versions = [
         rxJava               : '2.1.0',
         rxAndroid            : '2.0.1',
         retrofit             : '2.3.0',
+        billing              : '1.1',
 
         // Kotlin.
         kotlin               : '1.3.21',
@@ -72,6 +73,7 @@ ext.libraries = [
         retrofit                : "com.squareup.retrofit2:retrofit:$versions.retrofit",
         retrofitConverter       : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
         retrofitAdapter         : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
+        billing                 : "com.android.billingclient:billing:$versions.billing",
 
         // Kotlin.
         kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",

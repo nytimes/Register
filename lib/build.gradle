@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.billingclient:billing:1.1'
+    implementation libraries.billing
     implementation libraries.kotlin
 
     testImplementation libraries.junit
