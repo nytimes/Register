@@ -1,7 +1,10 @@
 package com.nytimes.android.external.register
 
 import android.content.Context
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.collect.ImmutableSet
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.APIOverrides.Companion.PREF_NAME
 import com.nytimes.android.external.registerlib.GoogleUtil
 import com.nytimes.android.external.registerlib.InAppPurchaseData
@@ -10,17 +13,12 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Matchers.anyString
-import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class PurchasesTest {
-
-    @Mock
-    private lateinit var signer: Signer
+    
+    private val signer: Signer = mock()
 
     private lateinit var testObject: Purchases
     private lateinit var inAppPurchaseData1: InAppPurchaseData
@@ -32,8 +30,6 @@ class PurchasesTest {
     @Before
     @Throws(Exception::class)
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
-
         val sharedPreferences = RuntimeEnvironment.application
                 .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
@@ -62,7 +58,7 @@ class PurchasesTest {
 
         testObject = Purchases(sharedPreferences, signer)
 
-        `when`(signer.signData(anyString())).thenReturn("signedData")
+        whenever(signer.signData(anyString())).thenReturn("signedData")
     }
 
     @Test

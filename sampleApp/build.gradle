@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 repositories {
     mavenCentral()
@@ -14,7 +14,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     compileOptions {
@@ -31,37 +31,31 @@ android {
 
 dependencies {
     implementation project(':lib')
-
-    implementation 'com.android.billingclient:billing:1.1'
-
+    implementation libraries.billing
     implementation libraries.kotlin
 
-    compile libraries.dagger
+    implementation libraries.dagger
     annotationProcessor libraries.daggerCompiler
+
+    implementation libraries.supportAppCompat
+    implementation libraries.constraint
+    implementation libraries.supportDesign
+    implementation libraries.supportCardView
+    implementation libraries.rxAndroid
+    implementation libraries.rxJava
+    implementation libraries.guava
+
     testAnnotationProcessor libraries.daggerCompiler
-    androidTestAnnotationProcessor libraries.daggerCompiler
-
-
-    androidTestCompile(libraries.espresso, {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile libraries.supportAppCompat
-    testCompile libraries.junit
-    compile libraries.constraint
-    compile libraries.supportDesign
-    compile libraries.supportCardView
-    compile libraries.butterKnife
-    annotationProcessor libraries.butterKnifeCompiler
-    compile libraries.rxAndroid
-    compile libraries.rxJava
-    compile libraries.guava
-
-    testCompile libraries.mockito
-    testCompile libraries.assertJ
-    testCompile libraries.junit
-    testCompile(libraries.robolectric) {
+    testImplementation libraries.junit
+    testImplementation libraries.mockito
+    testImplementation libraries.assertJ
+    testImplementation libraries.junit
+    testImplementation(libraries.robolectric) {
         exclude module: 'guava'
     }
+
+    androidTestAnnotationProcessor libraries.daggerCompiler
+    androidTestImplementation libraries.espresso
 }
 
 apply from: rootProject.file("gradle/checkstyle.gradle")

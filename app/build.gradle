@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply from: rootProject.file("configuration/register.gradle")
 
@@ -15,7 +15,7 @@ android {
         targetSdkVersion versions.targetSdk
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField "String", "GITHUB_BASE_URL", '"https://api.github.com"'
@@ -72,8 +72,6 @@ dependencies {
     implementation libraries.retrofitAdapter
 
     implementation libraries.guava
-    implementation libraries.butterKnife
-    annotationProcessor libraries.butterKnifeCompiler
 
     testImplementation libraries.mockito
     testImplementation libraries.mockitoInline
@@ -83,6 +81,10 @@ dependencies {
     testImplementation(libraries.robolectric) {
         exclude module: 'guava'
     }
+    testImplementation libraries.test
+    testImplementation libraries.testRules
+    testImplementation libraries.testRunner
+    testImplementation libraries.testExt
     testImplementation libraries.javaxInject
     testImplementation group: 'org.skyscreamer', name: 'jsonassert', version: '1.2.3'
 }

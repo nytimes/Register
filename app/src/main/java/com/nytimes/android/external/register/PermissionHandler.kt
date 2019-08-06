@@ -3,9 +3,9 @@ package com.nytimes.android.external.register
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.app.Activity
 import android.content.Context
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.PermissionChecker
-import android.support.v4.content.PermissionChecker.PERMISSION_GRANTED
+import androidx.core.app.ActivityCompat
+import androidx.core.content.PermissionChecker
+import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
 
 class PermissionHandler {
 

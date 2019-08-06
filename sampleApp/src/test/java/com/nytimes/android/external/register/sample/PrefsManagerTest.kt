@@ -14,7 +14,7 @@ import org.robolectric.annotation.Config
 @Config(manifest = Config.NONE)
 class PrefsManagerTest {
 
-    private var testObject: PrefsManager? = null
+    private lateinit var testObject: PrefsManager
 
     @Before
     @Throws(Exception::class)
@@ -27,8 +27,8 @@ class PrefsManagerTest {
     @Test
     @Throws(Exception::class)
     fun testSetAndGet() {
-        assertThat(testObject!!.isUsingTestGoogleServiceProvider).isFalse()
-        testObject!!.setUsingGoogleServiceProvider(true)
-        assertThat(testObject!!.isUsingTestGoogleServiceProvider).isTrue()
+        assertThat(testObject.isUsingTestGoogleServiceProvider).isFalse()
+        testObject.setUsingGoogleServiceProvider(true)
+        assertThat(testObject.isUsingTestGoogleServiceProvider).isTrue()
     }
 }

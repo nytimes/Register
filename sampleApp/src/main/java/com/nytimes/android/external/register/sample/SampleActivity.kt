@@ -4,17 +4,17 @@ import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.design.widget.AppBarLayout
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
+import com.google.android.material.appbar.AppBarLayout
+import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.widget.Toolbar
 import android.util.Log
 import android.util.Pair
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.Switch
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.android.billingclient.api.*
 import com.google.common.collect.ImmutableList
 import com.nytimes.android.external.registerlib.GoogleServiceProvider
@@ -46,7 +46,7 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
     private lateinit var googleServiceProvider: GoogleServiceProvider
     private var compositeDisposable = CompositeDisposable()
 
-    private var purchasesUpdatedListener = PurchasesUpdatedListener { responseCode, purchases -> checkPurchasesAndSkuDetails() }
+    private var purchasesUpdatedListener = PurchasesUpdatedListener { _, _ -> checkPurchasesAndSkuDetails() }
 
     private var billingClientStateListener: BillingClientStateListener = object : BillingClientStateListener {
         override fun onBillingSetupFinished(responseCode: Int) {
@@ -103,8 +103,8 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
                         GoogleUtil.BILLING_TYPE_IAP, GoogleUtil.BILLING_TYPE_SUBSCRIPTION)
                 val purchases = ArrayList<Purchase>()
                 for (type in types) {
-                    val result = googleServiceProvider?.queryPurchases(type)
-                    if (result?.responseCode == BillingClient.BillingResponse.OK) {
+                    val result = googleServiceProvider.queryPurchases(type)
+                    if (result.responseCode == BillingClient.BillingResponse.OK) {
                         purchases.addAll(result.purchasesList)
                     }
                 }

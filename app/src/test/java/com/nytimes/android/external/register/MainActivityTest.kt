@@ -1,13 +1,16 @@
 package com.nytimes.android.external.register
 
-import android.support.v7.widget.RecyclerView
 import android.view.MenuItem
 import android.view.View
 import android.widget.Adapter
 import android.widget.AdapterView
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.base.Optional
 import com.google.common.collect.ImmutableSet
 import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.APIOverrides.Companion.RESULT_DEFAULT
 import com.nytimes.android.external.register.BuyActivity.Companion.RECEIPT_FMT
 import com.nytimes.android.external.register.model.Config
@@ -18,11 +21,10 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Matchers.eq
-import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.robolectric.Robolectric
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.shadow.api.Shadow
@@ -30,20 +32,16 @@ import org.robolectric.shadows.ShadowActivity
 import org.robolectric.shadows.ShadowLooper
 import java.util.*
 
-@RunWith(RobolectricTestRunner::class)
-@org.robolectric.annotation.Config(constants = BuildConfig::class, sdk = [21])
+@RunWith(AndroidJUnit4::class)
 class MainActivityTest {
 
     private lateinit var testObject: MainActivity
     private lateinit var controller: ActivityController<*>
     private lateinit var shadowMain: ShadowActivity
 
-    @Mock
-    private lateinit var purchases: Purchases
-    @Mock
-    private lateinit var mockApiDelegate: APIOverridesDelegate
-    @Mock
-    private lateinit var config: Config
+    private val purchases: Purchases = mock()
+    private val mockApiDelegate: APIOverridesDelegate = mock()
+    private val config: Config = mock()
 
     private val inAppPurchaseData1 = InAppPurchaseData.Builder()
             .orderId(java.lang.Long.toString(CURRENT_TIME_MS))
@@ -65,7 +63,7 @@ class MainActivityTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        controller = Robolectric.buildActivity(MainActivityTest.TestMainActivity::class.java).create()
+        controller = Robolectric.buildActivity(TestMainActivity::class.java).create()
         testObject = controller.get() as MainActivity
         testObject.apiDelegate = mockApiDelegate
         testObject.purchases = purchases
@@ -76,9 +74,9 @@ class MainActivityTest {
     @Test
     fun updatePurchases_whenHas_showsItems() {
         // Setup
-        `when`(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
+        whenever(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
                 .thenReturn(ImmutableSet.of(inAppPurchaseData1))  // init
-        `when`(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
+        whenever(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
                 .thenReturn(ImmutableSet.of(inAppPurchaseData2))  // init
 
         val list = testObject.findViewById<View>(R.id.list) as RecyclerView
@@ -86,16 +84,16 @@ class MainActivityTest {
 
         // Verify empty
         controller.start().postResume()
-        assertThat(list.adapter.itemCount).isEqualTo(2)
+        assertThat(list.adapter?.itemCount).isEqualTo(2)
         assertThat(emptyView.visibility).isEqualTo(View.GONE)
     }
 
     @Test
     fun updatePurchases_whenNone_showsEmpty() {
         // Setup
-        `when`(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
+        whenever(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
                 .thenReturn(ImmutableSet.of())  // init
-        `when`(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
+        whenever(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
                 .thenReturn(ImmutableSet.of())   // init
 
         val list = testObject.findViewById<View>(R.id.list) as RecyclerView
@@ -103,63 +101,63 @@ class MainActivityTest {
 
         // Verify empty
         controller.start().postResume()
-        assertThat(list.adapter.itemCount).isEqualTo(0)
+        assertThat(list.adapter?.itemCount).isEqualTo(0)
         assertThat(emptyView.visibility).isEqualTo(View.VISIBLE)
     }
 
     @Test
     fun onMenuClick_whenDeleteAll_showsNoItems() {
         // Setup
-        `when`(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
+        whenever(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
                 .thenReturn(ImmutableSet.of(inAppPurchaseData1)) // Initial
                 .thenReturn(ImmutableSet.of()) // After purge
 
         val item = mock(MenuItem::class.java)
-        `when`(item.itemId).thenReturn(R.id.menu_action_delete_all)
+        whenever(item.itemId).thenReturn(R.id.menu_action_delete_all)
 
         val list = testObject.findViewById<View>(R.id.list) as RecyclerView
 
         // Start and make sure we have 1 IAP
         controller.start().postResume()
-        assertThat(list.adapter.itemCount).isEqualTo(1)
+        assertThat(list.adapter?.itemCount).isEqualTo(1)
 
         // Purge and make sure we are empty
         testObject.onOptionsItemSelected(item)
         verify(purchases).purgePurchases()
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
-        assertThat(list.adapter.itemCount).isEqualTo(0)
+        assertThat(list.adapter?.itemCount).isEqualTo(0)
     }
 
     @Test
     fun onMenuClick_whenRefresh_refreshContent() {
         // Setup
-        `when`(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
+        whenever(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
                 .thenReturn(ImmutableSet.of())   // init
                 .thenReturn(ImmutableSet.of(inAppPurchaseData1))   // after refresh
-        `when`(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
+        whenever(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
                 .thenReturn(ImmutableSet.of())   // init
                 .thenReturn(ImmutableSet.of(inAppPurchaseData2))   // after refresh
 
         val item = mock(MenuItem::class.java)
-        `when`(item.itemId).thenReturn(R.id.menu_action_refresh)
+        whenever(item.itemId).thenReturn(R.id.menu_action_refresh)
 
         val list = testObject.findViewById<View>(R.id.list) as RecyclerView
 
         // Verify empty
         controller.start().postResume()
-        assertThat(list.adapter.itemCount).isEqualTo(0)
+        assertThat(list.adapter?.itemCount).isEqualTo(0)
 
         //Refresh
         testObject.onOptionsItemSelected(item)
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
-        assertThat(list.adapter.itemCount).isEqualTo(2)
+        assertThat(list.adapter?.itemCount).isEqualTo(2)
     }
 
     @Test
     fun onMenuClick_whenSettings_startsSettings() {
         // Setup
         val item = mock(MenuItem::class.java)
-        `when`(item.itemId).thenReturn(R.id.menu_action_settings)
+        whenever(item.itemId).thenReturn(R.id.menu_action_settings)
 
         controller.start()
         testObject.onOptionsItemSelected(item)
@@ -172,12 +170,12 @@ class MainActivityTest {
 
     @Test
     fun onCreate_whenDefaultValues_showsDefaultValues() {
-        `when`(mockApiDelegate.getApiOverridesValue(R.id.isBillingSupported)).thenReturn(RESULT_DEFAULT)
-        `when`(mockApiDelegate.getApiOverridesValue(R.id.getBuyIntent)).thenReturn(RESULT_DEFAULT)
-        `when`(mockApiDelegate.getApiOverridesValue(R.id.buy)).thenReturn(RESULT_DEFAULT)
-        `when`(mockApiDelegate.getApiOverridesValue(R.id.getPurchases)).thenReturn(RESULT_DEFAULT)
-        `when`(mockApiDelegate.getApiOverridesValue(R.id.getSkuDetails)).thenReturn(RESULT_DEFAULT)
-        `when`(mockApiDelegate.getApiOverridesValue(R.id.getBuyIntentToReplaceSkus)).thenReturn(RESULT_DEFAULT)
+        whenever(mockApiDelegate.getApiOverridesValue(R.id.isBillingSupported)).thenReturn(RESULT_DEFAULT)
+        whenever(mockApiDelegate.getApiOverridesValue(R.id.getBuyIntent)).thenReturn(RESULT_DEFAULT)
+        whenever(mockApiDelegate.getApiOverridesValue(R.id.buy)).thenReturn(RESULT_DEFAULT)
+        whenever(mockApiDelegate.getApiOverridesValue(R.id.getPurchases)).thenReturn(RESULT_DEFAULT)
+        whenever(mockApiDelegate.getApiOverridesValue(R.id.getSkuDetails)).thenReturn(RESULT_DEFAULT)
+        whenever(mockApiDelegate.getApiOverridesValue(R.id.getBuyIntentToReplaceSkus)).thenReturn(RESULT_DEFAULT)
 
         controller.postCreate(null).start()
 
@@ -191,13 +189,13 @@ class MainActivityTest {
 
     @Test
     fun onCreate_whenUniqueValues_showsUniqueValues() {
-        `when`(mockApiDelegate.getApiOverridesValue(R.id.isBillingSupported))
+        whenever(mockApiDelegate.getApiOverridesValue(R.id.isBillingSupported))
                 .thenReturn(GoogleUtil.RESULT_BILLING_UNAVAILABLE)
-        `when`(mockApiDelegate.getApiOverridesValue(R.id.getBuyIntent)).thenReturn(GoogleUtil.RESULT_OK)
-        `when`(mockApiDelegate.getApiOverridesValue(R.id.buy)).thenReturn(GoogleUtil.RESULT_ITEM_UNAVAILABLE)
-        `when`(mockApiDelegate.getApiOverridesValue(R.id.getPurchases)).thenReturn(GoogleUtil.RESULT_DEVELOPER_ERROR)
-        `when`(mockApiDelegate.getApiOverridesValue(R.id.getSkuDetails)).thenReturn(GoogleUtil.RESULT_ERROR)
-        `when`(mockApiDelegate.getApiOverridesValue(R.id.getBuyIntentToReplaceSkus))
+        whenever(mockApiDelegate.getApiOverridesValue(R.id.getBuyIntent)).thenReturn(GoogleUtil.RESULT_OK)
+        whenever(mockApiDelegate.getApiOverridesValue(R.id.buy)).thenReturn(GoogleUtil.RESULT_ITEM_UNAVAILABLE)
+        whenever(mockApiDelegate.getApiOverridesValue(R.id.getPurchases)).thenReturn(GoogleUtil.RESULT_DEVELOPER_ERROR)
+        whenever(mockApiDelegate.getApiOverridesValue(R.id.getSkuDetails)).thenReturn(GoogleUtil.RESULT_ERROR)
+        whenever(mockApiDelegate.getApiOverridesValue(R.id.getBuyIntentToReplaceSkus))
                 .thenReturn(GoogleUtil.RESULT_ITEM_NOT_OWNED)
 
         controller.postCreate(null).start()

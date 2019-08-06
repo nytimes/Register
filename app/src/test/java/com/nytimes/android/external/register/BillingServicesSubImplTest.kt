@@ -2,7 +2,10 @@ package com.nytimes.android.external.register
 
 import android.os.Bundle
 import android.os.RemoteException
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.collect.ImmutableList
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.APIOverrides.Companion.RESULT_DEFAULT
 import com.nytimes.android.external.register.bundle.*
 import com.nytimes.android.external.registerlib.GoogleUtil
@@ -12,30 +15,22 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Matchers.anyListOf
 import org.mockito.Matchers.anyString
-import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
-import org.robolectric.RobolectricTestRunner
 import java.util.*
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class BillingServicesSubImplTest {
 
-    @Mock
-    private lateinit var apiOverrides: APIOverrides
+    private val apiOverrides: APIOverrides = mock()
 
-    @Mock
-    private lateinit var buyIntentBundleBuilder: BuyIntentBundleBuilder
+    private val buyIntentBundleBuilder: BuyIntentBundleBuilder = mock()
 
-    @Mock
-    private lateinit var skuDetailsBundleBuilder: SkuDetailsBundleBuilder
+    private val skuDetailsBundleBuilder: SkuDetailsBundleBuilder = mock()
 
-    @Mock
-    private lateinit var purchasesBundleBuilder: PurchasesBundleBuilder
+    private val purchasesBundleBuilder: PurchasesBundleBuilder = mock()
 
-    @Mock
-    private lateinit var buyIntentToReplaceSkusBundleBuilder: BuyIntentToReplaceSkusBundleBuilder
+    private val buyIntentToReplaceSkusBundleBuilder: BuyIntentToReplaceSkusBundleBuilder = mock()
 
     private lateinit var testObject: BillingServiceStubImpl
 
@@ -46,29 +41,29 @@ class BillingServicesSubImplTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        `when`(skuDetailsBundleBuilder.newBuilder()).thenReturn(skuDetailsBundleBuilder)
-        `when`(skuDetailsBundleBuilder.skus(anyListOf(String::class.java), anyString())).thenReturn(skuDetailsBundleBuilder)
-        `when`(skuDetailsBundleBuilder.build()).thenReturn(expected)
-        `when`(buyIntentBundleBuilder.newBuilder()).thenReturn(buyIntentBundleBuilder)
-        `when`(buyIntentBundleBuilder.developerPayload(anyString())).thenReturn(buyIntentBundleBuilder)
-        `when`(buyIntentBundleBuilder.packageName(anyString())).thenReturn(buyIntentBundleBuilder)
-        `when`(buyIntentBundleBuilder.sku(anyString())).thenReturn(buyIntentBundleBuilder)
-        `when`(buyIntentBundleBuilder.type(anyString())).thenReturn(buyIntentBundleBuilder)
-        `when`(buyIntentBundleBuilder.build()).thenReturn(expected)
-        `when`(purchasesBundleBuilder.newBuilder()).thenReturn(purchasesBundleBuilder)
-        `when`(purchasesBundleBuilder.type(anyString())).thenReturn(purchasesBundleBuilder)
-        `when`(purchasesBundleBuilder.continuationToken(anyString())).thenReturn(purchasesBundleBuilder)
-        `when`(purchasesBundleBuilder.build()).thenReturn(expected)
-        `when`(buyIntentToReplaceSkusBundleBuilder.newBuilder()).thenReturn(buyIntentToReplaceSkusBundleBuilder)
-        `when`(buyIntentToReplaceSkusBundleBuilder.developerPayload(anyString()))
+        whenever(skuDetailsBundleBuilder.newBuilder()).thenReturn(skuDetailsBundleBuilder)
+        whenever(skuDetailsBundleBuilder.skus(anyListOf(String::class.java), anyString())).thenReturn(skuDetailsBundleBuilder)
+        whenever(skuDetailsBundleBuilder.build()).thenReturn(expected)
+        whenever(buyIntentBundleBuilder.newBuilder()).thenReturn(buyIntentBundleBuilder)
+        whenever(buyIntentBundleBuilder.developerPayload(anyString())).thenReturn(buyIntentBundleBuilder)
+        whenever(buyIntentBundleBuilder.packageName(anyString())).thenReturn(buyIntentBundleBuilder)
+        whenever(buyIntentBundleBuilder.sku(anyString())).thenReturn(buyIntentBundleBuilder)
+        whenever(buyIntentBundleBuilder.type(anyString())).thenReturn(buyIntentBundleBuilder)
+        whenever(buyIntentBundleBuilder.build()).thenReturn(expected)
+        whenever(purchasesBundleBuilder.newBuilder()).thenReturn(purchasesBundleBuilder)
+        whenever(purchasesBundleBuilder.type(anyString())).thenReturn(purchasesBundleBuilder)
+        whenever(purchasesBundleBuilder.continuationToken(anyString())).thenReturn(purchasesBundleBuilder)
+        whenever(purchasesBundleBuilder.build()).thenReturn(expected)
+        whenever(buyIntentToReplaceSkusBundleBuilder.newBuilder()).thenReturn(buyIntentToReplaceSkusBundleBuilder)
+        whenever(buyIntentToReplaceSkusBundleBuilder.developerPayload(anyString()))
                 .thenReturn(buyIntentToReplaceSkusBundleBuilder)
-        `when`(buyIntentToReplaceSkusBundleBuilder.packageName(anyString()))
+        whenever(buyIntentToReplaceSkusBundleBuilder.packageName(anyString()))
                 .thenReturn(buyIntentToReplaceSkusBundleBuilder)
-        `when`(buyIntentToReplaceSkusBundleBuilder.newSku(anyString())).thenReturn(buyIntentToReplaceSkusBundleBuilder)
-        `when`(buyIntentToReplaceSkusBundleBuilder.oldSkus(anyListOf(String::class.java)))
+        whenever(buyIntentToReplaceSkusBundleBuilder.newSku(anyString())).thenReturn(buyIntentToReplaceSkusBundleBuilder)
+        whenever(buyIntentToReplaceSkusBundleBuilder.oldSkus(anyListOf(String::class.java)))
                 .thenReturn(buyIntentToReplaceSkusBundleBuilder)
-        `when`(buyIntentToReplaceSkusBundleBuilder.type(anyString())).thenReturn(buyIntentToReplaceSkusBundleBuilder)
-        `when`(buyIntentToReplaceSkusBundleBuilder.build()).thenReturn(expected)
+        whenever(buyIntentToReplaceSkusBundleBuilder.type(anyString())).thenReturn(buyIntentToReplaceSkusBundleBuilder)
+        whenever(buyIntentToReplaceSkusBundleBuilder.build()).thenReturn(expected)
 
         testObject = BillingServiceStubImpl(apiOverrides,
                 buyIntentBundleBuilder,
@@ -80,7 +75,7 @@ class BillingServicesSubImplTest {
 
     @Test
     fun testIsBillingSupportedDefault() {
-        `when`(apiOverrides.isBillingSupportedResponse).thenReturn(RESULT_DEFAULT)
+        whenever(apiOverrides.isBillingSupportedResponse).thenReturn(RESULT_DEFAULT)
 
         val actual = testObject.isBillingSupported(API_VERSION, PACKAGE_NAME, type)
 
@@ -90,7 +85,7 @@ class BillingServicesSubImplTest {
     @Test
     fun testIsBillingSupportedNonDefault() {
         val expected = GoogleUtil.RESULT_BILLING_UNAVAILABLE
-        `when`(apiOverrides.isBillingSupportedResponse).thenReturn(expected)
+        whenever(apiOverrides.isBillingSupportedResponse).thenReturn(expected)
 
         val actual = testObject.isBillingSupported(API_VERSION, PACKAGE_NAME, type)
 

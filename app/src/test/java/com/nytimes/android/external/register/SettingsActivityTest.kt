@@ -3,13 +3,16 @@ package com.nytimes.android.external.register
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.annotation.IdRes
-import android.support.annotation.StringRes
 import android.text.format.DateUtils
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.IdRes
+import androidx.annotation.StringRes
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.legal.LegalActivity
 import com.nytimes.android.external.register.model.Repository
 import com.nytimes.android.external.register.support.RepositoryFactory
@@ -18,12 +21,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
-import org.mockito.MockitoAnnotations
 import org.robolectric.Robolectric
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.android.controller.ActivityController
@@ -34,14 +33,10 @@ import org.robolectric.shadows.ShadowPackageManager
 import org.robolectric.shadows.ShadowResolveInfo
 import java.text.NumberFormat
 
-@RunWith(RobolectricTestRunner::class)
-@org.robolectric.annotation.Config(
-        constants = BuildConfig::class,
-        sdk = [21])
+@RunWith(AndroidJUnit4::class)
 class SettingsActivityTest {
-
-    @Mock
-    private lateinit var api: GithubApi
+    
+    private val api: GithubApi = mock()
 
     private lateinit var testObject: SettingsActivity
     private lateinit var controller: ActivityController<*>
@@ -60,8 +55,6 @@ class SettingsActivityTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
-
         shadowPackageManager = shadowOf(RuntimeEnvironment.application.packageManager)
 
         controller = Robolectric.buildActivity(SettingsActivity::class.java).create()
@@ -117,7 +110,7 @@ class SettingsActivityTest {
     @Test
     fun onClickWhenTosOpensTosWeb() {
         val uri = Uri.parse(getStringResource(R.string.url_tos))
-        shadowPackageManager.isQueryIntentImplicitly = true
+//        shadowPackageManager.isQueryIntentImplicitly = true
         shadowPackageManager.addResolveInfoForIntent(Intent(Intent.ACTION_VIEW, uri),
                 ShadowResolveInfo.newResolveInfo("web", "app.web", "web"))
 
@@ -130,7 +123,7 @@ class SettingsActivityTest {
     @Test
     fun onClickWhenPrivOpensPrivWeb() {
         val uri = Uri.parse(getStringResource(R.string.url_priv))
-        shadowPackageManager.isQueryIntentImplicitly = true
+//        shadowPackageManager.isQueryIntentImplicitly = true
         shadowPackageManager.addResolveInfoForIntent(Intent(Intent.ACTION_VIEW, uri),
                 ShadowResolveInfo.newResolveInfo("web", "app.web", "web"))
 
@@ -151,7 +144,7 @@ class SettingsActivityTest {
         controller.start()
 
         val item = mock(MenuItem::class.java)
-        `when`(item.itemId).thenReturn(android.R.id.home)
+        whenever(item.itemId).thenReturn(android.R.id.home)
 
         testObject.onOptionsItemSelected(item)
         assertThat(shadowActivity.isFinishing).isTrue()
@@ -159,7 +152,7 @@ class SettingsActivityTest {
 
     @Test
     fun loadDataWhenErrorShowsErrorView() {
-        `when`(api.playBillingRepository)
+        whenever(api.playBillingRepository)
                 .thenReturn(Observable.error(Throwable()))
 
         controller.start().postCreate(Bundle()).resume().visible()
@@ -171,7 +164,7 @@ class SettingsActivityTest {
     @Test
     fun loadDataWhenSuccessShowsDataViews() {
         val repository = RepositoryFactory.create()
-        `when`(api.playBillingRepository)
+        whenever(api.playBillingRepository)
                 .thenReturn(Observable.just(repository))
 
         controller.start().postCreate(Bundle()).resume().visible()
@@ -184,7 +177,7 @@ class SettingsActivityTest {
     fun loadDataWhenFailThenSuccessShowsDataViews() {
         val repository = RepositoryFactory.create()
 
-        `when`(api.playBillingRepository)
+        whenever(api.playBillingRepository)
                 .thenReturn(Observable.error(Throwable()))
                 .thenReturn(Observable.just(repository))
 

@@ -1,6 +1,9 @@
 package com.nytimes.android.external.register.bundle
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.collect.ImmutableList
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.APIOverrides
 import com.nytimes.android.external.register.Purchases
 import com.nytimes.android.external.register.PurchasesLists
@@ -9,25 +12,18 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
-import org.mockito.MockitoAnnotations
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class PurchasesBundleBuilderTest {
 
     private lateinit var testObject: PurchasesBundleBuilder
 
-    @Mock
-    private lateinit var apiOverrides: APIOverrides
+    private val apiOverrides: APIOverrides = mock()
 
-    @Mock
-    private lateinit var purchases: Purchases
+    private val purchases: Purchases = mock()
 
-    @Mock
-    private lateinit var purchasesLists: PurchasesLists
+    private val purchasesLists: PurchasesLists = mock()
 
     private val type = GoogleUtil.BILLING_TYPE_SUBSCRIPTION
     private val purchasesDataList = ImmutableList.of("purchase1Data", "purchase2Data")
@@ -36,17 +32,16 @@ class PurchasesBundleBuilderTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
         testObject = PurchasesBundleBuilder(apiOverrides, purchases)
     }
 
     @Test
     fun testBundleOKNoContinuationToken() {
-        `when`(apiOverrides.getPurchasesResponse).thenReturn(GoogleUtil.RESULT_OK)
-        `when`(purchases.getPurchasesLists(type, null)).thenReturn(purchasesLists)
-        `when`(purchasesLists.purchaseDataList).thenReturn(purchasesDataList)
-        `when`(purchasesLists.purchaseItemList).thenReturn(purchaseItemList)
-        `when`(purchasesLists.dataSignatureList).thenReturn(signedPurchaseList)
+        whenever(apiOverrides.getPurchasesResponse).thenReturn(GoogleUtil.RESULT_OK)
+        whenever(purchases.getPurchasesLists(type, null)).thenReturn(purchasesLists)
+        whenever(purchasesLists.purchaseDataList).thenReturn(purchasesDataList)
+        whenever(purchasesLists.purchaseItemList).thenReturn(purchaseItemList)
+        whenever(purchasesLists.dataSignatureList).thenReturn(signedPurchaseList)
         val bundle = testObject.newBuilder()
                 .type(type)
                 .build()
@@ -61,10 +56,10 @@ class PurchasesBundleBuilderTest {
     @Test
     fun testBundleOKWithContinuationToken() {
         val continuationToken = "100"
-        `when`(apiOverrides.getPurchasesResponse).thenReturn(GoogleUtil.RESULT_OK)
-        `when`(purchases.getPurchasesLists(type, continuationToken)).thenReturn(purchasesLists)
-        `when`(purchasesLists.purchaseDataList).thenReturn(purchasesDataList)
-        `when`<String>(purchasesLists.continuationToken).thenReturn(continuationToken)
+        whenever(apiOverrides.getPurchasesResponse).thenReturn(GoogleUtil.RESULT_OK)
+        whenever(purchases.getPurchasesLists(type, continuationToken)).thenReturn(purchasesLists)
+        whenever(purchasesLists.purchaseDataList).thenReturn(purchasesDataList)
+        whenever(purchasesLists.continuationToken).thenReturn(continuationToken)
         val bundle = testObject.newBuilder()
                 .type(type)
                 .continuationToken(continuationToken)
@@ -79,7 +74,7 @@ class PurchasesBundleBuilderTest {
 
     @Test
     fun testBundleNotOK() {
-        `when`(apiOverrides.getPurchasesResponse).thenReturn(GoogleUtil.RESULT_ERROR)
+        whenever(apiOverrides.getPurchasesResponse).thenReturn(GoogleUtil.RESULT_ERROR)
 
         val bundle = testObject.newBuilder()
                 .type(type)
@@ -94,7 +89,7 @@ class PurchasesBundleBuilderTest {
     @Test
     fun testRawResponseCode() {
         testObject.rawResponseCode()
-        verify<APIOverrides>(apiOverrides).getPurchasesResponse
+        verify(apiOverrides).getPurchasesResponse
     }
 }
 

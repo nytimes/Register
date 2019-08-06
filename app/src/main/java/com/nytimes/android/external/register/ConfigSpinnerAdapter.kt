@@ -1,11 +1,11 @@
 package com.nytimes.android.external.register
 
 import android.content.Context
-import android.support.annotation.IntDef
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import androidx.annotation.IntDef
 import java.util.*
 
 class ConfigSpinnerAdapter(context: Context, items: List<ConfigResponse>) : BaseAdapter() {

@@ -15,29 +15,30 @@ allprojects {
             url 'https://dl.google.com/dl/android/maven2/'
         }
         jcenter()
+        google()
     }
 }
 
 ext.versions = [
         minSdk               : 16,
-        targetSdk            : 25,
-        compileSdk           : 26,
-        buildTools           : '27.0.3',
+        targetSdk            : 28,
+        compileSdk           : 28,
+        buildTools           : '28.0.3',
 
         // UI libs.
         supportLibs          : '27.1.1',
         constraint           : '1.1.0',
-        butterKnife          : '8.5.1',
         swipeLayout          : '1.2.0@aar',
 
         // Others.
         dagger               : '2.9',
         gson                 : '2.6.2',
-        guava                : '19.0',
+        guava                : '28.0-android',
         javaxInject          : '1',
         rxJava               : '2.1.0',
         rxAndroid            : '2.0.1',
         retrofit             : '2.3.0',
+        billing              : '1.1',
 
         // Kotlin.
         kotlin               : '1.3.21',
@@ -48,18 +49,16 @@ ext.versions = [
         mockito              : '2.27.0',
         mockitoKotlin        : '2.1.0',
         mockitoAndroid       : '2.27.0',
-        robolectric          : '3.4.2',
+        robolectric          : '4.3',
         espresso             : '2.2.2'
 ]
 
 ext.libraries = [
         // UI libs.
-        supportAppCompat        : "com.android.support:appcompat-v7:$versions.supportLibs",
-        supportDesign           : "com.android.support:design:$versions.supportLibs",
-        supportCardView         : "com.android.support:cardview-v7:$versions.supportLibs",
-        constraint              : "com.android.support.constraint:constraint-layout:$versions.constraint",
-        butterKnife             : "com.jakewharton:butterknife:$versions.butterKnife",
-        butterKnifeCompiler     : "com.jakewharton:butterknife-compiler:$versions.butterKnife",
+        supportAppCompat        : "androidx.appcompat:appcompat:1.0.0",
+        supportDesign           : "com.google.android.material:material:1.0.0-rc01",
+        supportCardView         : "androidx.cardview:cardview:1.0.0",
+        constraint              : "androidx.constraintlayout:constraintlayout:2.0.0-beta2",
         swipeLayout             : "com.daimajia.swipelayout:library:$versions.swipeLayout",
 
         // Others.
@@ -67,13 +66,14 @@ ext.libraries = [
         daggerCompiler          : "com.google.dagger:dagger-compiler:$versions.dagger",
         gson                    : "com.google.code.gson:gson:$versions.gson",
         guava                   : "com.google.guava:guava:$versions.guava",
-        supportAnnotations      : "com.android.support:support-annotations:$versions.supportLibs",
+        supportAnnotations      : "androidx.annotation:annotation:1.0.0",
         javaxInject             : "javax.inject:javax.inject:$versions.javaxInject",
         rxJava                  : "io.reactivex.rxjava2:rxjava:$versions.rxJava",
         rxAndroid               : "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid",
         retrofit                : "com.squareup.retrofit2:retrofit:$versions.retrofit",
         retrofitConverter       : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
         retrofitAdapter         : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
+        billing                 : "com.android.billingclient:billing:$versions.billing",
 
         // Kotlin.
         kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",
@@ -86,5 +86,9 @@ ext.libraries = [
         mockitoKotlin           : "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.mockitoKotlin",
         mockitoAndroid          : "org.mockito:mockito-android:$versions.mockitoAndroid",
         robolectric             : "org.robolectric:robolectric:$versions.robolectric",
-        espresso                : "com.android.support.test.espresso:espresso-core:$versions.espresso",
+        espresso                : "androidx.test.espresso:espresso-core:3.1.0",
+        test                    : "androidx.test:core:1.0.0",
+        testRules               : "androidx.test:rules:1.1.0",
+        testRunner              : "androidx.test:runner:1.2.0",
+        testExt                 : "androidx.test.ext:junit:1.1.1"
 ]

@@ -5,11 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.IdRes
-import android.support.annotation.StringRes
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.text.Html
 import android.text.format.DateUtils
 import android.transition.Transition
@@ -21,6 +16,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.annotation.IdRes
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.google.android.material.snackbar.Snackbar
 import com.nytimes.android.external.register.di.Injector
 import com.nytimes.android.external.register.di.SchedulerProvider
 import com.nytimes.android.external.register.legal.LegalActivity
@@ -150,7 +150,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun initDevelopedBy() {
-        val onClick = { _ : View -> startWebIntent(getString(R.string.url_jobs)) }
+        val onClick = { _: View -> startWebIntent(getString(R.string.url_jobs)) }
 
         val title = setText(R.id.settings_header_dev, R.string.settings_dev_by)
         title.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_times_dev, 0)
