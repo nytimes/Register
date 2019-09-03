@@ -34,7 +34,7 @@ constructor(private val apiOverrides: APIOverrides,
     }
 
     override fun getBuyIntent(apiVersion: Int, packageName: String, sku: String, type: String,
-                              developerPayload: String): Bundle {
+                              developerPayload: String?): Bundle {
         return buyIntentBundleBuilder
                 .newBuilder()
                 .packageName(packageName)
@@ -44,7 +44,7 @@ constructor(private val apiOverrides: APIOverrides,
                 .build()
     }
 
-    override fun getPurchases(apiVersion: Int, packageName: String, type: String, continuationToken: String): Bundle {
+    override fun getPurchases(apiVersion: Int, packageName: String, type: String, continuationToken: String?): Bundle {
         return purchasesBundleBuilder
                 .newBuilder()
                 .type(type)

@@ -24,7 +24,7 @@ constructor(apiOverrides: APIOverrides, private val purchases: Purchases) : Base
         return this
     }
 
-    fun continuationToken(continuationToken: String): PurchasesBundleBuilder {
+    fun continuationToken(continuationToken: String?): PurchasesBundleBuilder {
         this.continuationToken = continuationToken
         return this
     }

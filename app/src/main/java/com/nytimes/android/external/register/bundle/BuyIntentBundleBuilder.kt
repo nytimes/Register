@@ -37,8 +37,8 @@ constructor(protected val application: Application, apiOverrides: APIOverrides) 
         return this
     }
 
-    fun developerPayload(developerPayload: String): BuyIntentBundleBuilder {
-        intent.putExtra(EX_DEVELOPER_PAYLOAD, developerPayload)
+    fun developerPayload(developerPayload: String?): BuyIntentBundleBuilder {
+        developerPayload?.let { intent.putExtra(EX_DEVELOPER_PAYLOAD, it) }
         return this
     }
 
