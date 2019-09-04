@@ -41,7 +41,7 @@ constructor(protected val application: Application, apiOverrides: APIOverrides) 
         return this
     }
 
-    fun developerPayload(developerPayload: String): BuyIntentToReplaceSkusBundleBuilder {
+    fun developerPayload(developerPayload: String?): BuyIntentToReplaceSkusBundleBuilder {
         intent.putExtra(EX_DEVELOPER_PAYLOAD, developerPayload)
         return this
     }
