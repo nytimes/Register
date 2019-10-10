@@ -62,6 +62,8 @@ dependencies {
     annotationProcessor libraries.daggerCompiler
     kapt 'com.google.dagger:dagger-compiler:2.11'
 
+    debugImplementation libraries.fragmentTest
+
     testAnnotationProcessor libraries.daggerCompiler
     androidTestAnnotationProcessor libraries.daggerCompiler
 

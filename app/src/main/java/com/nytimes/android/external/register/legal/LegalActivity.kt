@@ -1,11 +1,7 @@
 package com.nytimes.android.external.register.legal
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import com.nytimes.android.external.register.R
 
 /**
@@ -18,36 +14,8 @@ class LegalActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_legal)
 
-        initToolbar()
-        initRecycler()
-    }
-
-    private fun initToolbar() {
-        setSupportActionBar(findViewById(R.id.toolbar))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    private fun initRecycler() {
-        val legalRecyclerView: RecyclerView = findViewById(R.id.list)
-        legalRecyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-
-        val inflater = LayoutInflater.from(this)
-        legalRecyclerView.adapter = LegalAdapter(inflater, inflateData())
-    }
-
-    private fun inflateData(): List<Pair<String, String>> {
-        val names = resources.getStringArray(R.array.license_names)
-        val values = resources.getStringArray(R.array.license_values)
-
-        return names.mapIndexed { index, name -> name to values[index] }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == android.R.id.home) {
-            onBackPressed()
-            true
-        } else {
-            super.onOptionsItemSelected(item)
-        }
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.legal_fragment_container, LegalFragment())
+                .commit()
     }
 }
