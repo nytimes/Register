@@ -3,7 +3,6 @@ package com.nytimes.android.external.register.legal
 import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nytimes.android.external.register.R
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before

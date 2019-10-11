@@ -3,7 +3,6 @@ package com.nytimes.android.external.register
 import android.os.Bundle
 import android.os.RemoteException
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.common.collect.ImmutableList
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.APIOverrides.Companion.RESULT_DEFAULT
@@ -135,7 +134,7 @@ class BillingServicesSubImplTest {
     @Throws(RemoteException::class)
     fun testGetBuyIntentToReplaceSkus() {
         val actual = testObject.getBuyIntentToReplaceSkus(API_VERSION, PACKAGE_NAME,
-                ImmutableList.of(SKU), "sku2", type, DEVELOPER_PAYLOAD)
+                listOf(SKU), "sku2", type, DEVELOPER_PAYLOAD)
 
         assertThat(actual).isEqualTo(expected)
     }

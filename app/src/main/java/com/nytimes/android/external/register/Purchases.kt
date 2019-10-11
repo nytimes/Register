@@ -3,8 +3,6 @@ package com.nytimes.android.external.register
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.annotation.VisibleForTesting
-import com.google.common.collect.Collections2
-import com.google.common.collect.ImmutableSet
 import com.nytimes.android.external.registerlib.GoogleUtil.BILLING_TYPE_IAP
 import com.nytimes.android.external.registerlib.GoogleUtil.BILLING_TYPE_SUBSCRIPTION
 import com.nytimes.android.external.registerlib.InAppPurchaseData
@@ -51,7 +49,10 @@ constructor(private val sharedPreferences: SharedPreferences, private val signer
         if (items!!.contains(inAppPurchaseDataStr)) {
             return false
         } else {
-            val toAdd = ImmutableSet.Builder<String>().addAll(items).add(inAppPurchaseDataStr).build()
+            val toAdd = mutableSetOf<String>().apply {
+                addAll(items)
+                add(inAppPurchaseDataStr)
+            }
             sharedPreferences.edit().putStringSet(itemType, toAdd).apply()
             return true
         }
@@ -69,12 +70,13 @@ constructor(private val sharedPreferences: SharedPreferences, private val signer
     fun replacePurchase(newInAppPurchaseDataStr: String, replacedSkus: List<String>): Boolean {
         val purchasedItems = getPurchases(BILLING_TYPE_SUBSCRIPTION)
         val purchasedSkus = getPurchasedSkus(BILLING_TYPE_SUBSCRIPTION)
-        val builder = ImmutableSet.builder<String>()
+        val builder = mutableSetOf<String>()
         if (purchasedSkus.containsAll(replacedSkus) && !purchasedItems!!.contains(newInAppPurchaseDataStr)) {
-            val finalSet = builder
-                    .addAll(getPurchasesExceptForSkus(BILLING_TYPE_SUBSCRIPTION, ImmutableSet.copyOf(replacedSkus)))
-                    .add(newInAppPurchaseDataStr)
-                    .build()
+            val finalSet = builder.apply {
+                addAll(getPurchasesExceptForSkus(BILLING_TYPE_SUBSCRIPTION, mutableSetOf<String>().apply { addAll(replacedSkus) }))
+                add(newInAppPurchaseDataStr)
+            }
+
             sharedPreferences.edit().putStringSet(BILLING_TYPE_SUBSCRIPTION,
                     finalSet).commit()
             return true
@@ -91,14 +93,14 @@ constructor(private val sharedPreferences: SharedPreferences, private val signer
     }
 
     fun getReceiptsForSkus(skus: Set<String>, itemType: String): Set<String> {
-        val builder = ImmutableSet.builder<String>()
+        val builder = mutableSetOf<String>()
         for (json in getPurchases(itemType)!!) {
             val inAppPurchaseData = InAppPurchaseData.fromJson(json)
             if (skus.contains(inAppPurchaseData.productId())) {
                 builder.add(inAppPurchaseData.purchaseToken()!!)
             }
         }
-        return builder.build()
+        return builder
     }
 
     fun purgePurchases() {
@@ -106,20 +108,21 @@ constructor(private val sharedPreferences: SharedPreferences, private val signer
     }
 
     private fun getPurchases(itemType: String): MutableSet<String>? {
-        return sharedPreferences.getStringSet(itemType, ImmutableSet.of())
+        return sharedPreferences.getStringSet(itemType, setOf())
     }
 
     private fun getPurchasesExceptForSkus(itemType: String, skuFilter: Set<String>): Set<String> {
-        return ImmutableSet.copyOf(Collections2.filter(getPurchases(itemType)!!
-        ) { json -> !skuFilter.contains(InAppPurchaseData.fromJson(json!!).productId()) })
+        return mutableSetOf<String>().apply {
+            getPurchases(itemType)!!.filter { json -> !skuFilter.contains(InAppPurchaseData.fromJson(json!!).productId()) }
+        }
     }
 
     private fun getPurchasedSkus(itemType: String): Set<String> {
-        val builder = ImmutableSet.builder<String>()
+        val builder = mutableSetOf<String>()
         for (inAppPurchaseDataStr in getPurchases(itemType)!!) {
             builder.add(InAppPurchaseData.fromJson(inAppPurchaseDataStr).productId()!!)
         }
-        return builder.build()
+        return builder
     }
 
     private fun getFirst(continuationToken: String?): Int {

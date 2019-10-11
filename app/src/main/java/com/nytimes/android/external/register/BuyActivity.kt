@@ -8,9 +8,6 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
-import com.google.common.base.Optional
-import com.google.common.collect.ImmutableList
-import com.google.common.collect.ImmutableSet
 import com.nytimes.android.external.register.bundle.BuyIntentBundleBuilder
 import com.nytimes.android.external.register.bundle.BuyIntentToReplaceSkusBundleBuilder
 import com.nytimes.android.external.register.di.Injector
@@ -32,7 +29,8 @@ open class BuyActivity : AppCompatActivity() {
     @Inject
     lateinit var purchases: Purchases
     @Inject
-    lateinit var config: Optional<Config>
+    @JvmField
+    var config: Config? = null
     @Inject
     lateinit var signer: Signer
 
@@ -50,11 +48,11 @@ open class BuyActivity : AppCompatActivity() {
         get() {
             var response = apiOverrides.buyResponse
             if (response == APIOverrides.RESULT_DEFAULT) {
-                response = if (!config.isPresent) {
+                response = if (config == null) {
                     GoogleUtil.RESULT_ERROR
-                } else if (config.get().skus[sku] == null) {
+                } else if (config!!.skus[sku] == null) {
                     GoogleUtil.RESULT_ITEM_UNAVAILABLE
-                } else if (purchases.getReceiptsForSkus(ImmutableSet.of(sku!!), itemtype!!).isNotEmpty()) {
+                } else if (purchases.getReceiptsForSkus(setOf(sku!!), itemtype!!).isNotEmpty()) {
                     GoogleUtil.RESULT_ITEM_ALREADY_OWNED
                 } else {
                     GoogleUtil.RESULT_OK
@@ -67,13 +65,13 @@ open class BuyActivity : AppCompatActivity() {
         get() {
             var response = apiOverrides.replaceResponse
             if (response == APIOverrides.RESULT_DEFAULT) {
-                response = if (!config.isPresent) {
+                response = if (config == null) {
                     GoogleUtil.RESULT_ERROR
-                } else if (config.get().skus[newSku] == null) {
+                } else if (config!!.skus[newSku] == null) {
                     GoogleUtil.RESULT_ITEM_UNAVAILABLE
                 } else if (GoogleUtil.BILLING_TYPE_IAP == itemtype) {
                     GoogleUtil.RESULT_ERROR
-                } else if (purchases.getReceiptsForSkus(ImmutableSet.of(newSku!!), itemtype!!).isNotEmpty()) {
+                } else if (purchases.getReceiptsForSkus(setOf(newSku!!), itemtype!!).isNotEmpty()) {
                     GoogleUtil.RESULT_ITEM_ALREADY_OWNED
                 } else if (skusNotOwned(oldSkus)) {
                     GoogleUtil.RESULT_ITEM_NOT_OWNED
@@ -129,18 +127,18 @@ open class BuyActivity : AppCompatActivity() {
 
     private fun initTextBody(content: Bundle) {
         val title = findViewById<View>(R.id.buy_title) as TextView
-        title.text = if (config.isPresent)
+        title.text = if (config != null)
             content.getString(RESPONSE_EXTRA_TITLE)
         else
             getString(R.string.no_config_title)
 
         val summary = findViewById<View>(R.id.buy_summary) as TextView
-        summary.text = if (config.isPresent)
+        summary.text = if (config != null)
             content.getString(RESPONSE_EXTRA_SUMMARY)
         else
             getString(R.string.no_config_text)
 
-        if (config.isPresent && content.containsKey(RESPONSE_EXTRA_REPLACE_OLD_SKU)) {
+        if (config != null && content.containsKey(RESPONSE_EXTRA_REPLACE_OLD_SKU)) {
             summary.append("\n\n" + content.getString(RESPONSE_EXTRA_REPLACE_OLD_SKU)!!)
         }
     }
@@ -170,7 +168,7 @@ open class BuyActivity : AppCompatActivity() {
         usersSpinner.visibility = View.VISIBLE
 
         val currentUser = apiOverrides.usersResponse
-        val users = if (config.isPresent) config.get().users else ImmutableList.of()
+        val users = if (config != null) config!!.users else listOf()
         val index = users.indexOf(currentUser)
         val selectedItem = if (index == -1) 0 else index
 
@@ -207,7 +205,7 @@ open class BuyActivity : AppCompatActivity() {
     }
 
     private fun onBuy() {
-        if (config.isPresent) {
+        if (config != null) {
             val newReceipt = String.format(Locale.getDefault(), RECEIPT_FMT,
                     apiOverrides.usersResponse, currentTimeMillis)
             val resultIntent = Intent()
@@ -215,7 +213,7 @@ open class BuyActivity : AppCompatActivity() {
             val skuToPurchase = if (isReplace) newSku else sku
             val inAppPurchaseData = InAppPurchaseData.Builder()
                     .orderId(java.lang.Long.toString(currentTimeMillis))
-                    .packageName(config.get().skus[skuToPurchase]!!.packageName)
+                    .packageName(config!!.skus[skuToPurchase]!!.packageName)
                     .productId(skuToPurchase)
                     .purchaseTime(java.lang.Long.toString(currentTimeMillis))
                     .developerPayload(developerPayload)
@@ -258,8 +256,8 @@ open class BuyActivity : AppCompatActivity() {
     private fun getResponseContent(buyResponse: Int): Bundle {
         val bundle = Bundle()
         when (buyResponse) {
-            GoogleUtil.RESULT_OK -> if (config.isPresent) {
-                val configSku = config.get().skus[if (isReplace) newSku else sku]!!
+            GoogleUtil.RESULT_OK -> if (config != null) {
+                val configSku = config!!.skus[if (isReplace) newSku else sku]!!
 
                 bundle.putString(RESPONSE_EXTRA_TITLE, configSku.title)
                 bundle.putString(RESPONSE_EXTRA_SUMMARY, configSku.description)
@@ -268,7 +266,7 @@ open class BuyActivity : AppCompatActivity() {
                 if (isReplace) {
                     val oldSkuTitles = ArrayList<String>()
                     for (oldSku in oldSkus!!) {
-                        oldSkuTitles.add(config.get().skus[oldSku]!!.title + "\n")
+                        oldSkuTitles.add(config!!.skus[oldSku]!!.title + "\n")
                     }
                     bundle.putStringArrayList(RESPONSE_EXTRA_REPLACE_OLD_SKU, oldSkuTitles)
                 }
@@ -301,7 +299,7 @@ open class BuyActivity : AppCompatActivity() {
     }
 
     private fun skusNotOwned(skus: List<String>?): Boolean {
-        return purchases.getReceiptsForSkus(ImmutableSet.copyOf(skus!!), itemtype!!).size < skus.size
+        return purchases.getReceiptsForSkus(skus!!.toSet(), itemtype!!).size < skus.size
     }
 
     override fun onBackPressed() {

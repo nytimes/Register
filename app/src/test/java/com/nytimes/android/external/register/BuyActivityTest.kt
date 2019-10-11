@@ -7,9 +7,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.common.base.Optional
-import com.google.common.collect.ImmutableMap
-import com.google.common.collect.ImmutableSet
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.BuyActivity.Companion.ERROR_FMT
@@ -39,7 +36,7 @@ class BuyActivityTest {
     private lateinit var testObject: BuyActivity
     private lateinit var shadowActivity: ShadowActivity
     private val configSku = ConfigSku(TYPE, PRICE, TITLE, DESCRIPTION, PACKAGE_NAME)
-    private lateinit var configSkuMapBuilder: ImmutableMap.Builder<String, ConfigSku>
+    private lateinit var configSkuMapBuilder: MutableMap<String, ConfigSku>
     private val inAppPurchaseData = InAppPurchaseData.Builder()
             .orderId(java.lang.Long.toString(CURRENT_TIME_MS))
             .packageName(PACKAGE_NAME)
@@ -79,12 +76,12 @@ class BuyActivityTest {
         testObject = controller.get() as BuyActivity
         testObject.apiOverrides = apiOverrides
         testObject.purchases = purchases
-        testObject.config = Optional.of(config)
+        testObject.config = config
         testObject.signer = signer
         shadowActivity = shadowOf(testObject)
 
         whenever(purchases.getPurchasesLists(TYPE, CONTINUATION_TOKEN)).thenReturn(purchasesLists)
-        configSkuMapBuilder = ImmutableMap.builder()
+        configSkuMapBuilder = mutableMapOf()
     }
 
     @Test
@@ -92,9 +89,9 @@ class BuyActivityTest {
         initTestObject(false)
 
         whenever(apiOverrides.buyResponse).thenReturn(APIOverrides.RESULT_DEFAULT)
-        whenever(purchases.getReceiptsForSkus(ImmutableSet.of(SKU), TYPE)).thenReturn(ImmutableSet.of())
+        whenever(purchases.getReceiptsForSkus(setOf(SKU), TYPE)).thenReturn(setOf())
         configSkuMapBuilder.put(SKU, configSku)
-        whenever(config.skus).thenReturn(configSkuMapBuilder.build())
+        whenever(config.skus).thenReturn(configSkuMapBuilder)
 
         controller.start()
 
@@ -115,9 +112,9 @@ class BuyActivityTest {
 
         val sku2 = "sku2"
         whenever(apiOverrides.buyResponse).thenReturn(APIOverrides.RESULT_DEFAULT)
-        whenever(purchases.getReceiptsForSkus(ImmutableSet.of(SKU), TYPE)).thenReturn(ImmutableSet.of())
+        whenever(purchases.getReceiptsForSkus(setOf(SKU), TYPE)).thenReturn(setOf())
         configSkuMapBuilder.put(sku2, configSku)
-        whenever(config.skus).thenReturn(configSkuMapBuilder.build())
+        whenever(config.skus).thenReturn(configSkuMapBuilder)
 
         controller.start()
 
@@ -135,9 +132,9 @@ class BuyActivityTest {
         initTestObject(false)
 
         whenever(apiOverrides.buyResponse).thenReturn(APIOverrides.RESULT_DEFAULT)
-        whenever(purchases.getReceiptsForSkus(ImmutableSet.of(SKU), TYPE)).thenReturn(ImmutableSet.of(RECEIPT))
+        whenever(purchases.getReceiptsForSkus(setOf(SKU), TYPE)).thenReturn(setOf(RECEIPT))
         configSkuMapBuilder.put(SKU, configSku)
-        whenever(config.skus).thenReturn(configSkuMapBuilder.build())
+        whenever(config.skus).thenReturn(configSkuMapBuilder)
 
         controller.start()
 
@@ -177,7 +174,7 @@ class BuyActivityTest {
 
         whenever(apiOverrides.usersResponse).thenReturn(USER)
         configSkuMapBuilder.put(SKU, configSku)
-        whenever(config.skus).thenReturn(configSkuMapBuilder.build())
+        whenever(config.skus).thenReturn(configSkuMapBuilder)
         val inAppPurchaseDataStr = InAppPurchaseData.toJson(inAppPurchaseData)
         whenever(purchases.addPurchase(inAppPurchaseDataStr, TYPE)).thenReturn(true)
         whenever(signer.signData(inAppPurchaseDataStr)).thenReturn(signedData)
@@ -202,11 +199,11 @@ class BuyActivityTest {
     fun testHandleAlreadyOwnedValid() {
         whenever(apiOverrides.replaceResponse)
                 .thenReturn(GoogleUtil.RESULT_ITEM_ALREADY_OWNED)
-        whenever(purchases.getInAppPurchaseData(TYPE)).thenReturn(ImmutableSet.of(inAppPurchaseData))
+        whenever(purchases.getInAppPurchaseData(TYPE)).thenReturn(setOf(inAppPurchaseData))
 
         initTestObject(true)
         configSkuMapBuilder.put(NEW_SKU, configSku)
-        whenever(config.skus).thenReturn(configSkuMapBuilder.build())
+        whenever(config.skus).thenReturn(configSkuMapBuilder)
 
         controller.start()
         testObject.findViewById<View>(R.id.buy_button).callOnClick()
@@ -222,11 +219,11 @@ class BuyActivityTest {
     fun testHandleAlreadyOwnedInvalid() {
         whenever(apiOverrides.replaceResponse)
                 .thenReturn(GoogleUtil.RESULT_ITEM_ALREADY_OWNED)
-        whenever(purchases.getInAppPurchaseData(TYPE)).thenReturn(ImmutableSet.of())
+        whenever(purchases.getInAppPurchaseData(TYPE)).thenReturn(setOf())
 
         initTestObject(true)
         configSkuMapBuilder.put(SKU, configSku)
-        whenever(config.skus).thenReturn(configSkuMapBuilder.build())
+        whenever(config.skus).thenReturn(configSkuMapBuilder)
 
         controller.start()
         testObject.findViewById<View>(R.id.buy_button).callOnClick()
@@ -239,7 +236,7 @@ class BuyActivityTest {
     fun onBackPressedResultsOk() {
         initTestObject(false)
         configSkuMapBuilder.put(SKU, configSku)
-        whenever(config.skus).thenReturn(configSkuMapBuilder.build())
+        whenever(config.skus).thenReturn(configSkuMapBuilder)
 
         controller.start()
         testObject.onBackPressed()
