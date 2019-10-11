@@ -34,11 +34,11 @@ constructor(apiOverrides: APIOverrides, private val purchases: Purchases) : Base
         if (responseCode == GoogleUtil.RESULT_OK) {
             val purchasesLists = purchases.getPurchasesLists(type!!, continuationToken)
             bundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_ITEM_LIST,
-                    arrayListOf(*purchasesLists.purchaseItemList.toTypedArray()))
+                    ArrayList(purchasesLists.purchaseItemList))
             bundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST,
-                    arrayListOf(*purchasesLists.purchaseDataList.toTypedArray()))
+                    ArrayList(purchasesLists.purchaseDataList))
             bundle.putStringArrayList(GoogleUtil.INAPP_DATA_SIGNATURE_LIST,
-                    arrayListOf(*purchasesLists.dataSignatureList.toTypedArray()))
+                    ArrayList(purchasesLists.dataSignatureList))
             if (!purchasesLists.continuationToken.isNullOrEmpty()) {
                 bundle.putString(GoogleUtil.INAPP_CONTINUATION_TOKEN, purchasesLists.continuationToken)
             }
