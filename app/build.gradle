@@ -76,9 +76,7 @@ dependencies {
     testImplementation libraries.mockitoKotlin
     testImplementation libraries.assertJ
     testImplementation libraries.junit
-    testImplementation(libraries.robolectric) {
-        exclude module: 'guava'
-    }
+    testImplementation(libraries.robolectric)
     testImplementation libraries.test
     testImplementation libraries.testRules
     testImplementation libraries.testRunner
