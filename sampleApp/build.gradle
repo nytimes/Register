@@ -49,9 +49,7 @@ dependencies {
     testImplementation libraries.mockito
     testImplementation libraries.assertJ
     testImplementation libraries.junit
-    testImplementation(libraries.robolectric) {
-        exclude module: 'guava'
-    }
+    testImplementation(libraries.robolectric)
 
     androidTestAnnotationProcessor libraries.daggerCompiler
     androidTestImplementation libraries.espresso
