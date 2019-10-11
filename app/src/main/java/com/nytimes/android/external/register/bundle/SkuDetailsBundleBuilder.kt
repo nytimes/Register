@@ -1,7 +1,6 @@
 package com.nytimes.android.external.register.bundle
 
 import android.os.Bundle
-import com.google.common.base.Optional
 import com.nytimes.android.external.register.APIOverrides
 import com.nytimes.android.external.register.model.Config
 import com.nytimes.android.external.registerlib.GoogleProductResponse
@@ -10,7 +9,7 @@ import java.util.*
 import javax.inject.Inject
 
 class SkuDetailsBundleBuilder @Inject
-constructor(apiOverrides: APIOverrides, private val config: Optional<Config>) : BaseBundleBuilder(apiOverrides) {
+constructor(apiOverrides: APIOverrides, private val config: Config?) : BaseBundleBuilder(apiOverrides) {
 
     private var detailsList: MutableList<String>? = null
 
@@ -21,7 +20,7 @@ constructor(apiOverrides: APIOverrides, private val config: Optional<Config>) : 
     }
 
     fun skus(skus: List<String>, type: String): SkuDetailsBundleBuilder {
-        if (config.isPresent) {
+        if (config != null) {
             for (sku in skus) {
                 sku(sku, type)
             }
@@ -30,7 +29,7 @@ constructor(apiOverrides: APIOverrides, private val config: Optional<Config>) : 
     }
 
     private fun sku(sku: String, type: String) {
-        val configSku = config.get().skus[sku]
+        val configSku = config!!.skus[sku]
         if (configSku != null) {
             val builder = GoogleProductResponse.Builder()
                     .productId(sku)

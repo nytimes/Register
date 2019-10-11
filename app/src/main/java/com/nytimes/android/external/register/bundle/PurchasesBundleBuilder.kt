@@ -1,8 +1,6 @@
 package com.nytimes.android.external.register.bundle
 
 import android.os.Bundle
-import com.google.common.base.Strings
-import com.google.common.collect.Lists
 import com.nytimes.android.external.register.APIOverrides
 import com.nytimes.android.external.register.Purchases
 import com.nytimes.android.external.registerlib.GoogleUtil
@@ -36,12 +34,12 @@ constructor(apiOverrides: APIOverrides, private val purchases: Purchases) : Base
         if (responseCode == GoogleUtil.RESULT_OK) {
             val purchasesLists = purchases.getPurchasesLists(type!!, continuationToken)
             bundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_ITEM_LIST,
-                    Lists.newArrayList(purchasesLists.purchaseItemList))
+                    arrayListOf(*purchasesLists.purchaseItemList.toTypedArray()))
             bundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST,
-                    Lists.newArrayList(purchasesLists.purchaseDataList))
+                    arrayListOf(*purchasesLists.purchaseDataList.toTypedArray()))
             bundle.putStringArrayList(GoogleUtil.INAPP_DATA_SIGNATURE_LIST,
-                    Lists.newArrayList(purchasesLists.dataSignatureList))
-            if (!Strings.isNullOrEmpty(purchasesLists.continuationToken)) {
+                    arrayListOf(*purchasesLists.dataSignatureList.toTypedArray()))
+            if (!purchasesLists.continuationToken.isNullOrEmpty()) {
                 bundle.putString(GoogleUtil.INAPP_CONTINUATION_TOKEN, purchasesLists.continuationToken)
             }
         }

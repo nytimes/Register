@@ -71,8 +71,6 @@ dependencies {
     implementation libraries.retrofitConverter
     implementation libraries.retrofitAdapter
 
-    implementation libraries.guava
-
     testImplementation libraries.mockito
     testImplementation libraries.mockitoInline
     testImplementation libraries.mockitoKotlin

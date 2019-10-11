@@ -2,7 +2,6 @@ package com.nytimes.android.external.register
 
 import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.common.collect.ImmutableSet
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.APIOverrides.Companion.PREF_NAME
@@ -136,10 +135,10 @@ class PurchasesTest {
         testObject.addPurchase(inAppPurchaseData1Str, GoogleUtil.BILLING_TYPE_SUBSCRIPTION)
         testObject.addPurchase(inAppPurchaseData2Str, GoogleUtil.BILLING_TYPE_IAP)
 
-        val actual = testObject.getReceiptsForSkus(ImmutableSet.of(PRODUCT_ID_1),
+        val actual = testObject.getReceiptsForSkus(setOf(PRODUCT_ID_1),
                 GoogleUtil.BILLING_TYPE_SUBSCRIPTION)
         assertThat(actual)
-                .isEqualTo(ImmutableSet.of(PURCHASE_TOKEN_1))
+                .isEqualTo(setOf(PURCHASE_TOKEN_1))
     }
 
     @Test
@@ -147,10 +146,10 @@ class PurchasesTest {
         testObject.addPurchase(inAppPurchaseData1Str, GoogleUtil.BILLING_TYPE_SUBSCRIPTION)
         testObject.addPurchase(inAppPurchaseData2Str, GoogleUtil.BILLING_TYPE_IAP)
 
-        val actual = testObject.getReceiptsForSkus(ImmutableSet.of(PRODUCT_ID_1),
+        val actual = testObject.getReceiptsForSkus(setOf(PRODUCT_ID_1),
                 GoogleUtil.BILLING_TYPE_IAP)
         assertThat(actual)
-                .isEqualTo(ImmutableSet.of<Any>())
+                .isEqualTo(setOf<Any>())
     }
 
     @Test

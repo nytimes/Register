@@ -6,8 +6,6 @@ import android.widget.Adapter
 import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.common.base.Optional
-import com.google.common.collect.ImmutableSet
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
@@ -67,7 +65,7 @@ class MainActivityTest {
         testObject = controller.get() as MainActivity
         testObject.apiDelegate = mockApiDelegate
         testObject.purchases = purchases
-        testObject.config = Optional.of(config)
+        testObject.config = config
         shadowMain = Shadow.extract<ShadowActivity>(testObject)
     }
 
@@ -75,9 +73,9 @@ class MainActivityTest {
     fun updatePurchases_whenHas_showsItems() {
         // Setup
         whenever(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
-                .thenReturn(ImmutableSet.of(inAppPurchaseData1))  // init
+                .thenReturn(setOf(inAppPurchaseData1))  // init
         whenever(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
-                .thenReturn(ImmutableSet.of(inAppPurchaseData2))  // init
+                .thenReturn(setOf(inAppPurchaseData2))  // init
 
         val list = testObject.findViewById<View>(R.id.list) as RecyclerView
         val emptyView = testObject.findViewById<View>(R.id.empty_view)
@@ -92,9 +90,9 @@ class MainActivityTest {
     fun updatePurchases_whenNone_showsEmpty() {
         // Setup
         whenever(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
-                .thenReturn(ImmutableSet.of())  // init
+                .thenReturn(setOf())  // init
         whenever(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
-                .thenReturn(ImmutableSet.of())   // init
+                .thenReturn(setOf())   // init
 
         val list = testObject.findViewById<View>(R.id.list) as RecyclerView
         val emptyView = testObject.findViewById<View>(R.id.empty_view)
@@ -109,8 +107,8 @@ class MainActivityTest {
     fun onMenuClick_whenDeleteAll_showsNoItems() {
         // Setup
         whenever(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
-                .thenReturn(ImmutableSet.of(inAppPurchaseData1)) // Initial
-                .thenReturn(ImmutableSet.of()) // After purge
+                .thenReturn(setOf(inAppPurchaseData1)) // Initial
+                .thenReturn(setOf()) // After purge
 
         val item = mock(MenuItem::class.java)
         whenever(item.itemId).thenReturn(R.id.menu_action_delete_all)
@@ -132,11 +130,11 @@ class MainActivityTest {
     fun onMenuClick_whenRefresh_refreshContent() {
         // Setup
         whenever(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_IAP))
-                .thenReturn(ImmutableSet.of())   // init
-                .thenReturn(ImmutableSet.of(inAppPurchaseData1))   // after refresh
+                .thenReturn(setOf())   // init
+                .thenReturn(setOf(inAppPurchaseData1))   // after refresh
         whenever(purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION))
-                .thenReturn(ImmutableSet.of())   // init
-                .thenReturn(ImmutableSet.of(inAppPurchaseData2))   // after refresh
+                .thenReturn(setOf())   // init
+                .thenReturn(setOf(inAppPurchaseData2))   // after refresh
 
         val item = mock(MenuItem::class.java)
         whenever(item.itemId).thenReturn(R.id.menu_action_refresh)

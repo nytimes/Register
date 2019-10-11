@@ -4,9 +4,6 @@ import android.app.Application
 import android.app.Service
 import android.os.Environment
 import android.util.Log
-import com.google.common.base.Charsets.UTF_8
-import com.google.common.base.Optional
-import com.google.common.io.Files
 import com.google.gson.Gson
 import com.nytimes.android.external.register.*
 import com.nytimes.android.external.register.APIOverrides.Companion.CONFIG_FILE
@@ -14,8 +11,8 @@ import com.nytimes.android.external.register.bundle.*
 import com.nytimes.android.external.register.model.Config
 import dagger.Module
 import dagger.Provides
-import java.io.File
-import java.io.FileNotFoundException
+import java.io.*
+import java.nio.charset.Charset
 
 @Module
 class ServiceModule(private val service: Service) {
@@ -28,17 +25,17 @@ class ServiceModule(private val service: Service) {
 
     @Provides
     @ScopeService
-    internal fun provideConfig(gson: Gson): Optional<Config> {
+    internal fun provideConfig(gson: Gson): Config? {
         if (PermissionHandler.hasPermission(service)) {
             try {
-                return Optional.of(gson.fromJson(Files.newReader(File(
-                        Environment.getExternalStorageDirectory().path, CONFIG_FILE), UTF_8), Config::class.java))
+                return gson.fromJson(BufferedReader(InputStreamReader(FileInputStream(File(
+                        Environment.getExternalStorageDirectory().path, CONFIG_FILE)), Charset.forName("UTF-8"))), Config::class.java)
             } catch (exc: FileNotFoundException) {
                 Log.e("ServiceModule", service.getString(R.string.config_not_found), exc)
             }
 
         }
-        return Optional.absent()
+        return null
     }
 
     @Provides
@@ -63,7 +60,7 @@ class ServiceModule(private val service: Service) {
     @Provides
     @ScopeService
     internal fun provideSkuDetailsBundleBuilder(apiOverrides: APIOverrides,
-                                                config: Optional<Config>): SkuDetailsBundleBuilder {
+                                                config: Config?): SkuDetailsBundleBuilder {
         return SkuDetailsBundleBuilder(apiOverrides, config)
     }
 

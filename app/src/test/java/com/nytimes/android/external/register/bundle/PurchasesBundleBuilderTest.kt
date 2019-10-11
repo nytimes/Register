@@ -1,7 +1,6 @@
 package com.nytimes.android.external.register.bundle
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.common.collect.ImmutableList
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.APIOverrides
@@ -26,9 +25,9 @@ class PurchasesBundleBuilderTest {
     private val purchasesLists: PurchasesLists = mock()
 
     private val type = GoogleUtil.BILLING_TYPE_SUBSCRIPTION
-    private val purchasesDataList = ImmutableList.of("purchase1Data", "purchase2Data")
-    private val purchaseItemList = ImmutableList.of("item1", "item2")
-    private val signedPurchaseList = ImmutableList.of("signed1", "signed2")
+    private val purchasesDataList = mutableListOf("purchase1Data", "purchase2Data")
+    private val purchaseItemList = mutableListOf("item1", "item2")
+    private val signedPurchaseList = mutableListOf("signed1", "signed2")
 
     @Before
     fun setUp() {

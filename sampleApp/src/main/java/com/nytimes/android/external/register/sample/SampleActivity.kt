@@ -4,9 +4,6 @@ import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.preference.PreferenceManager
-import com.google.android.material.appbar.AppBarLayout
-import androidx.recyclerview.widget.RecyclerView
-import androidx.appcompat.widget.Toolbar
 import android.util.Log
 import android.util.Pair
 import android.view.View
@@ -14,9 +11,11 @@ import android.widget.CompoundButton
 import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.*
-import com.google.common.collect.ImmutableList
+import com.google.android.material.appbar.AppBarLayout
 import com.nytimes.android.external.registerlib.GoogleServiceProvider
 import com.nytimes.android.external.registerlib.GoogleServiceProviderTesting
 import com.nytimes.android.external.registerlib.GoogleUtil
@@ -99,7 +98,7 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
             val subSkuDetailsStream = getSubSkuDetailsStream()
 
             val purchasesResultStream = Observable.fromCallable<List<Purchase>> {
-                val types = ImmutableList.of(
+                val types = listOf(
                         GoogleUtil.BILLING_TYPE_IAP, GoogleUtil.BILLING_TYPE_SUBSCRIPTION)
                 val purchases = ArrayList<Purchase>()
                 for (type in types) {
@@ -118,7 +117,7 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
     private fun getSubSkuDetailsStream(): Observable<List<SkuDetails>> {
         val subParams = SkuDetailsParams
                 .newBuilder()
-                .setSkusList(ImmutableList.of(SKU_SUB))
+                .setSkusList(listOf(SKU_SUB))
                 .setType(BillingClient.SkuType.SUBS)
                 .build()
 
@@ -139,7 +138,7 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
     ): Observable<List<SkuDetails>> {
         val iapParams = SkuDetailsParams
                 .newBuilder()
-                .setSkusList(ImmutableList.of(SKU_IAP))
+                .setSkusList(listOf(SKU_IAP))
                 .setType(BillingClient.SkuType.INAPP)
                 .build()
 

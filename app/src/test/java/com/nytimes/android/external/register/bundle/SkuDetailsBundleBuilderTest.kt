@@ -1,9 +1,6 @@
 package com.nytimes.android.external.register.bundle
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.common.base.Optional
-import com.google.common.collect.ImmutableList
-import com.google.common.collect.ImmutableMap
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.APIOverrides
@@ -36,12 +33,12 @@ class SkuDetailsBundleBuilderTest {
         val title = "caps for sale"
         val price = "1.98"
 
-        testObject = SkuDetailsBundleBuilder(apiOverrides, Optional.of(config))
+        testObject = SkuDetailsBundleBuilder(apiOverrides, config)
 
-        whenever(config.skus).thenReturn(ImmutableMap.Builder<String, ConfigSku>()
-                .put(SKU1, ConfigSku(TYPE, price, title, description, packageName))
-                .put(SKU2, ConfigSku(TYPE, price, title, description, packageName))
-                .build())
+        whenever(config.skus).thenReturn(mutableMapOf<String, ConfigSku>().apply {
+            put(SKU1, ConfigSku(TYPE, price, title, description, packageName))
+            put(SKU2, ConfigSku(TYPE, price, title, description, packageName))
+        })
     }
 
     @Test
@@ -49,7 +46,7 @@ class SkuDetailsBundleBuilderTest {
         whenever(apiOverrides.getSkuDetailsResponse).thenReturn(GoogleUtil.RESULT_OK)
 
         val bundle = testObject.newBuilder()
-                .skus(ImmutableList.of(SKU1, SKU2), TYPE)
+                .skus(listOf(SKU1, SKU2), TYPE)
                 .build()
 
         assertThat(bundle.getInt(GoogleUtil.RESPONSE_CODE))
@@ -79,7 +76,7 @@ class SkuDetailsBundleBuilderTest {
         whenever(apiOverrides.getSkuDetailsResponse).thenReturn(GoogleUtil.RESULT_ERROR)
 
         val bundle = testObject.newBuilder()
-                .skus(ImmutableList.of(SKU1, SKU2), TYPE)
+                .skus(listOf(SKU1, SKU2), TYPE)
                 .build()
 
         assertThat(bundle.getInt(GoogleUtil.RESPONSE_CODE))

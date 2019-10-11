@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import com.google.common.base.Optional
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -75,47 +74,47 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     @Singleton
-    internal fun providePrivateKey(): Optional<PrivateKey> {
+    internal fun providePrivateKey(): PrivateKey? {
         return try {
             val trusted = KeyStore.getInstance("BKS")
             val keyStore = application.resources.openRawResource(R.raw.keystore)
             keyStore.use { trusted.load(it, "register".toCharArray()) }
-            Optional.of(trusted.getKey("register", "register".toCharArray()) as PrivateKey)
+            trusted.getKey("register", "register".toCharArray()) as PrivateKey
         } catch (exception: KeyStoreException) {
             Log.e("ApplicationModule", "Failed to provide private key", exception)
-            Optional.absent()
+            null
         } catch (exception: IOException) {
             Log.e("ApplicationModule", "Failed to provide private key", exception)
-            Optional.absent()
+            null
         } catch (exception: NoSuchAlgorithmException) {
             Log.e("ApplicationModule", "Failed to provide private key", exception)
-            Optional.absent()
+            null
         } catch (exception: CertificateException) {
             Log.e("ApplicationModule", "Failed to provide private key", exception)
-            Optional.absent()
+            null
         } catch (exception: UnrecoverableKeyException) {
             Log.e("ApplicationModule", "Failed to provide private key", exception)
-            Optional.absent()
+            null
         }
     }
 
     @Provides
     @Singleton
-    internal fun provideSignature(): Optional<Signature> {
+    internal fun provideSignature(): Signature? {
         return try {
-            Optional.of(Signature.getInstance("SHA1withRSA", "BC"))
+            Signature.getInstance("SHA1withRSA", "BC")
         } catch (exception: NoSuchAlgorithmException) {
             Log.e("ApplicationModule", "Failed to provide signature", exception)
-            Optional.absent()
+            null
         } catch (exception: NoSuchProviderException) {
             Log.e("ApplicationModule", "Failed to provide signature", exception)
-            Optional.absent()
+            null
         }
     }
 
     @Provides
     @Singleton
-    internal fun provideSigner(privateKey: Optional<PrivateKey>?, signature: Optional<Signature>?): Signer {
+    internal fun provideSigner(privateKey: PrivateKey?, signature: Signature?): Signer {
         return Signer(privateKey, signature)
     }
 

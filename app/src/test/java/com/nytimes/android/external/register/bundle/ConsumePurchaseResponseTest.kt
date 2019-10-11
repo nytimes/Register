@@ -2,7 +2,6 @@ package com.nytimes.android.external.register.bundle
 
 import android.os.Bundle
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.common.collect.ImmutableList
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.APIOverrides
@@ -93,8 +92,8 @@ class ConsumePurchaseResponseTest {
 
     @Test
     fun testConsumePurchaseSubscription() {
-        val testPurchases = ImmutableList.of("purchase1", "purchase2")
-        val subscriptions = ImmutableList.of("subscription1", "subscription2")
+        val testPurchases = mutableListOf("purchase1", "purchase2")
+        val subscriptions = mutableListOf("subscription1", "subscription2")
         val getPurchasesBundle = Bundle()
         getPurchasesBundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST, ArrayList(testPurchases))
         whenever(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null))
@@ -122,8 +121,8 @@ class ConsumePurchaseResponseTest {
 
     @Test
     fun testConsumePurchaseNotOwned() {
-        val testPurchases = ImmutableList.of("purchase1", "purchase2")
-        val subscriptions = ImmutableList.of("subscription1", "subscription2")
+        val testPurchases = mutableListOf("purchase1", "purchase2")
+        val subscriptions = mutableListOf("subscription1", "subscription2")
         val getPurchasesBundle = Bundle()
         getPurchasesBundle.putStringArrayList(GoogleUtil.INAPP_PURCHASE_DATA_LIST, ArrayList(testPurchases))
         whenever(purchases.getPurchasesLists(GoogleUtil.BILLING_TYPE_IAP, null))

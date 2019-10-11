@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
-import com.google.common.base.Optional
 import com.nytimes.android.external.register.di.Injector
 import com.nytimes.android.external.register.model.Config
 import com.nytimes.android.external.registerlib.GoogleUtil
@@ -40,7 +39,8 @@ open class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
     @Inject
     lateinit var apiDelegate: APIOverridesDelegate
     @Inject
-    lateinit var config: Optional<Config>
+    @JvmField
+    var config: Config? = null
 
     private val disposables = CompositeDisposable()
 
@@ -216,7 +216,7 @@ open class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
     }
 
     private fun updatePurchases() {
-        if (config.isPresent) {
+        if (config != null) {
             val items = ArrayList<Pair<String, InAppPurchaseData>>()
             for (sub in purchases.getInAppPurchaseData(GoogleUtil.BILLING_TYPE_SUBSCRIPTION)) {
                 items.add(Pair.create(GoogleUtil.BILLING_TYPE_SUBSCRIPTION, sub))
@@ -234,10 +234,10 @@ open class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListe
     }
 
     private fun checkEmptyState() {
-        emptyView.visibility = if (!config.isPresent || mainAdapter.itemCount == 0) View.VISIBLE else View.GONE
+        emptyView.visibility = if (config == null || mainAdapter.itemCount == 0) View.VISIBLE else View.GONE
         if (emptyView.visibility == View.VISIBLE) {
-            emptyViewText.setText(if (config.isPresent) R.string.empty_message_text else R.string.no_config_text)
-            emptyViewTitle.setText(if (config.isPresent) R.string.empty_message_title else R.string.no_config_title)
+            emptyViewText.setText(if (config != null) R.string.empty_message_text else R.string.no_config_text)
+            emptyViewTitle.setText(if (config != null) R.string.empty_message_title else R.string.no_config_title)
         }
     }
 

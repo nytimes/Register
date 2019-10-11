@@ -4,9 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.os.Environment
 import android.util.Log
-import com.google.common.base.Charsets.UTF_8
-import com.google.common.base.Optional
-import com.google.common.io.Files
 import com.google.gson.Gson
 import com.nytimes.android.external.register.APIOverrides.Companion.CONFIG_FILE
 import com.nytimes.android.external.register.BuildConfig
@@ -22,8 +19,8 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
-import java.io.FileNotFoundException
+import java.io.*
+import java.nio.charset.Charset
 import javax.inject.Named
 
 @Module
@@ -37,11 +34,11 @@ class ActivityModule(private val activity: Activity) {
 
     @Provides
     @ScopeActivity
-    internal fun provideConfig(gson: Gson): Optional<Config> {
+    internal fun provideConfig(gson: Gson): Config? {
         if (PermissionHandler.hasPermission(activity)) {
             try {
-                return Optional.of(gson.fromJson(Files.newReader(File(
-                        Environment.getExternalStorageDirectory().path, CONFIG_FILE), UTF_8), Config::class.java))
+                return gson.fromJson(BufferedReader(InputStreamReader(FileInputStream(File(
+                        Environment.getExternalStorageDirectory().path, CONFIG_FILE)), Charset.forName("UTF-8"))), Config::class.java)
             } catch (exc: FileNotFoundException) {
                 Log.e("ActivityModule", activity.getString(R.string.config_not_found), exc)
             }
@@ -49,7 +46,7 @@ class ActivityModule(private val activity: Activity) {
         } else {
             PermissionHandler.requestPermission(activity)
         }
-        return Optional.absent()
+        return null
     }
 
     @Provides
