@@ -43,7 +43,6 @@ dependencies {
     implementation libraries.supportCardView
     implementation libraries.rxAndroid
     implementation libraries.rxJava
-    implementation libraries.guava
 
     testAnnotationProcessor libraries.daggerCompiler
     testImplementation libraries.junit
