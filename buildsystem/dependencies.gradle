@@ -49,6 +49,7 @@ ext.versions = [
         mockitoKotlin        : '2.1.0',
         mockitoAndroid       : '2.27.0',
         robolectric          : '4.3',
+        fragment             : '1.1.0',
         espresso             : '2.2.2'
 ]
 
@@ -84,6 +85,7 @@ ext.libraries = [
         mockitoKotlin           : "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.mockitoKotlin",
         mockitoAndroid          : "org.mockito:mockito-android:$versions.mockitoAndroid",
         robolectric             : "org.robolectric:robolectric:$versions.robolectric",
+        fragmentTest            : "androidx.fragment:fragment-testing:$versions.fragment",
         espresso                : "androidx.test.espresso:espresso-core:3.1.0",
         test                    : "androidx.test:core:1.0.0",
         testRules               : "androidx.test:rules:1.1.0",
