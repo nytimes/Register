@@ -87,8 +87,8 @@ ext.libraries = [
         robolectric             : "org.robolectric:robolectric:$versions.robolectric",
         fragmentTest            : "androidx.fragment:fragment-testing:$versions.fragment",
         espresso                : "androidx.test.espresso:espresso-core:3.1.0",
-        test                    : "androidx.test:core:1.0.0",
+        test                    : "androidx.test:core:1.1.0",
         testRules               : "androidx.test:rules:1.1.0",
-        testRunner              : "androidx.test:runner:1.2.0",
-        testExt                 : "androidx.test.ext:junit:1.1.1"
+        testRunner              : "androidx.test:runner:1.1.0",
+        testExt                 : "androidx.test.ext:junit:1.1.0"
 ]
