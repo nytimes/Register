@@ -78,6 +78,7 @@ dependencies {
     testImplementation libraries.mockitoKotlin
     testImplementation libraries.assertJ
     testImplementation libraries.junit
+    testImplementation libraries.espresso
     testImplementation(libraries.robolectric)
     testImplementation libraries.test
     testImplementation libraries.testRules
@@ -85,6 +86,17 @@ dependencies {
     testImplementation libraries.testExt
     testImplementation libraries.javaxInject
     testImplementation group: 'org.skyscreamer', name: 'jsonassert', version: '1.2.3'
+
+    androidTestImplementation libraries.mockito
+    androidTestImplementation libraries.mockitoInline
+    androidTestImplementation libraries.mockitoKotlin
+    androidTestImplementation libraries.assertJ
+    androidTestImplementation libraries.junit
+    androidTestImplementation libraries.test
+    androidTestImplementation libraries.testRules
+    androidTestImplementation libraries.testRunner
+    androidTestImplementation libraries.testExt
+    androidTestImplementation libraries.javaxInject
 }
 
 buildscript {
