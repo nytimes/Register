@@ -28,7 +28,6 @@ ext.versions = [
         // UI libs.
         supportLibs          : '27.1.1',
         constraint           : '1.1.0',
-        swipeLayout          : '1.2.0@aar',
 
         // Others.
         dagger               : '2.9',
@@ -59,7 +58,6 @@ ext.libraries = [
         supportDesign           : "com.google.android.material:material:1.0.0-rc01",
         supportCardView         : "androidx.cardview:cardview:1.0.0",
         constraint              : "androidx.constraintlayout:constraintlayout:2.0.0-beta2",
-        swipeLayout             : "com.daimajia.swipelayout:library:$versions.swipeLayout",
 
         // Others.
         dagger                  : "com.google.dagger:dagger:$versions.dagger",

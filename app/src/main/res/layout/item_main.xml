@@ -1,14 +1,21 @@
-<com.daimajia.swipe.SwipeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-    <include layout="@layout/item_main_delete"
+    <include
+        android:id="@+id/item_main_top"
+        layout="@layout/item_main_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".8" />
+
+    <include
         android:id="@+id/item_main_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
+        layout="@layout/item_main_delete"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".2" />
 
-    <include layout="@layout/item_main_content"
-        android:id="@+id/item_main_top"/>
 
-</com.daimajia.swipe.SwipeLayout>
+</LinearLayout>
