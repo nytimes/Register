@@ -19,7 +19,7 @@
             android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_main"
-            tools:showIn="@layout/activity_main" />
+            tools:showIn="@layout/fragment_main" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
