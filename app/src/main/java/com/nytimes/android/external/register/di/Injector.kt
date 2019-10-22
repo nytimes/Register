@@ -1,6 +1,5 @@
 package com.nytimes.android.external.register.di
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Service
 import android.content.Context
@@ -11,7 +10,6 @@ class Injector {
 
         private var applicationComponent: ApplicationComponent? = null
 
-        @SuppressLint("WrongConstant")
         @JvmStatic
         fun obtainAppComponent(context: Context): ApplicationComponent {
             if (applicationComponent == null) {
@@ -25,13 +23,13 @@ class Injector {
 
         @JvmStatic
         fun create(activity: Activity): ActivityComponent {
-            return Injector.obtainAppComponent(activity)
+            return obtainAppComponent(activity)
                     .plusActivityComponent(ActivityModule(activity))
         }
 
         @JvmStatic
         fun create(service: Service): ServiceComponent {
-            return Injector.obtainAppComponent(service)
+            return obtainAppComponent(service)
                     .plusServiceComponent(ServiceModule(service))
         }
     }
