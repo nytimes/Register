@@ -10,7 +10,7 @@ import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.nytimes.android.external.register.APIOverrides.Companion.RESULT_DEFAULT
-import com.nytimes.android.external.register.BuyActivity.Companion.RECEIPT_FMT
+import com.nytimes.android.external.register.buy.BuyFragment.Companion.RECEIPT_FMT
 import com.nytimes.android.external.register.model.Config
 import com.nytimes.android.external.registerlib.GoogleUtil
 import com.nytimes.android.external.registerlib.InAppPurchaseData
