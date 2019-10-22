@@ -9,41 +9,18 @@ import android.content.Context
 class Injector {
     companion object {
 
-        private const val INJECTOR_APP = "INJECTOR_APP"
-        private const val INJECTOR_ACTIVITY = "INJECTOR_ACTIVITY"
-        private const val INJECTOR_SERVICE = "INJECTOR_SERVICE"
+        private var applicationComponent: ApplicationComponent? = null
 
         @SuppressLint("WrongConstant")
         @JvmStatic
         fun obtainAppComponent(context: Context): ApplicationComponent {
-            return context.applicationContext.getSystemService(INJECTOR_APP) as ApplicationComponent
-        }
-
-        @SuppressLint("WrongConstant")
-        @JvmStatic
-        fun obtainActivityComponent(context: Context): ActivityComponent {
-            return context.getSystemService(INJECTOR_ACTIVITY) as ActivityComponent
-        }
-
-        @SuppressLint("WrongConstant")
-        @JvmStatic
-        fun obtainServiceComponent(context: Context): ServiceComponent {
-            return context.getSystemService(INJECTOR_SERVICE) as ServiceComponent
-        }
-
-        @JvmStatic
-        fun matchesActivity(name: String): Boolean {
-            return INJECTOR_ACTIVITY == name
-        }
-
-        @JvmStatic
-        fun matchesService(name: String): Boolean {
-            return INJECTOR_SERVICE == name
-        }
-
-        @JvmStatic
-        fun matchesApp(name: String): Boolean {
-            return INJECTOR_APP == name
+            if (applicationComponent == null) {
+                val applicationModule = ApplicationModule(context)
+                applicationComponent = DaggerApplicationComponent.builder()
+                        .applicationModule(applicationModule)
+                        .build()
+            }
+            return applicationComponent!!
         }
 
         @JvmStatic
