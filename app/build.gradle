@@ -53,7 +53,6 @@ dependencies {
 
     implementation libraries.supportAppCompat
     implementation libraries.supportDesign
-    implementation libraries.swipeLayout
 
     implementation project(':lib')
     implementation libraries.gson
