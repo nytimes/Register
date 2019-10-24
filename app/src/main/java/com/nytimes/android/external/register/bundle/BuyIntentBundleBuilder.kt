@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 
 import com.nytimes.android.external.register.APIOverrides
-import com.nytimes.android.external.register.BuyActivity
+import com.nytimes.android.external.register.MainActivity
 import com.nytimes.android.external.registerlib.GoogleUtil
 
 import javax.inject.Inject
@@ -18,7 +18,8 @@ constructor(protected val context: Context, apiOverrides: APIOverrides) : BaseBu
 
     fun newBuilder(): BuyIntentBundleBuilder {
         bundle = Bundle()
-        intent = Intent(context, BuyActivity::class.java)
+        intent = Intent(context, MainActivity::class.java)
+        intent.putExtra(MainActivity.EXTRA_BUY_FLOW, MainActivity.EXTRA_BUY_FLOW)
         return this
     }
 

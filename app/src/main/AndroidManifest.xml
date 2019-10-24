@@ -11,19 +11,16 @@
         android:theme="@style/Theme.Register" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/main_name" >
+            android:label="@string/main_name"
+            android:theme="@style/Theme.Register.Translucent"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="com.nytimes.android.external.register.test.buy"/>
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".SettingsActivity"
-            android:label="@string/settings_name"/>
-
-        <activity android:name=".legal.LegalActivity"
-            android:label="@string/settings_other_legal"/>
 
         <service
             android:name=".RegisterService"
@@ -33,15 +30,6 @@
                 <action android:name="com.nytimes.android.external.register.InAppBillingService.BIND"/>
             </intent-filter>
         </service>
-
-        <activity
-            android:name=".BuyActivity"
-            android:theme="@style/Theme.Register.Dialog"
-            android:label="@string/title_activity_buy" >
-            <intent-filter>
-                <action android:name="com.nytimes.android.external.register.test.buy"/>
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

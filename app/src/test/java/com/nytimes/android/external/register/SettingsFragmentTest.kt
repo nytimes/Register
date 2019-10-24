@@ -17,7 +17,7 @@ class SettingsFragmentTest {
 
     private val scenario: FragmentScenario<SettingsFragment> by lazy {
         launchFragmentInContainer<SettingsFragment>(
-                themeResId = R.style.Theme_Register)
+                themeResId = R.style.Theme_Register_Translucent)
     }
 
     @Test

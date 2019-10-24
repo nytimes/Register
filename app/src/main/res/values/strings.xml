@@ -39,8 +39,6 @@
     <string name="empty_message_title">No purchases</string>
     <string name="no_config_text">There is no config file. Please push register.json file to sdcard/, restart the app, and accept file permissions.</string>
     <string name="no_config_title">No config file</string>
-    <!-- Buy-->
-    <string name="title_activity_buy">BuyActivity</string>
 
     <!-- Settings -->
     <string name="settings_name">Settings</string>

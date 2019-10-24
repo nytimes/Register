@@ -23,7 +23,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.nytimes.android.external.register.di.Injector
 import com.nytimes.android.external.register.di.SchedulerProvider
-import com.nytimes.android.external.register.legal.LegalActivity
 import com.nytimes.android.external.register.model.Repository
 import io.reactivex.disposables.CompositeDisposable
 import java.text.NumberFormat
@@ -109,7 +108,7 @@ class SettingsFragment : Fragment() {
         val toolbar = requireView().findViewById<View>(R.id.toolbar) as Toolbar
         toolbar.title = "Settings"
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-        toolbar.setNavigationOnClickListener { requireActivity().onBackPressed() }
+        toolbar.setNavigationOnClickListener { (requireActivity() as MainActivity).popBackstack() }
     }
 
     private fun initGeneral() {
@@ -125,8 +124,7 @@ class SettingsFragment : Fragment() {
     private fun initOther() {
         setText(R.id.settings_header_other, R.string.settings_other)
         initItemNested(R.id.settings_item_legal, R.string.settings_other_legal, -1) {
-            val intent = Intent(requireActivity(), LegalActivity::class.java)
-            startActivity(intent)
+            (requireActivity() as MainActivity).navigateToLegal()
         }
         initItemNested(R.id.settings_item_tos, R.string.settings_other_tos, -1) {
             startWebIntent(getString(R.string.url_tos))
@@ -229,7 +227,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showError(throwable: Throwable) {
-        Log.e(SettingsActivity::class.java.simpleName, "Error while loading GitHub repo", throwable)
+        Log.e(SettingsFragment::class.java.simpleName, "Error while loading GitHub repo", throwable)
         TransitionManager.beginDelayedTransition(githubCardRoot, showErrorTransition)
 
         val logoAdjustY = resources.getDimensionPixelSize(R.dimen.settings_github_logo_offset)

@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import com.nytimes.android.external.register.MainActivity
 import com.nytimes.android.external.register.R
 
 
@@ -24,14 +25,14 @@ class LegalFragment : Fragment() {
     }
 
     private fun initToolbar() {
-        val toolbar = view!!.findViewById<Toolbar>(R.id.toolbar)
+        val toolbar = requireView().findViewById<Toolbar>(R.id.toolbar)
         toolbar.title = "Legal"
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-        toolbar.setNavigationOnClickListener { requireActivity().onBackPressed() }
+        toolbar.setNavigationOnClickListener { (requireActivity() as MainActivity).popBackstack() }
     }
 
     private fun initRecycler() {
-        val legalRecyclerView: RecyclerView = view!!.findViewById(R.id.list)
+        val legalRecyclerView: RecyclerView = requireView().findViewById(R.id.list)
         legalRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
         val inflater = LayoutInflater.from(context)
