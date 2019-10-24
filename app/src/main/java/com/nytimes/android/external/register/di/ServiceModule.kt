@@ -1,7 +1,7 @@
 package com.nytimes.android.external.register.di
 
-import android.app.Application
 import android.app.Service
+import android.content.Context
 import android.os.Environment
 import android.util.Log
 import com.google.gson.Gson
@@ -52,9 +52,9 @@ class ServiceModule(private val service: Service) {
 
     @Provides
     @ScopeService
-    internal fun provideBuyIntentBundleBuilder(application: Application,
+    internal fun provideBuyIntentBundleBuilder(context: Context,
                                                apiOverrides: APIOverrides): BuyIntentBundleBuilder {
-        return BuyIntentBundleBuilder(application, apiOverrides)
+        return BuyIntentBundleBuilder(context, apiOverrides)
     }
 
     @Provides
@@ -78,8 +78,8 @@ class ServiceModule(private val service: Service) {
 
     @Provides
     @ScopeService
-    internal fun provideBuyIntentToReplaceSkusBundleBuilder(application: Application,
+    internal fun provideBuyIntentToReplaceSkusBundleBuilder(context: Context,
                                                             apiOverrides: APIOverrides): BuyIntentToReplaceSkusBundleBuilder {
-        return BuyIntentToReplaceSkusBundleBuilder(application, apiOverrides)
+        return BuyIntentToReplaceSkusBundleBuilder(context, apiOverrides)
     }
 }

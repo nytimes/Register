@@ -1,6 +1,5 @@
 package com.nytimes.android.external.register.di
 
-import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
@@ -22,12 +21,12 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-class ApplicationModule(private val application: Application) {
+class ApplicationModule(private val context: Context) {
 
     @Provides
     @Singleton
-    internal fun provideApplication(): Application {
-        return application
+    internal fun provideContext(): Context {
+        return context
     }
 
     @Singleton
@@ -56,8 +55,8 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     @Singleton
-    internal fun provideSharedPreferences(application: Application): SharedPreferences {
-        return application.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    internal fun provideSharedPreferences(context: Context): SharedPreferences {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     }
 
     @Provides
@@ -77,7 +76,7 @@ class ApplicationModule(private val application: Application) {
     internal fun providePrivateKey(): PrivateKey? {
         return try {
             val trusted = KeyStore.getInstance("BKS")
-            val keyStore = application.resources.openRawResource(R.raw.keystore)
+            val keyStore = context.resources.openRawResource(R.raw.keystore)
             keyStore.use { trusted.load(it, "register".toCharArray()) }
             trusted.getKey("register", "register".toCharArray()) as PrivateKey
         } catch (exception: KeyStoreException) {
