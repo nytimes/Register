@@ -22,7 +22,7 @@ import java.security.InvalidKeyException
 import java.security.SignatureException
 import javax.inject.Inject
 
-class BuyFragment : Fragment() {
+class BuyFragment : Fragment(), OnBackPressedListener {
     @Inject
     lateinit var apiOverrides: APIOverrides
     @Inject
@@ -250,13 +250,10 @@ class BuyFragment : Fragment() {
         PermissionHandler.handlePermissionResult(requestCode, requireActivity(), *grantResults)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (requireActivity().isFinishing) {
-            val bundle = Bundle()
-            bundle.putInt(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_USER_CANCELED)
-            requireActivity().setResult(AppCompatActivity.RESULT_OK)
-        }
+    override fun backPressed() {
+        val bundle = Bundle()
+        bundle.putInt(GoogleUtil.RESPONSE_CODE, GoogleUtil.RESULT_USER_CANCELED)
+        requireActivity().setResult(AppCompatActivity.RESULT_OK)
     }
 
     companion object {
@@ -273,7 +270,7 @@ class BuyFragment : Fragment() {
         const val RESPONSE_EXTRA_SUMMARY = "RESPONSE_EXTRA_SUMMARY"
         const val RESPONSE_EXTRA_PRICE = "RESPONSE_EXTRA_PRICE"
         const val RESPONSE_EXTRA_REPLACE_OLD_SKU = "RESPONSE_EXTRA_REPLACE_OLD_SKU"
-        private const val TAG = "BuyActivity"
+        private const val TAG = "BuyFragment"
 
         fun create(
                 sku: String?,
@@ -294,5 +291,8 @@ class BuyFragment : Fragment() {
             return fragment
         }
     }
+}
 
+interface OnBackPressedListener {
+    fun backPressed()
 }

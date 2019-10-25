@@ -2,7 +2,6 @@
 
     <!-- Base application theme. -->
     <style name="Theme.Register" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@color/windowBackground</item>
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
         <item name="colorAccent">@color/register_blue</item>
         <item name="colorPrimary">@color/colorPrimary</item>

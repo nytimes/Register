@@ -14,7 +14,7 @@ import org.junit.runner.RunWith
 class LegalFragmentTest {
 
     private val scenario: FragmentScenario<LegalFragment> by lazy {
-        launchFragmentInContainer<LegalFragment>(themeResId = R.style.Theme_Register)
+        launchFragmentInContainer<LegalFragment>(themeResId = R.style.Theme_Register_Translucent)
     }
 
     @Test

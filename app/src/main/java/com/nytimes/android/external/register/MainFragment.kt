@@ -1,6 +1,5 @@
 package com.nytimes.android.external.register
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Pair
 import android.view.LayoutInflater
@@ -24,16 +23,9 @@ import com.nytimes.android.external.register.model.Config
 import com.nytimes.android.external.registerlib.GoogleUtil
 import com.nytimes.android.external.registerlib.InAppPurchaseData
 import io.reactivex.disposables.CompositeDisposable
-import java.lang.Math
 import java.util.ArrayList
 import javax.inject.Inject
-import kotlin.Array
 import kotlin.Comparator
-import kotlin.Int
-import kotlin.IntArray
-import kotlin.Long
-import kotlin.String
-import kotlin.apply
 
 class MainFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
@@ -107,8 +99,7 @@ class MainFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     true
                 }
                 R.id.menu_action_settings -> {
-                    val settingsIntent = Intent(requireContext(), SettingsActivity::class.java)
-                    startActivity(settingsIntent)
+                    (requireActivity() as MainActivity).navigateToSettings()
                     true
                 }
                 R.id.menu_action_configure -> {
