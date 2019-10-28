@@ -28,12 +28,12 @@ class APIOverridesDelegateTest {
         `when`(mockConfig.responseCode).thenReturn(-1)
 
         // Valid entries
-        testObject.setApiOverridesValue(R.id.isBillingSupported, mockConfig)
-        testObject.setApiOverridesValue(R.id.getBuyIntent, mockConfig)
-        testObject.setApiOverridesValue(R.id.buy, mockConfig)
-        testObject.setApiOverridesValue(R.id.getPurchases, mockConfig)
-        testObject.setApiOverridesValue(R.id.getSkuDetails, mockConfig)
-        testObject.setApiOverridesValue(R.id.getBuyIntentToReplaceSkus, mockConfig)
+        testObject.setApiOverridesValue(R.id.nyt_register_isBillingSupported, mockConfig)
+        testObject.setApiOverridesValue(R.id.nyt_register_getBuyIntent, mockConfig)
+        testObject.setApiOverridesValue(R.id.nyt_register_buy, mockConfig)
+        testObject.setApiOverridesValue(R.id.nyt_register_getPurchases, mockConfig)
+        testObject.setApiOverridesValue(R.id.nyt_register_getSkuDetails, mockConfig)
+        testObject.setApiOverridesValue(R.id.nyt_register_getBuyIntentToReplaceSkus, mockConfig)
 
         // verify valid interactions
         verify<APIOverrides>(apiOverrides, times(1)).isBillingSupportedResponse = RESULT_DEFAULT
@@ -72,12 +72,12 @@ class APIOverridesDelegateTest {
         `when`(mockConfig.responseCode).thenReturn(-1)
 
         // Valid entries
-        testObject.getApiOverridesValue(R.id.isBillingSupported)
-        testObject.getApiOverridesValue(R.id.getBuyIntent)
-        testObject.getApiOverridesValue(R.id.buy)
-        testObject.getApiOverridesValue(R.id.getPurchases)
-        testObject.getApiOverridesValue(R.id.getSkuDetails)
-        testObject.getApiOverridesValue(R.id.getBuyIntentToReplaceSkus)
+        testObject.getApiOverridesValue(R.id.nyt_register_isBillingSupported)
+        testObject.getApiOverridesValue(R.id.nyt_register_getBuyIntent)
+        testObject.getApiOverridesValue(R.id.nyt_register_buy)
+        testObject.getApiOverridesValue(R.id.nyt_register_getPurchases)
+        testObject.getApiOverridesValue(R.id.nyt_register_getSkuDetails)
+        testObject.getApiOverridesValue(R.id.nyt_register_getBuyIntentToReplaceSkus)
 
         // verify only valid interactions
         verify<APIOverrides>(apiOverrides, times(1)).isBillingSupportedResponse
@@ -113,27 +113,27 @@ class APIOverridesDelegateTest {
     @Test
     fun getApiOverridesValueWithInvalidIdReturnsCorrectValue() {
         `when`(apiOverrides.isBillingSupportedResponse).thenReturn(GoogleUtil.RESULT_BILLING_UNAVAILABLE)
-        val isBillingSupported = testObject.getApiOverridesValue(R.id.isBillingSupported)
+        val isBillingSupported = testObject.getApiOverridesValue(R.id.nyt_register_isBillingSupported)
         assertThat(isBillingSupported).isEqualTo(GoogleUtil.RESULT_BILLING_UNAVAILABLE)
 
         `when`(apiOverrides.getBuyIntentResponse).thenReturn(GoogleUtil.RESULT_ITEM_NOT_OWNED)
-        val getBuyIntent = testObject.getApiOverridesValue(R.id.getBuyIntent)
+        val getBuyIntent = testObject.getApiOverridesValue(R.id.nyt_register_getBuyIntent)
         assertThat(getBuyIntent).isEqualTo(GoogleUtil.RESULT_ITEM_NOT_OWNED)
 
         `when`(apiOverrides.buyResponse).thenReturn(GoogleUtil.RESULT_DEVELOPER_ERROR)
-        val buy = testObject.getApiOverridesValue(R.id.buy)
+        val buy = testObject.getApiOverridesValue(R.id.nyt_register_buy)
         assertThat(buy).isEqualTo(GoogleUtil.RESULT_DEVELOPER_ERROR)
 
         `when`(apiOverrides.getPurchasesResponse).thenReturn(GoogleUtil.RESULT_ERROR)
-        val getPurchases = testObject.getApiOverridesValue(R.id.getPurchases)
+        val getPurchases = testObject.getApiOverridesValue(R.id.nyt_register_getPurchases)
         assertThat(getPurchases).isEqualTo(GoogleUtil.RESULT_ERROR)
 
         `when`(apiOverrides.getSkuDetailsResponse).thenReturn(GoogleUtil.RESULT_ITEM_ALREADY_OWNED)
-        val getSkuDetails = testObject.getApiOverridesValue(R.id.getSkuDetails)
+        val getSkuDetails = testObject.getApiOverridesValue(R.id.nyt_register_getSkuDetails)
         assertThat(getSkuDetails).isEqualTo(GoogleUtil.RESULT_ITEM_ALREADY_OWNED)
 
         `when`(apiOverrides.getBuyIntentToReplaceSkusResponse).thenReturn(GoogleUtil.RESULT_OK)
-        val getBuyIntentToReplaceSkus = testObject.getApiOverridesValue(R.id.getBuyIntentToReplaceSkus)
+        val getBuyIntentToReplaceSkus = testObject.getApiOverridesValue(R.id.nyt_register_getBuyIntentToReplaceSkus)
         assertThat(getBuyIntentToReplaceSkus).isEqualTo(GoogleUtil.RESULT_OK)
     }
 

@@ -24,27 +24,27 @@ class SettingsFragmentTest {
     fun onCreateSetsOther() {
 
         scenario.onFragment {
-            it.assertTextViewText(R.id.settings_header_other, R.string.nyt_register_settings_other)
+            it.assertTextViewText(R.id.nyt_register_settings_header_other, R.string.nyt_register_settings_other)
 
             // Legal
-            val legalRoot = it.requireView().findViewById<View>(R.id.settings_item_legal)
-            val legalTitle = legalRoot.findViewById<View>(R.id.settings_item_title) as TextView
+            val legalRoot = it.requireView().findViewById<View>(R.id.nyt_register_settings_item_legal)
+            val legalTitle = legalRoot.findViewById<View>(R.id.nyt_register_settings_item_title) as TextView
             Assertions.assertThat(legalTitle.text).isEqualTo(it.getStringResource(R.string.nyt_register_settings_other_legal))
-            val legalSub = legalRoot.findViewById<View>(R.id.settings_item_summary) as TextView
+            val legalSub = legalRoot.findViewById<View>(R.id.nyt_register_settings_item_summary) as TextView
             Assertions.assertThat(legalSub.visibility).isEqualTo(View.GONE)
 
             // TOS
-            val tosRoot = it.requireView().findViewById<View>(R.id.settings_item_tos)
-            val tosTitle = tosRoot.findViewById<View>(R.id.settings_item_title) as TextView
+            val tosRoot = it.requireView().findViewById<View>(R.id.nyt_register_settings_item_tos)
+            val tosTitle = tosRoot.findViewById<View>(R.id.nyt_register_settings_item_title) as TextView
             Assertions.assertThat(tosTitle.text).isEqualTo(it.getStringResource(R.string.nyt_register_settings_other_tos))
-            val tosSub = tosRoot.findViewById<View>(R.id.settings_item_summary) as TextView
+            val tosSub = tosRoot.findViewById<View>(R.id.nyt_register_settings_item_summary) as TextView
             Assertions.assertThat(tosSub.visibility).isEqualTo(View.GONE)
 
             // Priv
-            val privRoot = it.requireView().findViewById<View>(R.id.settings_item_priv)
-            val privTitle = privRoot.findViewById<View>(R.id.settings_item_title) as TextView
+            val privRoot = it.requireView().findViewById<View>(R.id.nyt_register_settings_item_priv)
+            val privTitle = privRoot.findViewById<View>(R.id.nyt_register_settings_item_title) as TextView
             Assertions.assertThat(privTitle.text).isEqualTo(it.getStringResource(R.string.nyt_register_settings_other_priv))
-            val privSub = privRoot.findViewById<View>(R.id.settings_item_summary) as TextView
+            val privSub = privRoot.findViewById<View>(R.id.nyt_register_settings_item_summary) as TextView
             Assertions.assertThat(privSub.visibility).isEqualTo(View.GONE)
         }
     }
@@ -52,8 +52,8 @@ class SettingsFragmentTest {
     @Test
     fun onCreateSetsLicense() {
         scenario.onFragment {
-            it.assertTextViewText(R.id.settings_header_license, R.string.nyt_register_settings_license)
-            it.assertTextViewText(R.id.settings_item_license, R.string.nyt_register_settings_license_text)
+            it.assertTextViewText(R.id.nyt_register_settings_header_license, R.string.nyt_register_settings_license)
+            it.assertTextViewText(R.id.nyt_register_settings_item_license, R.string.nyt_register_settings_license_text)
         }
     }
 

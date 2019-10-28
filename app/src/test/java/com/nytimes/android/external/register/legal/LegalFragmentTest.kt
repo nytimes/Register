@@ -23,7 +23,7 @@ class LegalFragmentTest {
             val names = it.requireActivity().resources.getStringArray(R.array.nyt_register_license_names)
             val values = it.requireActivity().resources.getStringArray(R.array.nyt_register_license_values)
 
-            val legalRecyclerView = it.view!!.findViewById<View>(R.id.list) as RecyclerView
+            val legalRecyclerView = it.view!!.findViewById<View>(R.id.nyt_register_list) as RecyclerView
 
             val adapter = legalRecyclerView.adapter as LegalAdapter
 
