@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/empty_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingStart="@dimen/nyt_register_recycler_empty_padding"
+    android:paddingEnd="@dimen/nyt_register_recycler_empty_padding"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="@dimen/nyt_register_recycler_empty_icon_size"
+        android:layout_height="@dimen/nyt_register_recycler_empty_icon_size"
+        app:srcCompat="@drawable/nyt_register_ic_shopping" />
+
+    <TextView
+        android:id="@+id/nyt_register_empty_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/nyt_register_recycler_empty_title_margin_top"
+        android:layout_marginBottom="@dimen/nyt_register_recycler_empty_title_margin_top"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/nyt_register_recycler_empty_title_size"
+        android:text="@string/nyt_register_empty_message_title" />
+
+    <TextView
+        android:id="@+id/nyt_register_empty_view_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:maxWidth="400dp"
+        android:textColor="?android:textColorSecondary"
+        android:text="@string/nyt_register_empty_message_text" />
+
+</LinearLayout>

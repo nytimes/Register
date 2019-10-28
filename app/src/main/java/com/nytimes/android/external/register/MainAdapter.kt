@@ -28,7 +28,7 @@ class MainAdapter(context: Context) : RecyclerView.Adapter<MainViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
-        return with(inflater.inflate(R.layout.item_main, parent, false)) {
+        return with(inflater.inflate(R.layout.nyt_register_item_main, parent, false)) {
             MainViewHolder(this)
         }
     }

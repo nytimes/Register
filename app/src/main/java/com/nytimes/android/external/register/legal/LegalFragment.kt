@@ -15,7 +15,7 @@ import com.nytimes.android.external.register.R
 class LegalFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_legal, container, false)
+        return inflater.inflate(R.layout.nyt_register_fragment_legal, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -25,14 +25,14 @@ class LegalFragment : Fragment() {
     }
 
     private fun initToolbar() {
-        val toolbar = requireView().findViewById<Toolbar>(R.id.toolbar)
+        val toolbar = requireView().findViewById<Toolbar>(R.id.nyt_register_toolbar)
         toolbar.title = "Legal"
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        toolbar.setNavigationIcon(R.drawable.nyt_register_ic_arrow_back)
         toolbar.setNavigationOnClickListener { (requireActivity() as MainActivity).popBackstack() }
     }
 
     private fun initRecycler() {
-        val legalRecyclerView: RecyclerView = requireView().findViewById(R.id.list)
+        val legalRecyclerView: RecyclerView = requireView().findViewById(R.id.nyt_register_list)
         legalRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
         val inflater = LayoutInflater.from(context)
@@ -40,8 +40,8 @@ class LegalFragment : Fragment() {
     }
 
     private fun inflateData(): List<Pair<String, String>> {
-        val names = resources.getStringArray(R.array.license_names)
-        val values = resources.getStringArray(R.array.license_values)
+        val names = resources.getStringArray(R.array.nyt_register_license_names)
+        val values = resources.getStringArray(R.array.nyt_register_license_values)
 
         return names.mapIndexed { index, name -> name to values[index] }
     }

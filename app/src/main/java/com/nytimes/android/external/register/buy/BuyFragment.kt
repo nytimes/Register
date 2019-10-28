@@ -81,7 +81,7 @@ class BuyFragment : Fragment(), OnBackPressedListener {
         }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_buy, container, false)
+        return inflater.inflate(R.layout.nyt_register_fragment_buy, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -125,17 +125,17 @@ class BuyFragment : Fragment(), OnBackPressedListener {
     }
 
     private fun initTextBody(content: Bundle) {
-        val title = requireView().findViewById<View>(R.id.buy_title) as TextView
+        val title = requireView().findViewById<View>(R.id.nyt_register_buy_title) as TextView
         title.text = if (config != null)
             content.getString(RESPONSE_EXTRA_TITLE)
         else
-            getString(R.string.no_config_title)
+            getString(R.string.nyt_register_no_config_title)
 
-        val summary = requireView().findViewById<View>(R.id.buy_summary) as TextView
+        val summary = requireView().findViewById<View>(R.id.nyt_register_buy_summary) as TextView
         summary.text = if (config != null)
             content.getString(RESPONSE_EXTRA_SUMMARY)
         else
-            getString(R.string.no_config_text)
+            getString(R.string.nyt_register_no_config_text)
 
         if (config != null && content.containsKey(RESPONSE_EXTRA_REPLACE_OLD_SKU)) {
             summary.append("\n\n" + content.getString(RESPONSE_EXTRA_REPLACE_OLD_SKU)!!)
@@ -146,7 +146,7 @@ class BuyFragment : Fragment(), OnBackPressedListener {
         initUserSpinner()
 
         // init price
-        val price = requireView().findViewById<View>(R.id.buy_price) as TextView
+        val price = requireView().findViewById<View>(R.id.nyt_register_buy_price) as TextView
         if (content.containsKey(RESPONSE_EXTRA_PRICE)) {
             price.visibility = View.VISIBLE
             price.text = content.getString(RESPONSE_EXTRA_PRICE)
@@ -154,16 +154,16 @@ class BuyFragment : Fragment(), OnBackPressedListener {
             price.visibility = View.GONE
         }
 
-        requireView().findViewById<View>(R.id.div).visibility = View.VISIBLE
+        requireView().findViewById<View>(R.id.nyt_register_div).visibility = View.VISIBLE
 
         // init buy
-        val buyButton = requireView().findViewById<View>(R.id.buy_button) as Button
-        buyButton.setText(R.string.buy)
+        val buyButton = requireView().findViewById<View>(R.id.nyt_register_buy_button) as Button
+        buyButton.setText(R.string.nyt_register_buy)
         buyButton.setOnClickListener { onBuy() }
     }
 
     private fun initUserSpinner() {
-        val usersSpinner = requireView().findViewById<View>(R.id.buy_spinner_accounts) as Spinner
+        val usersSpinner = requireView().findViewById<View>(R.id.nyt_register_buy_spinner_accounts) as Spinner
         usersSpinner.visibility = View.VISIBLE
 
         val currentUser = apiOverrides.usersResponse
@@ -172,7 +172,7 @@ class BuyFragment : Fragment(), OnBackPressedListener {
         val selectedItem = if (index == -1) 0 else index
 
         val adapter = ArrayAdapter(requireActivity(),
-                R.layout.simple_list_item, android.R.id.text1,
+                R.layout.nyt_register_simple_list_item, android.R.id.text1,
                 users)
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
         usersSpinner.adapter = adapter
@@ -189,16 +189,16 @@ class BuyFragment : Fragment(), OnBackPressedListener {
     }
 
     private fun initBodyResultFail(buyResponse: Int) {
-        requireView().findViewById<View>(R.id.buy_price).visibility = View.GONE
-        requireView().findViewById<View>(R.id.div).visibility = View.GONE
-        requireView().findViewById<View>(R.id.buy_spinner_accounts).visibility = View.GONE
+        requireView().findViewById<View>(R.id.nyt_register_buy_price).visibility = View.GONE
+        requireView().findViewById<View>(R.id.nyt_register_div).visibility = View.GONE
+        requireView().findViewById<View>(R.id.nyt_register_buy_spinner_accounts).visibility = View.GONE
 
-        val buyButton = requireView().findViewById<View>(R.id.buy_button) as Button
+        val buyButton = requireView().findViewById<View>(R.id.nyt_register_buy_button) as Button
         if (buyResponse == GoogleUtil.RESULT_ITEM_ALREADY_OWNED) {
-            buyButton.setText(R.string.replace)
+            buyButton.setText(R.string.nyt_register_replace)
             buyButton.setOnClickListener { onBuyAlreadyOwned() }
         } else {
-            buyButton.setText(R.string.ok)
+            buyButton.setText(R.string.nyt_register_ok)
             buyButton.setOnClickListener { requireActivity().finish() }
         }
     }

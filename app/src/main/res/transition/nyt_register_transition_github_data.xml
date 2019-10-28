@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionOrdering="together">
+
+    <changeBounds android:duration="300">
+        <targets>
+            <target android:targetId="@+id/nyt_register_settings_github" />
+        </targets>
+    </changeBounds>
+
+    <changeBounds android:duration="300">
+        <targets>
+            <target android:targetId="@+id/nyt_register_github_logo" />
+        </targets>
+    </changeBounds>
+
+    <fade
+        android:duration="300"
+        android:fadingMode="fade_in"
+        android:startDelay="150">
+        <targets>
+            <target android:targetId="@+id/nyt_register_github_repo_name" />
+            <target android:targetId="@+id/nyt_register_github_repo_last_commit" />
+            <target android:targetId="@+id/nyt_register_github_repo_desc" />
+            <target android:targetId="@+id/nyt_register_github_repo_forks" />
+            <target android:targetId="@+id/nyt_register_github_repo_stars" />
+        </targets>
+    </fade>
+
+    <changeBounds
+        android:duration="300"
+        android:fadingMode="fade_in"
+        android:startDelay="150">
+        <targets>
+            <target android:targetId="@+id/nyt_register_github_repo_forks" />
+            <target android:targetId="@+id/nyt_register_github_repo_stars" />
+        </targets>
+    </changeBounds>
+
+</transitionSet>

@@ -41,7 +41,7 @@ class ConfigSpinnerAdapter(context: Context, items: List<ConfigResponse>) : Base
 
     private fun getViewHolder(view: View?, viewGroup: ViewGroup): ConfigViewHolder {
         return if (view == null) {
-            val itemView = inflater.inflate(R.layout.item_config, viewGroup, false)
+            val itemView = inflater.inflate(R.layout.nyt_register_item_config, viewGroup, false)
             ConfigViewHolder(itemView)
         } else {
             view.tag as ConfigViewHolder

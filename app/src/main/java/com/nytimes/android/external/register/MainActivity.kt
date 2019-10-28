@@ -25,7 +25,7 @@ open class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.nyt_register_activity_main)
 
         if (intent.hasExtra(EXTRA_BUY_FLOW)) {
             navigateToBuy()
@@ -62,7 +62,7 @@ open class MainActivity : AppCompatActivity() {
         fragment.retainInstance = true
 
         val transaction = supportFragmentManager.beginTransaction()
-                .replace(R.id.main_fragment_container, fragment)
+                .replace(R.id.nyt_register_main_fragment_container, fragment)
 
         if (addToBackStack) {
             transaction.addToBackStack(null)

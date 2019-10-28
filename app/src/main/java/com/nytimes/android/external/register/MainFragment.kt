@@ -49,7 +49,7 @@ class MainFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private var configureMenuItem: MenuItem? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        return inflater.inflate(R.layout.nyt_register_fragment_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,17 +61,17 @@ class MainFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         initRecycler()
 
         emptyView = requireView().findViewById(R.id.empty_view)
-        emptyViewText = requireView().findViewById<View>(R.id.empty_view_text) as TextView
-        emptyViewTitle = requireView().findViewById<View>(R.id.empty_view_title) as TextView
+        emptyViewText = requireView().findViewById<View>(R.id.nyt_register_empty_view_text) as TextView
+        emptyViewTitle = requireView().findViewById<View>(R.id.nyt_register_empty_view_title) as TextView
 
-        initSpinner(R.id.isBillingSupported, R.string.is_billing_supported, R.array.isBillingEnabled_spinner)
-        initSpinner(R.id.getBuyIntent, R.string.get_buy_intent, R.array.getBuyIntent_spinner)
-        initSpinner(R.id.buy, R.string.buy_label, R.array.buy_spinner)
-        initSpinner(R.id.getPurchases, R.string.get_purchases, R.array.getPurchases_spinner)
-        initSpinner(R.id.getSkuDetails, R.string.get_sku_details, R.array.getSkuDetails_spinner)
-        initSpinner(R.id.consumePurchase, R.string.consume_purchases, R.array.consumePurchase_spinner)
-        initSpinner(R.id.getBuyIntentToReplaceSkus, R.string.buy_intent_replace_skus,
-                R.array.buy_intent_replace_skus_spinner)
+        initSpinner(R.id.nyt_register_isBillingSupported, R.string.nyt_register_is_billing_supported, R.array.nyt_register_isBillingEnabled_spinner)
+        initSpinner(R.id.nyt_register_getBuyIntent, R.string.nyt_register_get_buy_intent, R.array.nyt_register_getBuyIntent_spinner)
+        initSpinner(R.id.nyt_register_buy, R.string.nyt_register_buy_label, R.array.nyt_register_buy_spinner)
+        initSpinner(R.id.nyt_register_getPurchases, R.string.nyt_register_get_purchases, R.array.nyt_register_getPurchases_spinner)
+        initSpinner(R.id.nyt_register_getSkuDetails, R.string.nyt_register_get_sku_details, R.array.nyt_register_getSkuDetails_spinner)
+        initSpinner(R.id.nyt_register_consumePurchase, R.string.nyt_register_consume_purchases, R.array.nyt_register_consumePurchase_spinner)
+        initSpinner(R.id.nyt_register_getBuyIntentToReplaceSkus, R.string.nyt_register_buy_intent_replace_skus,
+                R.array.nyt_register_buy_intent_replace_skus_spinner)
     }
 
     private fun inject() {
@@ -79,30 +79,30 @@ class MainFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun initToolbar() {
-        val toolbar = requireView().findViewById<Toolbar>(R.id.toolbar)
-        toolbar.setTitle(R.string.app_name)
+        val toolbar = requireView().findViewById<Toolbar>(R.id.nyt_register_toolbar)
+        toolbar.setTitle(R.string.nyt_register_app_name)
 
-        toolbar.inflateMenu(R.menu.menu_main)
-        configureMenuItem = toolbar.menu.findItem(R.id.menu_action_configure)
+        toolbar.inflateMenu(R.menu.nyt_register_menu_main)
+        configureMenuItem = toolbar.menu.findItem(R.id.nyt_register_menu_action_configure)
 
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.menu_action_delete_all -> {
+                R.id.nyt_register_menu_action_delete_all -> {
                     purchases.purgePurchases()
                     swipeRefresh.isRefreshing = true
                     swipeRefresh.postDelayed({ this.onRefresh() }, 300)
                     true
                 }
-                R.id.menu_action_refresh -> {
+                R.id.nyt_register_menu_action_refresh -> {
                     swipeRefresh.isRefreshing = true
                     swipeRefresh.postDelayed({ this.onRefresh() }, 300)
                     true
                 }
-                R.id.menu_action_settings -> {
+                R.id.nyt_register_menu_action_settings -> {
                     (requireActivity() as MainActivity).navigateToSettings()
                     true
                 }
-                R.id.menu_action_configure -> {
+                R.id.nyt_register_menu_action_configure -> {
                     appBarLayout.setExpanded(true, true)
                     true
                 }
@@ -113,7 +113,7 @@ class MainFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun initAppBarLayout() {
         val appBarContent = requireView().findViewById<View>(R.id.app_bar_content)
-        appBarLayout = requireView().findViewById(R.id.app_bar_layout)
+        appBarLayout = requireView().findViewById(R.id.nyt_register_app_bar_layout)
         appBarLayout.setExpanded(false, false)
         appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             appBarContent.translationY = (-verticalOffset).toFloat()
@@ -136,7 +136,7 @@ class MainFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun initRecycler() {
-        swipeRefresh = requireView().findViewById(R.id.swiperefresh)
+        swipeRefresh = requireView().findViewById(R.id.nyt_register_swiperefresh)
         swipeRefresh.setOnRefreshListener(this)
 
         mainAdapter = MainAdapter(requireContext()).apply {
@@ -149,7 +149,7 @@ class MainFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             })
         }
 
-        requireView().findViewById<RecyclerView>(R.id.list).apply {
+        requireView().findViewById<RecyclerView>(R.id.nyt_register_list).apply {
             setHasFixedSize(true)
             adapter = mainAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
@@ -161,12 +161,12 @@ class MainFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         val container = requireView().findViewById<View>(containerLayoutId)
 
         // Set title
-        container.findViewById<TextView>(R.id.config_title).apply {
+        container.findViewById<TextView>(R.id.nyt_register_config_title).apply {
             setText(titleResId)
         }
 
         // Init Spinner
-        container.findViewById<Spinner>(R.id.config_spinner).apply {
+        container.findViewById<Spinner>(R.id.nyt_register_config_spinner).apply {
             // Get data
             val items = getData(entriesResId)
 
@@ -257,8 +257,8 @@ class MainFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun checkEmptyState() {
         emptyView.visibility = if (config == null || mainAdapter.itemCount == 0) View.VISIBLE else View.GONE
         if (emptyView.visibility == View.VISIBLE) {
-            emptyViewText.setText(if (config != null) R.string.empty_message_text else R.string.no_config_text)
-            emptyViewTitle.setText(if (config != null) R.string.empty_message_title else R.string.no_config_title)
+            emptyViewText.setText(if (config != null) R.string.nyt_register_empty_message_text else R.string.nyt_register_no_config_text)
+            emptyViewTitle.setText(if (config != null) R.string.nyt_register_empty_message_title else R.string.nyt_register_no_config_title)
         }
     }
 

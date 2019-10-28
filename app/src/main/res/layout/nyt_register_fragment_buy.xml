@@ -1,0 +1,83 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:paddingBottom="@dimen/nyt_register_activity_vertical_margin"
+    android:paddingLeft="@dimen/nyt_register_activity_horizontal_margin"
+    android:paddingRight="@dimen/nyt_register_activity_horizontal_margin"
+    android:paddingTop="@dimen/nyt_register_activity_vertical_margin"
+    android:layout_gravity="center"
+    android:background="@color/nyt_register_windowBackground">
+
+    <TextView
+        android:id="@+id/nyt_register_buy_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/nyt_register_buy_price"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="20sp"
+        tools:text="Lorem Ipsum Item" />
+
+    <TextView
+        android:id="@+id/nyt_register_buy_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/nyt_register_buy_title"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:textColor="@color/nyt_register_register_blue"
+        android:textSize="22sp"
+        tools:text="$10.00" />
+
+    <TextView
+        android:id="@+id/nyt_register_buy_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nyt_register_buy_title"
+        android:layout_marginBottom="32dp"
+        android:layout_marginTop="8dp"
+        tools:text="Lorem Ipsum Item" />
+
+    <View
+        android:id="@+id/nyt_register_div"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/nyt_register_buy_summary"
+        android:background="#1A000000" />
+
+    <Spinner
+        android:id="@+id/nyt_register_buy_spinner_accounts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nyt_register_div"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        tools:listitem="@layout/nyt_register_simple_list_item" />
+
+    <TextView
+        android:id="@+id/nyt_register_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nyt_register_buy_spinner_accounts"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="2dp"
+        android:text="@string/nyt_register_app_name"
+        android:textColor="#757575"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/nyt_register_buy_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/nyt_register_buy_spinner_accounts"
+        android:background="@drawable/nyt_register_bg_button"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:minHeight="36dp"
+        android:minWidth="120dp"
+        android:text="@string/nyt_register_ok"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>

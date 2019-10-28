@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:autoLink="web|email"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:paddingBottom="16dp"
+    android:paddingEnd="@dimen/nyt_register_padding_horizontal_settings"
+    android:paddingStart="@dimen/nyt_register_padding_horizontal_settings"
+    android:paddingTop="16dp"
+    android:textColor="@color/nyt_register_textColorSecondarySettings"
+    tools:text="@string/nyt_register_lorem_ipsum_sentence" />

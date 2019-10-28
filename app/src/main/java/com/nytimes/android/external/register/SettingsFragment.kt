@@ -53,7 +53,7 @@ class SettingsFragment : Fragment() {
     private var subs = CompositeDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+        return inflater.inflate(R.layout.nyt_register_fragment_settings, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,7 +74,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun initRoot() {
-        val layout = requireView().findViewById<View>(R.id.root) as ViewGroup
+        val layout = requireView().findViewById<View>(R.id.nyt_register_root) as ViewGroup
         val layoutTransition = layout.layoutTransition
         layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
     }
@@ -82,9 +82,9 @@ class SettingsFragment : Fragment() {
     private fun initGithub() {
 
         with(TransitionInflater.from(requireContext())) {
-            showDataTransition = inflateTransition(R.transition.transition_github_data)
-            showErrorTransition = inflateTransition(R.transition.transition_github_error)
-            showDefaultTransition = inflateTransition(R.transition.transition_github_default)
+            showDataTransition = inflateTransition(R.transition.nyt_register_transition_github_data)
+            showErrorTransition = inflateTransition(R.transition.nyt_register_transition_github_error)
+            showDefaultTransition = inflateTransition(R.transition.nyt_register_transition_github_default)
             showDefaultTransition.addListener(object : TransitionListenerAdapter() {
                 override fun onTransitionEnd(transition: Transition) {
                     loadGithubRepoData(true)
@@ -94,43 +94,43 @@ class SettingsFragment : Fragment() {
 
         numberFormat = NumberFormat.getIntegerInstance()
 
-        githubCardRoot = requireView().findViewById<View>(R.id.settings_github) as ViewGroup
-        githubCardName = requireView().findViewById<View>(R.id.github_repo_name) as TextView
-        githubCardCommit = requireView().findViewById<View>(R.id.github_repo_last_commit) as TextView
-        githubCardDesc = requireView().findViewById<View>(R.id.github_repo_desc) as TextView
-        githubCardForks = requireView().findViewById<View>(R.id.github_repo_forks) as TextView
-        githubCardStars = requireView().findViewById<View>(R.id.github_repo_stars) as TextView
-        githubError = requireView().findViewById(R.id.github_error)
-        githubImage = requireView().findViewById(R.id.github_logo)
+        githubCardRoot = requireView().findViewById<View>(R.id.nyt_register_settings_github) as ViewGroup
+        githubCardName = requireView().findViewById<View>(R.id.nyt_register_github_repo_name) as TextView
+        githubCardCommit = requireView().findViewById<View>(R.id.nyt_register_github_repo_last_commit) as TextView
+        githubCardDesc = requireView().findViewById<View>(R.id.nyt_register_github_repo_desc) as TextView
+        githubCardForks = requireView().findViewById<View>(R.id.nyt_register_github_repo_forks) as TextView
+        githubCardStars = requireView().findViewById<View>(R.id.nyt_register_github_repo_stars) as TextView
+        githubError = requireView().findViewById(R.id.nyt_register_github_error)
+        githubImage = requireView().findViewById(R.id.nyt_register_github_logo)
     }
 
     private fun initToolbar() {
-        val toolbar = requireView().findViewById<View>(R.id.toolbar) as Toolbar
+        val toolbar = requireView().findViewById<View>(R.id.nyt_register_toolbar) as Toolbar
         toolbar.title = "Settings"
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        toolbar.setNavigationIcon(R.drawable.nyt_register_ic_arrow_back)
         toolbar.setNavigationOnClickListener { (requireActivity() as MainActivity).popBackstack() }
     }
 
     private fun initGeneral() {
-        setText(R.id.settings_header_general, R.string.settings_general)
-        initItemNested(R.id.settings_item_import,
-                R.string.settings_general_import_title,
-                R.string.settings_general_import_summ) {
+        setText(R.id.nyt_register_settings_header_general, R.string.nyt_register_settings_general)
+        initItemNested(R.id.nyt_register_settings_item_import,
+                R.string.nyt_register_settings_general_import_title,
+                R.string.nyt_register_settings_general_import_summ) {
             val root = requireView().findViewById<View>(android.R.id.content)
             Snackbar.make(root, "TODO: Change Import Location", Snackbar.LENGTH_SHORT).show()
         }
     }
 
     private fun initOther() {
-        setText(R.id.settings_header_other, R.string.settings_other)
-        initItemNested(R.id.settings_item_legal, R.string.settings_other_legal, -1) {
+        setText(R.id.nyt_register_settings_header_other, R.string.nyt_register_settings_other)
+        initItemNested(R.id.nyt_register_settings_item_legal, R.string.nyt_register_settings_other_legal, -1) {
             (requireActivity() as MainActivity).navigateToLegal()
         }
-        initItemNested(R.id.settings_item_tos, R.string.settings_other_tos, -1) {
-            startWebIntent(getString(R.string.url_tos))
+        initItemNested(R.id.nyt_register_settings_item_tos, R.string.nyt_register_settings_other_tos, -1) {
+            startWebIntent(getString(R.string.nyt_register_url_tos))
         }
-        initItemNested(R.id.settings_item_priv, R.string.settings_other_priv, -1) {
-            startWebIntent(getString(R.string.url_priv))
+        initItemNested(R.id.nyt_register_settings_item_priv, R.string.nyt_register_settings_other_priv, -1) {
+            startWebIntent(getString(R.string.nyt_register_url_priv))
         }
     }
 
@@ -138,10 +138,10 @@ class SettingsFragment : Fragment() {
                                clickListener: (View) -> Unit) {
         val v = requireView().findViewById<View>(layout)
 
-        val title = v.findViewById<View>(R.id.settings_item_title) as TextView
+        val title = v.findViewById<View>(R.id.nyt_register_settings_item_title) as TextView
         title.setText(titleRes)
 
-        val desc = v.findViewById<View>(R.id.settings_item_summary) as TextView
+        val desc = v.findViewById<View>(R.id.nyt_register_settings_item_summary) as TextView
 
         if (summaryRes == -1) {
             desc.visibility = View.GONE
@@ -154,14 +154,14 @@ class SettingsFragment : Fragment() {
     }
 
     private fun initDevelopedBy() {
-        val onClick = { _: View -> startWebIntent(getString(R.string.url_jobs)) }
+        val onClick = { _: View -> startWebIntent(getString(R.string.nyt_register_url_jobs)) }
 
-        val title = setText(R.id.settings_header_dev, R.string.settings_dev_by)
-        title.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_times_dev, 0)
+        val title = setText(R.id.nyt_register_settings_header_dev, R.string.nyt_register_settings_dev_by)
+        title.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.nyt_register_ic_times_dev, 0)
         title.setOnClickListener(onClick)
 
-        val source = getString(R.string.settings_dev_by_text)
-        val summ = requireView().findViewById<View>(R.id.settings_item_dev) as TextView
+        val source = getString(R.string.nyt_register_settings_dev_by_text)
+        val summ = requireView().findViewById<View>(R.id.nyt_register_settings_item_dev) as TextView
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             summ.text = Html.fromHtml(source, Html.FROM_HTML_MODE_LEGACY)
         } else {
@@ -171,8 +171,8 @@ class SettingsFragment : Fragment() {
     }
 
     private fun initLicense() {
-        setText(R.id.settings_header_license, R.string.settings_license)
-        val licenseView = setText(R.id.settings_item_license, R.string.settings_license_text)
+        setText(R.id.nyt_register_settings_header_license, R.string.nyt_register_settings_license)
+        val licenseView = setText(R.id.nyt_register_settings_item_license, R.string.nyt_register_settings_license_text)
         licenseView.background = null
     }
 
@@ -187,7 +187,7 @@ class SettingsFragment : Fragment() {
         val intent = Intent(Intent.ACTION_VIEW, uri)
         if (intent.resolveActivity(requireActivity().packageManager) == null) {
             val root = requireView().findViewById<View>(android.R.id.content)
-            Snackbar.make(root, R.string.error_cannot_load_url, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(root, R.string.nyt_register_error_cannot_load_url, Snackbar.LENGTH_SHORT).show()
         } else {
             startActivity(intent)
         }
@@ -203,10 +203,10 @@ class SettingsFragment : Fragment() {
     private fun showData(repository: Repository) {
         TransitionManager.beginDelayedTransition(githubCardRoot, showDataTransition)
 
-        val logoSize = resources.getDimensionPixelSize(R.dimen.settings_github_logo_size)
+        val logoSize = resources.getDimensionPixelSize(R.dimen.nyt_register_settings_github_logo_size)
         val layoutParams = githubImage.layoutParams as RelativeLayout.LayoutParams
         layoutParams.removeRule(RelativeLayout.CENTER_IN_PARENT)
-        layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.github_repo_forks)
+        layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.nyt_register_github_repo_forks)
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE)
         layoutParams.width = logoSize
         layoutParams.height = logoSize
@@ -230,7 +230,7 @@ class SettingsFragment : Fragment() {
         Log.e(SettingsFragment::class.java.simpleName, "Error while loading GitHub repo", throwable)
         TransitionManager.beginDelayedTransition(githubCardRoot, showErrorTransition)
 
-        val logoAdjustY = resources.getDimensionPixelSize(R.dimen.settings_github_logo_offset)
+        val logoAdjustY = resources.getDimensionPixelSize(R.dimen.nyt_register_settings_github_logo_offset)
         val layoutParams = githubImage.layoutParams as RelativeLayout.LayoutParams
         layoutParams.topMargin = githubImage.top - githubCardRoot.paddingTop - logoAdjustY
         layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL)

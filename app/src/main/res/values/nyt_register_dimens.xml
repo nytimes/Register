@@ -1,0 +1,21 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nyt_register_activity_horizontal_margin">20dp</dimen>
+    <dimen name="nyt_register_activity_vertical_margin">16dp</dimen>
+
+    <dimen name="nyt_register_recycler_empty_icon_size">56dp</dimen>
+    <dimen name="nyt_register_recycler_empty_padding">32dp</dimen>
+    <dimen name="nyt_register_recycler_empty_title_size">18sp</dimen>
+    <dimen name="nyt_register_recycler_empty_title_margin_top">4dp</dimen>
+
+    <dimen name="nyt_register_z_app_bar">4dp</dimen>
+    <dimen name="nyt_register_padding_normal">16dp</dimen>
+    <dimen name="nyt_register_z_fab">6dp</dimen>
+    <dimen name="nyt_register_spacing_huge">64dp</dimen>
+    <dimen name="nyt_register_fab_size">56dp</dimen>
+    <dimen name="nyt_register_padding_horizontal_settings">20dp</dimen>
+
+    <dimen name="nyt_register_settings_github_logo_offset">20dp</dimen>
+    <dimen name="nyt_register_settings_github_logo_size">24dp</dimen>
+    <dimen name="nyt_register_settings_github_error_offset">0dp</dimen>
+</resources>

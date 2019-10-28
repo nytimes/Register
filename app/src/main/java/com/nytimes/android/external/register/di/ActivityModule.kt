@@ -40,7 +40,7 @@ class ActivityModule(private val activity: Activity) {
                 return gson.fromJson(BufferedReader(InputStreamReader(FileInputStream(File(
                         Environment.getExternalStorageDirectory().path, CONFIG_FILE)), Charset.forName("UTF-8"))), Config::class.java)
             } catch (exc: FileNotFoundException) {
-                Log.e("ActivityModule", activity.getString(R.string.config_not_found), exc)
+                Log.e("ActivityModule", activity.getString(R.string.nyt_register_config_not_found), exc)
             }
 
         } else {

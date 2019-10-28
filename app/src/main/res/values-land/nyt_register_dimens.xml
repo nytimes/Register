@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="nyt_register_settings_github_logo_offset">16dp</dimen>
+    <dimen name="nyt_register_settings_github_error_offset">-8dp</dimen>
+
+    <dimen name="nyt_register_recycler_empty_padding">72dp</dimen>
+    <dimen name="nyt_register_recycler_empty_icon_size">40dp</dimen>
+    <dimen name="nyt_register_recycler_empty_title_size">16sp</dimen>
+    <dimen name="nyt_register_recycler_empty_title_margin_top">0dp</dimen>
+</resources>

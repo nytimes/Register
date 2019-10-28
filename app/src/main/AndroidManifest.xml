@@ -7,9 +7,9 @@
     <application>
         <activity
             android:name="com.nytimes.android.external.register.MainActivity"
-            android:label="@string/main_name"
-            android:icon="@mipmap/ic_launcher"
-            android:theme="@style/Theme.Register.Translucent"
+            android:label="@string/nyt_register_main_name"
+            android:icon="@mipmap/nyt_register_ic_launcher"
+            android:theme="@style/nyt_register_Theme.Register.Translucent"
             android:taskAffinity="com.nytimes.android.external.register.${applicationId}"
             >
             <intent-filter>
