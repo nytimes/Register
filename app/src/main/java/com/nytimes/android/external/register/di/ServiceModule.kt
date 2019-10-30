@@ -2,7 +2,6 @@ package com.nytimes.android.external.register.di
 
 import android.app.Service
 import android.content.Context
-import android.os.Environment
 import android.util.Log
 import com.google.gson.Gson
 import com.nytimes.android.external.register.*
@@ -11,7 +10,10 @@ import com.nytimes.android.external.register.bundle.*
 import com.nytimes.android.external.register.model.Config
 import dagger.Module
 import dagger.Provides
-import java.io.*
+import java.io.BufferedReader
+import java.io.FileNotFoundException
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.nio.charset.Charset
 
 @Module
@@ -26,16 +28,16 @@ class ServiceModule(private val service: Service) {
     @Provides
     @ScopeService
     internal fun provideConfig(gson: Gson): Config? {
-        if (PermissionHandler.hasPermission(service)) {
-            try {
-                return gson.fromJson(BufferedReader(InputStreamReader(FileInputStream(File(
-                        Environment.getExternalStorageDirectory().path, CONFIG_FILE)), Charset.forName("UTF-8"))), Config::class.java)
-            } catch (exc: FileNotFoundException) {
-                Log.e("ServiceModule", service.getString(R.string.nyt_register_config_not_found), exc)
-            }
-
+        try {
+            return gson.fromJson(BufferedReader(InputStreamReader(readConfigFile(), Charset.forName("UTF-8"))), Config::class.java)
+        } catch (exc: FileNotFoundException) {
+            Log.e("ServiceModule", service.getString(R.string.nyt_register_config_not_found), exc)
         }
         return null
+    }
+
+    private fun readConfigFile(): InputStream {
+        return service.resources.assets.open(CONFIG_FILE)
     }
 
     @Provides
