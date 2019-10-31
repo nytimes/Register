@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="12dp">
+
+    <include
+        android:id="@+id/nyt_register_isBillingSupported"
+        style="@style/nyt_register_Config.Row"
+        layout="@layout/nyt_register_layout_config_spinner" />
+
+    <include
+        android:id="@+id/nyt_register_getBuyIntent"
+        style="@style/nyt_register_Config.Row"
+        layout="@layout/nyt_register_layout_config_spinner" />
+
+    <include
+        android:id="@+id/nyt_register_buy"
+        style="@style/nyt_register_Config.Row"
+        layout="@layout/nyt_register_layout_config_spinner" />
+
+    <include
+        android:id="@+id/nyt_register_getPurchases"
+        style="@style/nyt_register_Config.Row"
+        layout="@layout/nyt_register_layout_config_spinner" />
+
+    <include
+        android:id="@+id/nyt_register_getSkuDetails"
+        style="@style/nyt_register_Config.Row"
+        layout="@layout/nyt_register_layout_config_spinner" />
+
+    <include
+        android:id="@+id/nyt_register_consumePurchase"
+        style="@style/nyt_register_Config.Row"
+        layout="@layout/nyt_register_layout_config_spinner" />
+
+    <include
+        android:id="@+id/nyt_register_getBuyIntentToReplaceSkus"
+        style="@style/nyt_register_Config.Row"
+        layout="@layout/nyt_register_layout_config_spinner" />
+
+</LinearLayout>

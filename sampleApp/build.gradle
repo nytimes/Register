@@ -30,6 +30,7 @@ android {
 }
 
 dependencies {
+    implementation project(':app')
     implementation project(':lib')
     implementation libraries.billing
     implementation libraries.kotlin

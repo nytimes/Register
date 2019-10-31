@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
@@ -6,15 +6,13 @@ apply from: rootProject.file("configuration/register.gradle")
 
 
 android {
+    resourcePrefix 'nyt_register_'
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
     defaultConfig {
-        applicationId "com.nytimes.android.external.register"
         minSdkVersion 19
         compileSdkVersion versions.compileSdk
         targetSdkVersion versions.targetSdk
-        versionCode 1
-        versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -26,12 +24,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
     }
     lintOptions {
         abortOnError false
@@ -54,7 +46,7 @@ dependencies {
     implementation libraries.supportAppCompat
     implementation libraries.supportDesign
 
-    implementation project(':lib')
+    api project(':lib')
     implementation libraries.gson
 
     implementation libraries.dagger

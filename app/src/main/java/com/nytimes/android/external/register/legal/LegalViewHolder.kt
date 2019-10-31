@@ -11,8 +11,8 @@ import com.nytimes.android.external.register.R
  */
 class LegalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val title: TextView = itemView.findViewById(R.id.legal_item_title)
-    private val body: TextView = itemView.findViewById(R.id.legal_item_body)
+    private val title: TextView = itemView.findViewById(R.id.nyt_register_legal_item_title)
+    private val body: TextView = itemView.findViewById(R.id.nyt_register_legal_item_body)
 
     fun onBind(legalText: Pair<String, String>) {
         title.text = legalText.first

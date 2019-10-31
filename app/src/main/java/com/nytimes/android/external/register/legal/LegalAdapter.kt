@@ -15,7 +15,7 @@ class LegalAdapter(private val inflater: LayoutInflater, items: List<Pair<String
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LegalViewHolder {
         return LegalViewHolder(
-                inflater.inflate(R.layout.item_legal, parent, false))
+                inflater.inflate(R.layout.nyt_register_item_legal, parent, false))
     }
 
     override fun onBindViewHolder(holder: LegalViewHolder, position: Int) {

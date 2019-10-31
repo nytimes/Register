@@ -75,7 +75,7 @@ class BillingClientTesting(context: Context, listener: PurchasesUpdatedListener)
                 val originalComponent = service.component
                 val intent = Intent(service)
                 intent.action = INTENT_STRING
-                intent.setPackage(INTENT_PKG)
+                intent.setPackage(packageName)
                 intent.component = null
                 val intentServices = packageManager.queryIntentServices(intent, 0)
                 val resolveInfo = intentServices[0]
@@ -94,7 +94,6 @@ class BillingClientTesting(context: Context, listener: PurchasesUpdatedListener)
             private const val WRAPPED_ACTION = "com.android.vending.billing.InAppBillingService.BIND"
 
             private const val INTENT_STRING = "com.nytimes.android.external.register.InAppBillingService.BIND"
-            private const val INTENT_PKG = "com.nytimes.android.external.register"
         }
     }
 

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <public />
+
+    <!-- General-->
+    <string name="nyt_register_app_name">Register</string>
+
+    <!-- Debug-->
+    <string name="nyt_register_lorem_ipsum">Lorem Ipsum</string>
+    <string name="nyt_register_lorem_ipsum_sentence">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eros ligula, tincidunt non bibendum et, aliquam sed tortor.</string>
+
+    <!-- Menu-->
+    <string name="nyt_register_action_refresh">Refresh</string>
+    <string name="nyt_register_action_delete_all">Delete All</string>
+    <string name="nyt_register_action_settings">Settings</string>
+
+    <!-- Main-->
+    <string name="nyt_register_main_name">Register Config</string>
+
+    <string name="nyt_register_error">Error</string>
+    <string name="nyt_register_config_not_found">Config file not found</string>
+    <string name="nyt_register_item_not_found">Item not found</string>
+    <string name="nyt_register_item_already_owned">Item already owned</string>
+    <string name="nyt_register_replace_item_not_owned">Item(s) to be replaced not owned</string>
+    <string name="nyt_register_buy">Buy</string>
+    <string name="nyt_register_replace">Replace</string>
+    <string name="nyt_register_ok">OK</string>
+
+    <string name="nyt_register_is_billing_supported">isBillingSupported()</string>
+    <string name="nyt_register_get_buy_intent">getBuyIntent()</string>
+    <string name="nyt_register_buy_label">buy()</string>
+    <string name="nyt_register_get_purchases">getPurchases()</string>
+    <string name="nyt_register_get_sku_details">getSkuDetails()</string>
+    <string name="nyt_register_consume_purchases">consumePurchases()</string>
+    <string name="nyt_register_buy_intent_replace_skus">getBuyIntentToReplaceSkus()</string>
+    <string name="nyt_register_config_replace">replace()</string>
+
+
+    <string name="nyt_register_empty_message_text">There are no purchases available. Please integrate the Register Library into your app if you haven\'t done so already.</string>
+    <string name="nyt_register_empty_message_title">No purchases</string>
+    <string name="nyt_register_no_config_text">There is no config file. Please push register.json file to sdcard/, restart the app, and accept file permissions.</string>
+    <string name="nyt_register_no_config_title">No config file</string>
+
+    <!-- Settings -->
+    <string name="nyt_register_settings_name">Settings</string>
+    <string name="nyt_register_action_configure">Configure</string>
+    <string name="nyt_register_settings_general">General</string>
+    <string name="nyt_register_settings_general_import_title">Import from local storage</string>
+    <string name="nyt_register_settings_general_import_summ">Import your configuration file from the local storage of the phone. This populates the data fields within the main screen.</string>
+    <string name="nyt_register_settings_other">Other</string>
+    <string name="nyt_register_settings_other_legal">Legal</string>
+    <string name="nyt_register_settings_other_priv">Privacy Policy</string>
+    <string name="nyt_register_settings_other_tos">Terms of Service</string>
+    <string name="nyt_register_settings_dev_by">Developed By</string>
+    <string name="nyt_register_settings_dev_by_text"><![CDATA[John Smith, Jane Doe, Bob Snow, Adam Rock, Burt Paper, Adam
+        Jack, Tom Sink, Angie Dot, William Bottle, Judy Maple and support from the entire Mobile
+        team <font color=\"#248CD0\">@NYTimes</font>]]>.</string>
+    <string name="nyt_register_settings_license">License</string>
+    <string name="nyt_register_settings_license_text">Copyright © 2017 The New York Times Company\n\nLicensed under the Apache License, Version 2.0 (the \"License\"); you may not use this library except in compliance with the License. You may obtain a copy of the License at\n\nwww.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</string>
+    <string name="nyt_register_error_cannot_load_url">No app exists to view the URL.</string>
+
+    <string name="nyt_register_url_tos" translatable="false">https://www.nytimes.com/content/help/rights/terms/terms-of-service.html</string>
+    <string name="nyt_register_url_priv" translatable="false">https://www.nytimes.com/content/help/rights/privacy/policy/privacy-policy.html</string>
+    <string name="nyt_register_url_jobs">https://jobs.nytco.com</string>
+    <string name="nyt_register_settings_github_error">An error occurred when trying to fetch the repo information. Tap to try again.</string>
+
+
+</resources>

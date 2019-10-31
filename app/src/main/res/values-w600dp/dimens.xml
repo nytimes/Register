@@ -1,6 +1,0 @@
-<resources>
-    <dimen name="recycler_empty_icon_size">56dp</dimen>
-    <dimen name="recycler_empty_padding">32dp</dimen>
-    <dimen name="recycler_empty_title_size">18sp</dimen>
-    <dimen name="recycler_empty_title_margin_top">4dp</dimen>
-</resources>

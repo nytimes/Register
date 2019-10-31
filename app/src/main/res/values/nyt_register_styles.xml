@@ -1,0 +1,55 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="nyt_register_Theme.Register" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColorSecondary">@color/nyt_register_textColorSecondary</item>
+        <item name="colorAccent">@color/nyt_register_register_blue</item>
+        <item name="colorPrimary">@color/nyt_register_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/nyt_register_colorPrimaryDark</item>
+    </style>
+
+    <style name="nyt_register_Theme.Register.Translucent">
+        <item name="android:windowBackground">@color/nyt_register_scrim</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+
+    </style>
+
+    <style name="nyt_register_Theme.Register.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorAccent">@color/nyt_register_register_blue</item>
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+    </style>
+
+    <style name="nyt_register_TextView.Legal" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="nyt_register_TextView.Legal.Title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="nyt_register_TextView.Legal.Body">
+        <item name="android:textSize">12sp</item>
+
+        <item name="android:padding">10dp</item>
+        <item name="android:background">@color/nyt_register_config_spinner_background</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
+
+    <style name="nyt_register_Base.Config.Row" parent="">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+    </style>
+
+    <style name="nyt_register_Config.Row" parent="nyt_register_Base.Config.Row"/>
+
+</resources>

@@ -2,13 +2,11 @@ package com.nytimes.android.external.register.di
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.os.Environment
 import android.util.Log
 import com.google.gson.Gson
 import com.nytimes.android.external.register.APIOverrides.Companion.CONFIG_FILE
 import com.nytimes.android.external.register.BuildConfig
 import com.nytimes.android.external.register.GithubApi
-import com.nytimes.android.external.register.PermissionHandler
 import com.nytimes.android.external.register.R
 import com.nytimes.android.external.register.di.ApplicationModule.Companion.GSON_RETROFIT
 import com.nytimes.android.external.register.model.Config
@@ -19,7 +17,10 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.*
+import java.io.BufferedReader
+import java.io.FileNotFoundException
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.nio.charset.Charset
 import javax.inject.Named
 
@@ -35,18 +36,16 @@ class ActivityModule(private val activity: Activity) {
     @Provides
     @ScopeActivity
     internal fun provideConfig(gson: Gson): Config? {
-        if (PermissionHandler.hasPermission(activity)) {
             try {
-                return gson.fromJson(BufferedReader(InputStreamReader(FileInputStream(File(
-                        Environment.getExternalStorageDirectory().path, CONFIG_FILE)), Charset.forName("UTF-8"))), Config::class.java)
+                return gson.fromJson(BufferedReader(InputStreamReader(readConfigFile(), Charset.forName("UTF-8"))), Config::class.java)
             } catch (exc: FileNotFoundException) {
-                Log.e("ActivityModule", activity.getString(R.string.config_not_found), exc)
+                Log.e("ActivityModule", activity.getString(R.string.nyt_register_config_not_found), exc)
             }
-
-        } else {
-            PermissionHandler.requestPermission(activity)
-        }
         return null
+    }
+
+    private fun readConfigFile(): InputStream {
+        return activity.resources.assets.open(CONFIG_FILE)
     }
 
     @Provides

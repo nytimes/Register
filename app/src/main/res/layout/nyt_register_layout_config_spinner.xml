@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="true"
+    android:gravity="center_vertical"
+    android:minHeight="40dp"
+    android:orientation="horizontal"
+    android:paddingBottom="3dp"
+    android:paddingTop="3dp">
+
+    <TextView
+        android:id="@+id/nyt_register_config_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="monospace"
+        android:paddingEnd="16dp"
+        android:singleLine="true"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="12sp"
+        tools:ignore="MissingPrefix"
+        tools:targetApi="o"
+        tools:text="configName()" />
+
+    <Spinner
+        android:id="@+id/nyt_register_config_spinner"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/nyt_register_bg_config_spinner"
+        android:spinnerMode="dropdown"
+        tools:entries="@array/nyt_register_debug_spinner"
+        tools:listitem="@layout/nyt_register_item_config" />
+
+</LinearLayout>

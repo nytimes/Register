@@ -14,16 +14,16 @@ import org.junit.runner.RunWith
 class LegalFragmentTest {
 
     private val scenario: FragmentScenario<LegalFragment> by lazy {
-        launchFragmentInContainer<LegalFragment>(themeResId = R.style.Theme_Register_Translucent)
+        launchFragmentInContainer<LegalFragment>(themeResId = R.style.nyt_register_Theme_Register_Translucent)
     }
 
     @Test
     fun hasCorrectData() {
         scenario.onFragment {
-            val names = it.requireActivity().resources.getStringArray(R.array.license_names)
-            val values = it.requireActivity().resources.getStringArray(R.array.license_values)
+            val names = it.requireActivity().resources.getStringArray(R.array.nyt_register_license_names)
+            val values = it.requireActivity().resources.getStringArray(R.array.nyt_register_license_values)
 
-            val legalRecyclerView = it.view!!.findViewById<View>(R.id.list) as RecyclerView
+            val legalRecyclerView = it.view!!.findViewById<View>(R.id.nyt_register_list) as RecyclerView
 
             val adapter = legalRecyclerView.adapter as LegalAdapter
 
