@@ -111,7 +111,7 @@ See the image below for all configurable options on a response.
 
 ### Sample App
 
-**SampleApp** is a client app that showcases working with Register. See [SampleActivity](https://github.com/nytm/Register/blob/master/sampleApp/src/main/java/com/nytimes/android/external/register/sample/SampleActivity.java) for a demo of the purchasing flow.
+**SampleApp** is a client app that showcases working with Register. See [SampleActivity](https://github.com/nytimes/Register/blob/master/sampleApp/src/main/java/com/nytimes/android/external/register/sample/SampleActivity.kt) for a demo of the purchasing flow.
 
 ### Gradle
 
