@@ -2,18 +2,30 @@ package com.nytimes.android.external.registerlib
 
 import android.app.Activity
 import android.content.Context
-import android.support.annotation.UiThread
+import androidx.annotation.UiThread
 import com.android.billingclient.api.*
 
-class GoogleServiceProviderTesting(context: Context, listener: PurchasesUpdatedListener) : GoogleServiceProvider() {
+class GoogleServiceProviderTesting(
+        context: Context,
+        childDirected: Int,
+        underAgeOfConsent: Int,
+        enablePendingPurchases: Boolean,
+        listener: PurchasesUpdatedListener
+) : GoogleServiceProvider() {
 
-    private val billingClient: BillingClientTesting = BillingClientTesting(context, listener)
+    private val billingClient: BillingClientTesting = BillingClientTesting(
+            context,
+            childDirected,
+            underAgeOfConsent,
+            enablePendingPurchases,
+            listener
+    )
 
     override fun isReady(): Boolean {
         return billingClient.isReady
     }
 
-    override fun isFeatureSupported(feature: String): Int {
+    override fun isFeatureSupported(feature: String): BillingResult {
         return billingClient.isFeatureSupported(feature)
     }
 
@@ -25,7 +37,7 @@ class GoogleServiceProviderTesting(context: Context, listener: PurchasesUpdatedL
         billingClient.endConnection()
     }
 
-    override fun launchBillingFlow(activity: Activity, params: BillingFlowParams): Int {
+    override fun launchBillingFlow(activity: Activity, params: BillingFlowParams): BillingResult {
         return billingClient.launchBillingFlow(activity, params)
     }
 
@@ -37,8 +49,8 @@ class GoogleServiceProviderTesting(context: Context, listener: PurchasesUpdatedL
         billingClient.querySkuDetailsAsync(params, listener)
     }
 
-    override fun consumeAsync(purchaseToken: String, listener: ConsumeResponseListener) {
-        billingClient.consumeAsync(purchaseToken, listener)
+    override fun consumeAsync(params: ConsumeParams, listener: ConsumeResponseListener) {
+        billingClient.consumeAsync(params, listener)
     }
 
     override fun queryPurchaseHistoryAsync(skuType: String, listener: PurchaseHistoryResponseListener) {

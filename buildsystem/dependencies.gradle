@@ -36,7 +36,7 @@ ext.versions = [
         rxJava               : '2.1.0',
         rxAndroid            : '2.0.1',
         retrofit             : '2.3.0',
-        billing              : '1.1',
+        billing              : '2.1.0',
 
         // Kotlin.
         kotlin               : '1.3.21',

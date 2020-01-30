@@ -16,16 +16,35 @@ import java.io.FileDescriptor
  * `com.android.billingclient.api` package, so to have visibility over the
  * [BillingClientImpl] class (which is package-private).
  */
-class BillingClientTesting(context: Context, listener: PurchasesUpdatedListener) : BillingClient() {
+class BillingClientTesting(
+        context: Context,
+        childDirected: Int,
+        underAgeOfConsent: Int,
+        enablePendingPurchases: Boolean,
+        listener: PurchasesUpdatedListener
+
+) : BillingClient() {
 
     private val billingClientImpl: BillingClientImpl =
-            BillingClientImpl(BillingContextWrapper(context), listener)
+            BillingClientImpl(BillingContextWrapper(context), childDirected, underAgeOfConsent, enablePendingPurchases, listener)
+
+    override fun loadRewardedSku(params: RewardLoadParams?, listener: RewardResponseListener) {
+        billingClientImpl.loadRewardedSku(params, listener)
+    }
+
+    override fun acknowledgePurchase(params: AcknowledgePurchaseParams?, listener: AcknowledgePurchaseResponseListener?) {
+        billingClientImpl.acknowledgePurchase(params, listener)
+    }
+
+    override fun launchPriceChangeConfirmationFlow(activity: Activity?, params: PriceChangeFlowParams?, listener: PriceChangeConfirmationListener) {
+        billingClientImpl.launchPriceChangeConfirmationFlow(activity, params, listener)
+    }
 
     override fun isReady(): Boolean {
         return billingClientImpl.isReady
     }
 
-    override fun isFeatureSupported(feature: String): Int {
+    override fun isFeatureSupported(feature: String): BillingResult {
         return billingClientImpl.isFeatureSupported(feature)
     }
 
@@ -37,7 +56,7 @@ class BillingClientTesting(context: Context, listener: PurchasesUpdatedListener)
         billingClientImpl.endConnection()
     }
 
-    override fun launchBillingFlow(activity: Activity, params: BillingFlowParams): Int {
+    override fun launchBillingFlow(activity: Activity, params: BillingFlowParams): BillingResult {
         return billingClientImpl.launchBillingFlow(activity, params)
     }
 
@@ -49,8 +68,8 @@ class BillingClientTesting(context: Context, listener: PurchasesUpdatedListener)
         billingClientImpl.querySkuDetailsAsync(params, listener)
     }
 
-    override fun consumeAsync(purchaseToken: String, listener: ConsumeResponseListener) {
-        billingClientImpl.consumeAsync(purchaseToken, listener)
+    override fun consumeAsync(params: ConsumeParams, listener: ConsumeResponseListener) {
+        billingClientImpl.consumeAsync(params, listener)
     }
 
     override fun queryPurchaseHistoryAsync(skuType: String, listener: PurchaseHistoryResponseListener) {
