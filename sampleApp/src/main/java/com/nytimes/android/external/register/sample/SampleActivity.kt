@@ -45,11 +45,13 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
     private lateinit var googleServiceProvider: GoogleServiceProvider
     private var compositeDisposable = CompositeDisposable()
 
+    private val skuMap = mutableMapOf<String, SkuDetails>()
+
     private var purchasesUpdatedListener = PurchasesUpdatedListener { _, _ -> checkPurchasesAndSkuDetails() }
 
     private var billingClientStateListener: BillingClientStateListener = object : BillingClientStateListener {
-        override fun onBillingSetupFinished(responseCode: Int) {
-            if (responseCode == BillingClient.BillingResponse.OK) {
+        override fun onBillingSetupFinished(billingResult: BillingResult) {
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                 checkPurchasesAndSkuDetails()
             }
         }
@@ -103,7 +105,7 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
                 val purchases = ArrayList<Purchase>()
                 for (type in types) {
                     val result = googleServiceProvider.queryPurchases(type)
-                    if (result.responseCode == BillingClient.BillingResponse.OK) {
+                    if (result.responseCode == BillingClient.BillingResponseCode.OK) {
                         purchases.addAll(result.purchasesList)
                     }
                 }
@@ -126,6 +128,9 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
                 if (skuDetailsList == null) {
                     emitter.onNext(ArrayList())
                 } else {
+                    skuDetailsList.forEach {
+                        skuMap[it.sku] = it
+                    }
                     emitter.onNext(skuDetailsList)
                 }
                 emitter.onComplete()
@@ -147,6 +152,9 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
                 if (skuDetailsList == null) {
                     emitter.onNext(ArrayList())
                 } else {
+                    skuDetailsList.forEach {
+                        skuMap[it.sku] = it
+                    }
                     emitter.onNext(skuDetailsList)
                 }
                 emitter.onComplete()
@@ -237,8 +245,8 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
         compositeDisposable.add(adapter.clickSubject!!.subscribe { item ->
             val params = BillingFlowParams
                     .newBuilder()
-                    .setSku(item.sku)
-                    .setType(item.type)
+                    .setSkuDetails(skuMap[item.sku])
+//                    .setType(item.type)
                     .build()
             googleServiceProvider.launchBillingFlow(this, params)
         })
@@ -255,6 +263,7 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
                 .newBuilder(this)
                 .useTestProvider(prefsManager.isUsingTestGoogleServiceProvider)
                 .setListener(purchasesUpdatedListener)
+                .enablePendingPurchases() // Not used for subscriptions
                 .build()
 
         googleServiceProvider.startConnection(billingClientStateListener)
