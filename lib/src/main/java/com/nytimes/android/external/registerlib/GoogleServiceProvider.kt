@@ -2,7 +2,7 @@ package com.nytimes.android.external.registerlib
 
 import android.app.Activity
 import android.content.Context
-import android.support.annotation.UiThread
+import androidx.annotation.UiThread
 import com.android.billingclient.api.*
 
 /**
@@ -28,6 +28,9 @@ abstract class GoogleServiceProvider {
     class Builder constructor(private val mContext: Context?) {
         private var mListener: PurchasesUpdatedListener? = null
         private var useTestProvider: Boolean = false
+        private var underAgeOfConsent: Int = BillingClient.UnderAgeOfConsent.UNSPECIFIED
+        private var childDirected: Int = BillingClient.ChildDirected.UNSPECIFIED
+        private var enablePendingPurchases: Boolean = false
 
         /**
          * Specify a valid listener for onPurchasesUpdated event.
@@ -43,6 +46,24 @@ abstract class GoogleServiceProvider {
         @UiThread
         fun useTestProvider(useTestProvider: Boolean): GoogleServiceProvider.Builder {
             this.useTestProvider = useTestProvider
+            return this
+        }
+
+        @UiThread
+        fun setUnderAgeOfConsent(underAgeOfConsent: Int): GoogleServiceProvider.Builder {
+            this.underAgeOfConsent = underAgeOfConsent
+            return this
+        }
+
+        @UiThread
+        fun setChildDirected(childDirected: Int): GoogleServiceProvider.Builder {
+            this.childDirected = childDirected
+            return this
+        }
+
+        @UiThread
+        fun enablePendingPurchases(): GoogleServiceProvider.Builder {
+            this.enablePendingPurchases = true
             return this
         }
 
@@ -66,9 +87,9 @@ abstract class GoogleServiceProvider {
             }
 
             return if (useTestProvider) {
-                GoogleServiceProviderTesting(mContext, mListener!!)
+                GoogleServiceProviderTesting(mContext,childDirected, underAgeOfConsent, enablePendingPurchases, mListener!!)
             } else {
-                GoogleServiceProviderImpl(mContext, mListener!!)
+                GoogleServiceProviderImpl(mContext,childDirected, underAgeOfConsent, enablePendingPurchases, mListener!!)
             }
         }
     }
@@ -80,8 +101,7 @@ abstract class GoogleServiceProvider {
      * @return BILLING_RESULT_OK if feature is supported and corresponding error code otherwise.
      */
     @UiThread
-    @BillingClient.BillingResponse
-    abstract fun isFeatureSupported(@BillingClient.FeatureType feature: String): Int
+    abstract fun isFeatureSupported(@BillingClient.FeatureType feature: String): BillingResult
 
     /**
      * Starts up BillingClient setup process asynchronously. You will be notified through the [ ] listener when the setup process is complete.
@@ -109,10 +129,10 @@ abstract class GoogleServiceProvider {
      *
      * @param activity An activity reference from which the billing flow will be launched.
      * @param params Params specific to the request [BillingFlowParams]).
-     * @return int The response code ([BillingClient.BillingResponse]) of launch flow operation.
+     * @return BillingResult The response code ([BillingClient.BillingResponse]) of launch flow operation.
      */
     @UiThread
-    abstract fun launchBillingFlow(activity: Activity, params: BillingFlowParams): Int
+    abstract fun launchBillingFlow(activity: Activity, params: BillingFlowParams): BillingResult
 
     /**
      * Get purchases details for all the items bought within your app. This method uses a cache of
@@ -154,7 +174,7 @@ abstract class GoogleServiceProvider {
      * asynchronously through the callback with token and [BillingClient.BillingResponse] parameters.
      */
     @UiThread
-    abstract fun consumeAsync(purchaseToken: String, listener: ConsumeResponseListener)
+    abstract fun consumeAsync(params: ConsumeParams, listener: ConsumeResponseListener)
 
     /**
      * Returns the most recent purchase made by the user for each SKU, even if that purchase is
@@ -167,6 +187,36 @@ abstract class GoogleServiceProvider {
     @UiThread
     abstract fun queryPurchaseHistoryAsync(
             @BillingClient.SkuType skuType: String, listener: PurchaseHistoryResponseListener)
+
+    /**
+     * Acknowledge in-app purchases.
+     *
+     * <p>Developers are required to acknowledge that they have granted entitlement for all in-app
+     * purchases for their application.
+     *
+     * @param params Params specific to this acknowledge purchase request {@link
+     *     AcknowledgePurchaseParams}
+     * @param listener Implement it to get the result of the acknowledge operation returned
+     *     asynchronously through the callback with the {@link BillingResponseCode}
+     */
+    @UiThread
+    abstract fun acknowledgePurchase(params: AcknowledgePurchaseParams, listener: AcknowledgePurchaseResponseListener)
+
+    /**
+     * Loads a rewarded sku in the background and returns the result asynchronously.
+     *
+     *
+     * If the rewarded sku is available, the response will be BILLING_RESULT_OK. Otherwise the
+     * response will be ITEM_UNAVAILABLE. There is no guarantee that a rewarded sku will always be
+     * available. After a successful response, only then should the offer be given to a user to obtain
+     * a rewarded item and call launchBillingFlow.
+     *
+     * @param params Params specific to this load request [RewardLoadParams]
+     * @param listener Implement it to get the result of the load operation returned asynchronously
+     * through the callback with the [BillingResponseCode]
+     */
+    abstract fun loadRewardedSku(
+            params: RewardLoadParams, listener: RewardResponseListener)
 
     companion object {
 

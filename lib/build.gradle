@@ -23,6 +23,7 @@ android {
 dependencies {
     implementation libraries.billing
     implementation libraries.kotlin
+    implementation libraries.supportAnnotations
 
     testImplementation libraries.junit
     testImplementation libraries.assertJ
