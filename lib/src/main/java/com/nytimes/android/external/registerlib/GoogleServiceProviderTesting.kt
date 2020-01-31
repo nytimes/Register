@@ -57,6 +57,14 @@ class GoogleServiceProviderTesting(
         billingClient.queryPurchaseHistoryAsync(skuType, listener)
     }
 
+    override fun acknowledgePurchase(params: AcknowledgePurchaseParams, listener: AcknowledgePurchaseResponseListener) {
+        billingClient.acknowledgePurchase(params, listener)
+    }
+
+    override fun loadRewardedSku(params: RewardLoadParams, listener: RewardResponseListener) {
+        billingClient.loadRewardedSku(params, listener)
+    }
+
     companion object {
 
         /**

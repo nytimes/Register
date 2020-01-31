@@ -188,6 +188,36 @@ abstract class GoogleServiceProvider {
     abstract fun queryPurchaseHistoryAsync(
             @BillingClient.SkuType skuType: String, listener: PurchaseHistoryResponseListener)
 
+    /**
+     * Acknowledge in-app purchases.
+     *
+     * <p>Developers are required to acknowledge that they have granted entitlement for all in-app
+     * purchases for their application.
+     *
+     * @param params Params specific to this acknowledge purchase request {@link
+     *     AcknowledgePurchaseParams}
+     * @param listener Implement it to get the result of the acknowledge operation returned
+     *     asynchronously through the callback with the {@link BillingResponseCode}
+     */
+    @UiThread
+    abstract fun acknowledgePurchase(params: AcknowledgePurchaseParams, listener: AcknowledgePurchaseResponseListener)
+
+    /**
+     * Loads a rewarded sku in the background and returns the result asynchronously.
+     *
+     *
+     * If the rewarded sku is available, the response will be BILLING_RESULT_OK. Otherwise the
+     * response will be ITEM_UNAVAILABLE. There is no guarantee that a rewarded sku will always be
+     * available. After a successful response, only then should the offer be given to a user to obtain
+     * a rewarded item and call launchBillingFlow.
+     *
+     * @param params Params specific to this load request [RewardLoadParams]
+     * @param listener Implement it to get the result of the load operation returned asynchronously
+     * through the callback with the [BillingResponseCode]
+     */
+    abstract fun loadRewardedSku(
+            params: RewardLoadParams, listener: RewardResponseListener)
+
     companion object {
 
         /**
