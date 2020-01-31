@@ -246,7 +246,6 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
             val params = BillingFlowParams
                     .newBuilder()
                     .setSkuDetails(skuMap[item.sku])
-//                    .setType(item.type)
                     .build()
             googleServiceProvider.launchBillingFlow(this, params)
         })
