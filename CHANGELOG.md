@@ -1,6 +1,22 @@
 Change Log
 ==========
 
+Version 0.0.7
+-------------
+internal
+
+Version 0.0.6
+-------------
+internal
+
+Version 0.0.5
+-------------
+internal
+
+Version 0.0.4
+-------------
+internal
+
 Version 0.0.3 *(2018-05-24)*
 ----------------------------
 

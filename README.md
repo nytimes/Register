@@ -124,5 +124,5 @@ implementation 'com.nytimes.android:register:0.0.3'
 **For projects using older versions of the plugin**
 
 ```groovy
-compile 'com.nytimes.android:register:0.0.3'
+compile 'com.nytimes.android:register:0.0.7'
 ```
