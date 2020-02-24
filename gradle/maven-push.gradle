@@ -200,6 +200,7 @@ afterEvaluate { project ->
     if (JavaVersion.current().isJava8Compatible()) {
         allprojects {
             tasks.withType(Javadoc) {
+                excludes = ['**/*.kt']
                 options.addStringOption('Xdoclint:none', '-quiet')
             }
         }

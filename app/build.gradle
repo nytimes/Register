@@ -10,7 +10,7 @@ android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
         compileSdkVersion versions.compileSdk
         targetSdkVersion versions.targetSdk
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -97,5 +97,7 @@ buildscript {
     }
 
 }
+
+apply from: rootProject.file("gradle/maven-push.gradle")
 apply from: rootProject.file("gradle/checkstyle.gradle")
 apply from: rootProject.file("gradle/pmd.gradle")
