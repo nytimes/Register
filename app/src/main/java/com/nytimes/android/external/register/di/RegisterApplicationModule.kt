@@ -21,7 +21,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-class ApplicationModule(private val context: Context) {
+class RegisterApplicationModule(private val context: Context) {
 
     @Provides
     @Singleton
@@ -76,23 +76,23 @@ class ApplicationModule(private val context: Context) {
     internal fun providePrivateKey(): PrivateKey? {
         return try {
             val trusted = KeyStore.getInstance("BKS")
-            val keyStore = context.resources.openRawResource(R.raw.keystore)
+            val keyStore = context.resources.openRawResource(R.raw.register_keystore)
             keyStore.use { trusted.load(it, "register".toCharArray()) }
             trusted.getKey("register", "register".toCharArray()) as PrivateKey
         } catch (exception: KeyStoreException) {
-            Log.e("ApplicationModule", "Failed to provide private key", exception)
+            Log.e("RegisterApplicationModu", "Failed to provide private key", exception)
             null
         } catch (exception: IOException) {
-            Log.e("ApplicationModule", "Failed to provide private key", exception)
+            Log.e("RegisterApplicationModu", "Failed to provide private key", exception)
             null
         } catch (exception: NoSuchAlgorithmException) {
-            Log.e("ApplicationModule", "Failed to provide private key", exception)
+            Log.e("RegisterApplicationModu", "Failed to provide private key", exception)
             null
         } catch (exception: CertificateException) {
-            Log.e("ApplicationModule", "Failed to provide private key", exception)
+            Log.e("RegisterApplicationModu", "Failed to provide private key", exception)
             null
         } catch (exception: UnrecoverableKeyException) {
-            Log.e("ApplicationModule", "Failed to provide private key", exception)
+            Log.e("RegisterApplicationModu", "Failed to provide private key", exception)
             null
         }
     }
@@ -101,12 +101,12 @@ class ApplicationModule(private val context: Context) {
     @Singleton
     internal fun provideSignature(): Signature? {
         return try {
-            Signature.getInstance("SHA1withRSA", "BC")
+            Signature.getInstance("SHA1withRSA")
         } catch (exception: NoSuchAlgorithmException) {
-            Log.e("ApplicationModule", "Failed to provide signature", exception)
+            Log.e("RegisterApplicationModu", "Failed to provide signature", exception)
             null
         } catch (exception: NoSuchProviderException) {
-            Log.e("ApplicationModule", "Failed to provide signature", exception)
+            Log.e("RegisterApplicationModu", "Failed to provide signature", exception)
             null
         }
     }

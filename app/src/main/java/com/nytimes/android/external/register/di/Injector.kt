@@ -8,14 +8,14 @@ import android.content.Context
 class Injector {
     companion object {
 
-        private var applicationComponent: ApplicationComponent? = null
+        private var applicationComponent: RegisterApplicationComponent? = null
 
         @JvmStatic
-        fun obtainAppComponent(context: Context): ApplicationComponent {
+        fun obtainAppComponent(context: Context): RegisterApplicationComponent {
             if (applicationComponent == null) {
-                val applicationModule = ApplicationModule(context)
-                applicationComponent = DaggerApplicationComponent.builder()
-                        .applicationModule(applicationModule)
+                val applicationModule = RegisterApplicationModule(context)
+                applicationComponent = DaggerRegisterApplicationComponent.builder()
+                        .registerApplicationModule(applicationModule)
                         .build()
             }
             return applicationComponent!!
