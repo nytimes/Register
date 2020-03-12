@@ -8,7 +8,7 @@ import com.nytimes.android.external.register.APIOverrides.Companion.CONFIG_FILE
 import com.nytimes.android.external.register.BuildConfig
 import com.nytimes.android.external.register.GithubApi
 import com.nytimes.android.external.register.R
-import com.nytimes.android.external.register.di.ApplicationModule.Companion.GSON_RETROFIT
+import com.nytimes.android.external.register.di.RegisterApplicationModule.Companion.GSON_RETROFIT
 import com.nytimes.android.external.register.model.Config
 import dagger.Module
 import dagger.Provides

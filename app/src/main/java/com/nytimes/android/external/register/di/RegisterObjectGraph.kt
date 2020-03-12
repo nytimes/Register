@@ -1,6 +1,6 @@
 package com.nytimes.android.external.register.di
 
-interface ObjectGraph {
+interface RegisterObjectGraph {
 
     fun plusActivityComponent(activityModule: ActivityModule): ActivityComponent
 
