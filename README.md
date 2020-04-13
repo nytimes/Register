@@ -9,11 +9,11 @@ Register is an Android library for easier testing of Google Play's In-app Billin
 
 ### The Problems:
 
-+ In-app Billing implementations on Android are hard to get right
++ Google Play Billing implementations on Android are hard to get right
 + When payments are involved, developers sleep better having a way to test their functionality prior to release
 + Before an app is promoted to Alpha in the Play Store, we do not have an offical way to test payments
 
-The New York Times Android Team developed a fake implementation of Google Play Store's In-app Billing called Register, which can be used as a companion app for testing In-app Billing purchases and subscriptions. 
+The New York Times Android Team developed a fake implementation of Google Play Billing called Register, which can be used as a companion app for testing Play Billing purchases and subscriptions. 
 
 Similar to a mock web server, you can point your app to use Register rather than the real Play Store In-app Billing implementation. Using Register, you'll be able to validate in-advance whether your purchasing flows work correctly.
 
@@ -23,10 +23,10 @@ Register has been used to test purchasing flows of our [Flagship Reader App](htt
 
 ### Overview
 
-Register is a library and companion app that allows seamless mocking of responses from Google Play's In-app Billing. 
-Register works by implementing the same interface as Google's In-app Billing library [InApp Billing Service](https://github.com/googlesamples/android-play-billing/blob/master/TrivialDrive/app/src/main/aidl/com/android/vending/billing/IInAppBillingService.aidl).
+Register is a companion app and library that allows seamless mocking of responses from Google Play Store Billing. 
+Register works by implementing the same interface as the Google Play Store Billing library [Google Play Billing](https://developer.android.com/google/play/billing/billing_overview).
 
-From a client's perspective, there is no difference in how you work with Google's In-app Billing or Register's implementation.
+From a client's perspective, there is no difference in how you work with Google Play Billing or Register's implementation.
 
 If you've used [Amazon's IAP Tester Utility](https://developer.amazon.com/public/apis/earn/in-app-purchasing/docs-v2/testing-iap), 
 you'll find Register's workflow to be very familiar.
@@ -35,7 +35,7 @@ you'll find Register's workflow to be very familiar.
 
 **Step 0:** Register needs a configuration file that declares the mock purchases, subscriptions and users that you will be testing against.  
 
-Here's a sample that we use at NYTimes. The format needs to be the same as below when creating your own fake purchases. This JSON file (`register.json`) will be pushed to your device's SDCard on installation of the companion app.
+Here's a sample that we use at NYTimes. The format needs to be the same as below when creating your own fake purchases. This JSON file (`register.json`) should be included in the assets folder of your module.
 ```json
 {
 	"skus": {
@@ -67,36 +67,34 @@ ide.json.path=subfolder/from/root
 file.json.name=newFileName.json
 ```
 
-**Step 1:** Install `RegisterCompanion` onto the device where you want to mock In-app Billing. You can find the latest version in the [Releases Tab](https://github.com/nytm/Register/releases).
-
-**Step 2:** Add Register as a dependency to your client app:
+**Step 1:** Add Register as a dependency to your client app, this will install the companion app:
 ```groovy 
-compile 'com.nytimes.android:register:0.0.3'
+compile 'com.nytimes.android:register:0.0.8'
 ```
 
 or, on Android Gradle Plugin 3.0 or later:
 
 ```groovy 
-implementation 'com.nytimes.android:register:0.0.3'
+implementation 'com.nytimes.android:register:0.0.8'
 ```
 
-**Step 3:** Create a test Google Services provider (or a real provider):
+**Step 2:** Create a test Google Billing Client (or a real client):
 
 ```java
- private void initGoogleServiceProvider() {
-        if (prefsManager.isUsingTestGoogleServiceProvider()) {
-            googleServiceProvider = new GoogleServiceProviderTesting();
+ private void initGooglePlayBillingClient() {
+        if (prefsManager.isUsingTestBillingClient()) {
+            googleBillingClient = new BillingClientTesting(...);
         } else {
-            googleServiceProvider = new GoogleServiceProviderImpl();
+            googleBillingClient = new BillingClient(...);
         }
     }
 ```
 
-**Step 4:** Make a purchase, similar to how you would with the regular In-app Billing API.
+**Step 3:** Make a purchase, similar to how you would with the regular In-app Billing API.
 
 ![Register Sample](https://github.com/nytm/register/blob/master/images/purchase.png?raw=true)
 
-**Step 5:** Go to your companion app to view the purchase.
+**Step 4:** Go to the companion app to view the purchase.
 
 ![Register Sample](https://github.com/nytm/register/blob/master/images/purchased.png?raw=true)
 
@@ -118,11 +116,11 @@ See the image below for all configurable options on a response.
 **For Android Gradle Plugin 3.0**
 
 ```groovy 
-implementation 'com.nytimes.android:register:0.0.3'
+implementation 'com.nytimes.android:register:0.0.8'
 ```
 
 **For projects using older versions of the plugin**
 
 ```groovy
-compile 'com.nytimes.android:register:0.0.7'
+compile 'com.nytimes.android:register:0.0.8'
 ```
