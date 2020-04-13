@@ -26,14 +26,17 @@ Register has been used to test purchasing flows of our [Flagship Reader App](htt
 Register is a companion app and library that allows seamless mocking of responses from Google Play Store Billing. 
 Register works by implementing the same interface as the Google Play Store Billing library [Google Play Billing](https://developer.android.com/google/play/billing/billing_overview).
 
+You can find an sample app that highlights the features of Google Play Billing here: [Classy Taxi](https://github.com/qinci/android-play-billing/tree/master/ClassyTaxi)
+
 From a client's perspective, there is no difference in how you work with Google Play Billing or Register's implementation.
 
 If you've used [Amazon's IAP Tester Utility](https://developer.amazon.com/public/apis/earn/in-app-purchasing/docs-v2/testing-iap), 
 you'll find Register's workflow to be very familiar.
 
 ### Using Register
+You can find the latest version of Register in the [Releases Tab](https://github.com/nytm/Register/releases)
 
-**Step 0:** Register needs a configuration file that declares the mock purchases, subscriptions and users that you will be testing against.  
+**Step 0:** Register needs a configuration file that declares the mock purchases, subscriptions and users that you will be testing against. 
 
 Here's a sample that we use at NYTimes. The format needs to be the same as below when creating your own fake purchases. This JSON file (`register.json`) should be included in the assets folder of your module.
 ```json
@@ -69,13 +72,13 @@ file.json.name=newFileName.json
 
 **Step 1:** Add Register as a dependency to your client app, this will install the companion app:
 ```groovy 
-compile 'com.nytimes.android:register:0.0.8'
+compile 'com.nytimes.android:register-app:0.0.8'
 ```
 
 or, on Android Gradle Plugin 3.0 or later:
 
 ```groovy 
-implementation 'com.nytimes.android:register:0.0.8'
+implementation 'com.nytimes.android:register-app:0.0.8'
 ```
 
 **Step 2:** Create a test Google Billing Client (or a real client):
@@ -116,11 +119,11 @@ See the image below for all configurable options on a response.
 **For Android Gradle Plugin 3.0**
 
 ```groovy 
-implementation 'com.nytimes.android:register:0.0.8'
+implementation 'com.nytimes.android:register-app:0.0.8'
 ```
 
 **For projects using older versions of the plugin**
 
 ```groovy
-compile 'com.nytimes.android:register:0.0.8'
+compile 'com.nytimes.android:register-app:0.0.8'
 ```
