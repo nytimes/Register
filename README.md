@@ -26,7 +26,7 @@ Register has been used to test purchasing flows of our [Flagship Reader App](htt
 Register is a companion app and library that allows seamless mocking of responses from Google Play Store Billing. 
 Register works by implementing the same interface as the Google Play Store Billing library [Google Play Billing](https://developer.android.com/google/play/billing/billing_overview).
 
-You can find an sample app that highlights the features of Google Play Billing here: [Classy Taxi](https://github.com/qinci/android-play-billing/tree/master/ClassyTaxi)
+You can find a sample app that highlights the features of Google Play Billing here: [Classy Taxi](https://github.com/qinci/android-play-billing/tree/master/ClassyTaxi)
 
 From a client's perspective, there is no difference in how you work with Google Play Billing or Register's implementation.
 
