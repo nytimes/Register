@@ -83,16 +83,14 @@ implementation 'com.nytimes.android:register-app:0.0.8'
 implementation 'com.nytimes.android:register:0.0.8'
 ```
 
-**Step 2:** Create a test Google Billing Client (or a real client):
+**Step 2:** Create a test Google Service Privider (or a real provider):
 
 ```java
- private void initGooglePlayBillingClient() {
-        if (prefsManager.isUsingTestBillingClient()) {
-            googleBillingClient = new BillingClientTesting(...);
+ private void initGoogleServiceProvider() {
+        if (prefsManager.isUsingTestGoogleServiceProvider()) {
+            googleServiceProvider = new GoogleServiceProviderTesting();
         } else {
-            googleBillingClient = new BillingClient(...);
-        }
-    }
+            googleServiceProvider = new GoogleServiceProviderImpl();
 ```
 
 **Step 3:** Make a purchase, similar to how you would with the regular In-app Billing API.
