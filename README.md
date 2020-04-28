@@ -83,7 +83,7 @@ implementation 'com.nytimes.android:register-app:0.0.8'
 implementation 'com.nytimes.android:register:0.0.8'
 ```
 
-**Step 2:** Create a test Google Service Privider (or a real provider):
+**Step 2:** Create a test Google Service Provider (or a real provider):
 
 ```java
  private void initGoogleServiceProvider() {
