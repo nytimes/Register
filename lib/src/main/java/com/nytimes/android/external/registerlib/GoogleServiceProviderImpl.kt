@@ -6,8 +6,6 @@ import com.android.billingclient.api.*
 
 class GoogleServiceProviderImpl(
         context: Context,
-        childDirected: Int,
-        underAgeOfConsent: Int,
         enablePendingPurchases: Boolean,
         listener: PurchasesUpdatedListener
 ) : GoogleServiceProvider() {
@@ -15,8 +13,6 @@ class GoogleServiceProviderImpl(
     private val billingClient: BillingClient by lazy {
         val builder = BillingClient.newBuilder(context)
                 .setListener(listener)
-                .setChildDirected(childDirected)
-                .setUnderAgeOfConsent(underAgeOfConsent)
 
         if (enablePendingPurchases) {
             builder.enablePendingPurchases()
@@ -63,7 +59,4 @@ class GoogleServiceProviderImpl(
         billingClient.acknowledgePurchase(params, listener)
     }
 
-    override fun loadRewardedSku(params: RewardLoadParams, listener: RewardResponseListener) {
-        billingClient.loadRewardedSku(params, listener)
-    }
 }

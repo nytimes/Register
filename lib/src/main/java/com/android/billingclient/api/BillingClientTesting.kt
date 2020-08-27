@@ -18,26 +18,21 @@ import java.io.FileDescriptor
  */
 class BillingClientTesting(
         context: Context,
-        childDirected: Int,
-        underAgeOfConsent: Int,
         enablePendingPurchases: Boolean,
         listener: PurchasesUpdatedListener
 
 ) : BillingClient() {
 
     private val billingClientImpl: BillingClientImpl =
-            BillingClientImpl(BillingContextWrapper(context), childDirected, underAgeOfConsent, enablePendingPurchases, listener)
+            BillingClientImpl(null, enablePendingPurchases, BillingContextWrapper(context), listener)
 
-    override fun loadRewardedSku(params: RewardLoadParams?, listener: RewardResponseListener) {
-        billingClientImpl.loadRewardedSku(params, listener)
+
+    override fun acknowledgePurchase(p0: AcknowledgePurchaseParams, p1: AcknowledgePurchaseResponseListener) {
+        billingClientImpl.acknowledgePurchase(p0, p1)
     }
 
-    override fun acknowledgePurchase(params: AcknowledgePurchaseParams?, listener: AcknowledgePurchaseResponseListener?) {
-        billingClientImpl.acknowledgePurchase(params, listener)
-    }
-
-    override fun launchPriceChangeConfirmationFlow(activity: Activity?, params: PriceChangeFlowParams?, listener: PriceChangeConfirmationListener) {
-        billingClientImpl.launchPriceChangeConfirmationFlow(activity, params, listener)
+    override fun launchPriceChangeConfirmationFlow(p0: Activity, p1: PriceChangeFlowParams, listener: PriceChangeConfirmationListener) {
+        billingClientImpl.launchPriceChangeConfirmationFlow(p0, p1, listener)
     }
 
     override fun isReady(): Boolean {

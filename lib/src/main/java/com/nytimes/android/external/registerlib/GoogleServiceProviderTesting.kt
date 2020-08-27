@@ -7,16 +7,12 @@ import com.android.billingclient.api.*
 
 class GoogleServiceProviderTesting(
         context: Context,
-        childDirected: Int,
-        underAgeOfConsent: Int,
         enablePendingPurchases: Boolean,
         listener: PurchasesUpdatedListener
 ) : GoogleServiceProvider() {
 
     private val billingClient: BillingClientTesting = BillingClientTesting(
             context,
-            childDirected,
-            underAgeOfConsent,
             enablePendingPurchases,
             listener
     )
@@ -59,10 +55,6 @@ class GoogleServiceProviderTesting(
 
     override fun acknowledgePurchase(params: AcknowledgePurchaseParams, listener: AcknowledgePurchaseResponseListener) {
         billingClient.acknowledgePurchase(params, listener)
-    }
-
-    override fun loadRewardedSku(params: RewardLoadParams, listener: RewardResponseListener) {
-        billingClient.loadRewardedSku(params, listener)
     }
 
     companion object {

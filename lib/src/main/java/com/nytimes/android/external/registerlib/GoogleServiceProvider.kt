@@ -28,8 +28,6 @@ abstract class GoogleServiceProvider {
     class Builder constructor(private val mContext: Context?) {
         private var mListener: PurchasesUpdatedListener? = null
         private var useTestProvider: Boolean = false
-        private var underAgeOfConsent: Int = BillingClient.UnderAgeOfConsent.UNSPECIFIED
-        private var childDirected: Int = BillingClient.ChildDirected.UNSPECIFIED
         private var enablePendingPurchases: Boolean = false
 
         /**
@@ -49,17 +47,6 @@ abstract class GoogleServiceProvider {
             return this
         }
 
-        @UiThread
-        fun setUnderAgeOfConsent(underAgeOfConsent: Int): GoogleServiceProvider.Builder {
-            this.underAgeOfConsent = underAgeOfConsent
-            return this
-        }
-
-        @UiThread
-        fun setChildDirected(childDirected: Int): GoogleServiceProvider.Builder {
-            this.childDirected = childDirected
-            return this
-        }
 
         @UiThread
         fun enablePendingPurchases(): GoogleServiceProvider.Builder {
@@ -87,9 +74,9 @@ abstract class GoogleServiceProvider {
             }
 
             return if (useTestProvider) {
-                GoogleServiceProviderTesting(mContext,childDirected, underAgeOfConsent, enablePendingPurchases, mListener!!)
+                GoogleServiceProviderTesting(mContext, enablePendingPurchases, mListener!!)
             } else {
-                GoogleServiceProviderImpl(mContext,childDirected, underAgeOfConsent, enablePendingPurchases, mListener!!)
+                GoogleServiceProviderImpl(mContext, enablePendingPurchases, mListener!!)
             }
         }
     }
@@ -201,22 +188,6 @@ abstract class GoogleServiceProvider {
      */
     @UiThread
     abstract fun acknowledgePurchase(params: AcknowledgePurchaseParams, listener: AcknowledgePurchaseResponseListener)
-
-    /**
-     * Loads a rewarded sku in the background and returns the result asynchronously.
-     *
-     *
-     * If the rewarded sku is available, the response will be BILLING_RESULT_OK. Otherwise the
-     * response will be ITEM_UNAVAILABLE. There is no guarantee that a rewarded sku will always be
-     * available. After a successful response, only then should the offer be given to a user to obtain
-     * a rewarded item and call launchBillingFlow.
-     *
-     * @param params Params specific to this load request [RewardLoadParams]
-     * @param listener Implement it to get the result of the load operation returned asynchronously
-     * through the callback with the [BillingResponseCode]
-     */
-    abstract fun loadRewardedSku(
-            params: RewardLoadParams, listener: RewardResponseListener)
 
     companion object {
 

@@ -106,7 +106,7 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
                 for (type in types) {
                     val result = googleServiceProvider.queryPurchases(type)
                     if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-                        purchases.addAll(result.purchasesList)
+                        purchases.addAll(result.purchasesList as List<Purchase>)
                     }
                 }
                 purchases
@@ -243,11 +243,13 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
     private fun initRecycler() {
         adapter = SampleAdapter(this)
         compositeDisposable.add(adapter.clickSubject!!.subscribe { item ->
-            val params = BillingFlowParams
-                    .newBuilder()
-                    .setSkuDetails(skuMap[item.sku])
-                    .build()
-            googleServiceProvider.launchBillingFlow(this, params)
+            skuMap[item.sku]?.let { skuDetails ->
+                val params = BillingFlowParams
+                        .newBuilder()
+                        .setSkuDetails(skuDetails)
+                        .build()
+                googleServiceProvider.launchBillingFlow(this, params)
+            }
         })
 
         val recyclerView = findViewById<RecyclerView>(R.id.list)
@@ -262,7 +264,7 @@ class SampleActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListen
                 .newBuilder(this)
                 .useTestProvider(prefsManager.isUsingTestGoogleServiceProvider)
                 .setListener(purchasesUpdatedListener)
-                .enablePendingPurchases() // Not used for subscriptions
+               // .enablePendingPurchases() // Not used for subscriptions
                 .build()
 
         googleServiceProvider.startConnection(billingClientStateListener)
