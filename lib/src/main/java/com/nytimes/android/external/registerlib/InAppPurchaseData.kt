@@ -6,7 +6,7 @@ import com.nytimes.android.external.registerlib.JsonHelper.addToObjIfNotNull
 import com.nytimes.android.external.registerlib.JsonHelper.getFieldAsStringOrNull
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.*
+import java.util.Objects
 
 /**
  * class structure representing INAPP_PURCHASE_DATA.
@@ -20,6 +20,7 @@ class InAppPurchaseData {
     internal var purchaseState: String? = null
     internal var developerPayload: String? = null
     internal var purchaseToken: String? = null
+    internal var isAutoRenewing: Boolean? = null
 
     fun orderId(): String? {
         return orderId
@@ -49,6 +50,10 @@ class InAppPurchaseData {
         return purchaseToken
     }
 
+    fun isAutoRenewing(): Boolean? {
+        return isAutoRenewing
+    }
+
     override fun equals(o: Any?): Boolean {
         if (this === o) {
             return true
@@ -61,17 +66,18 @@ class InAppPurchaseData {
         }
         val other = o as InAppPurchaseData?
         return TextUtils.equals(orderId, other!!.orderId) &&
-                TextUtils.equals(packageName, other.packageName) &&
-                TextUtils.equals(productId, other.productId) &&
-                TextUtils.equals(purchaseTime, other.purchaseTime) &&
-                TextUtils.equals(purchaseState, other.purchaseState) &&
-                TextUtils.equals(developerPayload, other.developerPayload) &&
-                TextUtils.equals(purchaseToken, other.purchaseToken)
+            TextUtils.equals(packageName, other.packageName) &&
+            TextUtils.equals(productId, other.productId) &&
+            TextUtils.equals(purchaseTime, other.purchaseTime) &&
+            TextUtils.equals(purchaseState, other.purchaseState) &&
+            TextUtils.equals(developerPayload, other.developerPayload) &&
+            TextUtils.equals(purchaseToken, other.purchaseToken) &&
+            isAutoRenewing == other.isAutoRenewing
     }
 
     override fun hashCode(): Int {
         return Objects.hash(orderId, packageName, productId, purchaseTime, purchaseState, developerPayload,
-                purchaseToken)
+            purchaseToken, isAutoRenewing)
     }
 
     class Builder {
@@ -112,6 +118,11 @@ class InAppPurchaseData {
             return this
         }
 
+        fun isAutoRenewing(isAutoRenewing: Boolean?): Builder {
+            inAppPurchaseData.isAutoRenewing = isAutoRenewing
+            return this
+        }
+
         fun build(): InAppPurchaseData {
             return inAppPurchaseData
         }
@@ -126,6 +137,7 @@ class InAppPurchaseData {
         private const val FLD_PURCHASE_STATE = "purchaseState"
         private const val FLD_DEV_PAYLOAD = "developerPayload"
         private const val FLD_PURCHASE_TOKEN = "purchaseToken"
+        private const val FLD_IS_AUTO_RENEWING = "autoRenewing"
 
         @JvmStatic
         fun fromJson(json: String): InAppPurchaseData {
@@ -137,14 +149,15 @@ class InAppPurchaseData {
             }
 
             return Builder()
-                    .orderId(getFieldAsStringOrNull(obj, FLD_ORDER_ID))
-                    .packageName(getFieldAsStringOrNull(obj, FLD_PACKAGE))
-                    .productId(getFieldAsStringOrNull(obj, FLD_PRODUCT_ID))
-                    .purchaseTime(getFieldAsStringOrNull(obj, FLD_PURCHASE_TIME))
-                    .purchaseState(getFieldAsStringOrNull(obj, FLD_PURCHASE_STATE))
-                    .developerPayload(getFieldAsStringOrNull(obj, FLD_DEV_PAYLOAD))
-                    .purchaseToken(getFieldAsStringOrNull(obj, FLD_PURCHASE_TOKEN))
-                    .build()
+                .orderId(getFieldAsStringOrNull(obj, FLD_ORDER_ID))
+                .packageName(getFieldAsStringOrNull(obj, FLD_PACKAGE))
+                .productId(getFieldAsStringOrNull(obj, FLD_PRODUCT_ID))
+                .purchaseTime(getFieldAsStringOrNull(obj, FLD_PURCHASE_TIME))
+                .purchaseState(getFieldAsStringOrNull(obj, FLD_PURCHASE_STATE))
+                .developerPayload(getFieldAsStringOrNull(obj, FLD_DEV_PAYLOAD))
+                .purchaseToken(getFieldAsStringOrNull(obj, FLD_PURCHASE_TOKEN))
+                .isAutoRenewing(getFieldAsStringOrNull(obj, FLD_IS_AUTO_RENEWING)?.toBoolean())
+                .build()
         }
 
         @JvmStatic
@@ -157,6 +170,7 @@ class InAppPurchaseData {
             addToObjIfNotNull(FLD_PURCHASE_STATE, inAppPurchaseData.purchaseState(), obj)
             addToObjIfNotNull(FLD_DEV_PAYLOAD, inAppPurchaseData.developerPayload(), obj)
             addToObjIfNotNull(FLD_PURCHASE_TOKEN, inAppPurchaseData.purchaseToken(), obj)
+            addToObjIfNotNull(FLD_IS_AUTO_RENEWING, inAppPurchaseData.isAutoRenewing().toString(), obj)
             return obj.toString()
         }
     }
