@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 0.0.9
+-------------
+- [APP-3750](https://jira.nyt.net/browse/APP-3750) Update Purchase to include `autorenew` mock so can have sku type in Purchase
+
+Version 0.0.9
+-------------
+internal
+
 Version 0.0.7
 -------------
 internal

@@ -72,15 +72,15 @@ file.json.name=newFileName.json
 
 **Step 1:** Add Register as a dependency to your client app, this will install the companion app:
 ```groovy 
-compile 'com.nytimes.android:register-app:0.0.8'
-compile 'com.nytimes.android:register:0.0.8'
+compile 'com.nytimes.android:register-app:0.0.9'
+compile 'com.nytimes.android:register:0.0.9'
 ```
 
 or, on Android Gradle Plugin 3.0 or later:
 
 ```groovy 
-implementation 'com.nytimes.android:register-app:0.0.8'
-implementation 'com.nytimes.android:register:0.0.8'
+implementation 'com.nytimes.android:register-app:0.0.9'
+implementation 'com.nytimes.android:register:0.0.9'
 ```
 
 **Step 2:** Create a test Google Service Provider (or a real provider):
@@ -119,13 +119,13 @@ See the image below for all configurable options on a response.
 **For Android Gradle Plugin 3.0**
 
 ```groovy 
-implementation 'com.nytimes.android:register-app:0.0.8'
-implementation 'com.nytimes.android:register:0.0.8'
+implementation 'com.nytimes.android:register-app:0.0.9'
+implementation 'com.nytimes.android:register:0.0.9'
 ```
 
 **For projects using older versions of the plugin**
 
 ```groovy
-compile 'com.nytimes.android:register-app:0.0.8'
-compile 'com.nytimes.android:register:0.0.8'
+compile 'com.nytimes.android:register-app:0.0.9'
+compile 'com.nytimes.android:register:0.0.9'
 ```
