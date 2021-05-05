@@ -1,3 +1,13 @@
+<table>
+  <tr>
+    <td>
+        <h3>DEPRECATED</h3>
+        Register is deprecated. No more development will be taking place. Thanks for all your support!
+    </td>
+  </tr>
+</table>
+<br/><br/>
+
 [![Build Status](https://travis-ci.org/nytimes/Register.svg?branch=master)](https://travis-ci.org/nytimes/Register)
 
 ![Register Logo](https://github.com/nytm/register/blob/master/images/register-logo.png?raw=true)
